@@ -3,6 +3,7 @@ package com.vegazsdev.bobobot.commands.gsi;
 import com.vegazsdev.bobobot.TelegramBot;
 import com.vegazsdev.bobobot.core.Command;
 import com.vegazsdev.bobobot.db.PrefObj;
+import com.vegazsdev.bobobot.utils.Config;
 import com.vegazsdev.bobobot.utils.FileTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Properties;
 
 public class SourceForgeSetup extends Command {
@@ -45,8 +47,14 @@ public class SourceForgeSetup extends Command {
 
     @Override
     public void botReply(Update update, TelegramBot bot, PrefObj prefs) {
-        mkSfConf();
-        bot.sendMessage("Check your config folder", update);
+        if (update.getMessage().getFrom().getId() == Float.parseFloat(Objects.requireNonNull(Config.getDefConfig("bot-master")))) {
+            if (FileTools.checkFileExistsCurPath("configs/sf-creds.prop")) {
+                bot.sendMessage(prefs.getString("unable_to_create"), update);
+            } else {
+                mkSfConf();
+                bot.sendMessage(prefs.getString("created_sf_folder"), update);
+            }
+        }
     }
 
     @SuppressWarnings("SpellCheckingInspection")

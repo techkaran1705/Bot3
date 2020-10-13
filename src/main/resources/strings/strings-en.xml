@@ -76,4 +76,8 @@
     <info_not_shared>Information not shared by the user.</info_not_shared>
     <invalid_link>Hello [%1](tg://user?id=%2) (`%3`), the link you sent appears to be invalid! Use with http parameters and try again.</invalid_link>
     <cant_be_used>This bot cannot be used in other locations!</cant_be_used>
+
+    <!-- SourceForgeSetup Command -->
+    <unable_to_create>It is impossible to create, as a SourceForge properties file already exists</unable_to_create>
+    <created_sf_folder>Check your config folder</created_sf_folder>
 </strings>
