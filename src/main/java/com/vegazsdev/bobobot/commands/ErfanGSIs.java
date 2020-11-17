@@ -270,12 +270,10 @@ public class ErfanGSIs extends Command {
                 String re = new sfUpload().uploadGsi(arr, gsiCmdObj.getGsi());
                 re=re+"/";
 
-
-//                GDriveGSI links = new GSIUpload().enviarGSI(gsiCmdObj.getGsi(), arr);
-//
-//                if (gsiCmdObj.getGsi().contains(":")) {
-//                    gsiCmdObj.setGsi(gsiCmdObj.getGsi().split(":")[1]);
-//                }
+                if (gsiCmdObj.getGsi().contains(":")) {
+                    gsiCmdObj.setGsi(gsiCmdObj.getGsi().split(":")[1]);
+                    gsiCmdObj.setGsi(gsiCmdObj.getGsi().replace("-"," "));
+                }
 
                 StringBuilder generateLinks = new StringBuilder();
 
