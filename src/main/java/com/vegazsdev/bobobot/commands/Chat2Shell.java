@@ -29,7 +29,7 @@ public class Chat2Shell extends Command {
             ProcessBuilder pb;
             pb = new ProcessBuilder("/bin/bash", "-c", msg);
             StringBuilder fullLogs = new StringBuilder();
-            fullLogs.append("***$ " + msg + "***\n");
+            fullLogs.append("***$ ").append(msg).append("***\n");
             int id = bot.sendReply(fullLogs.toString(), update);
             try {
                 pb.redirectErrorStream(true);
