@@ -7,13 +7,16 @@ import com.vegazsdev.bobobot.db.PrefObj;
 import com.vegazsdev.bobobot.utils.XMLs;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.Objects;
+
+@SuppressWarnings("unused")
 public class ChangeHotkey extends Command {
 
     public ChangeHotkey() {
         super("chkey", "Change current hotkey on this chat");
     }
 
-    private String supportedHotkeys = XMLs.getFromStringsXML("core-strings.xml", "possible_hotkeys");
+    private final String supportedHotkeys = XMLs.getFromStringsXML("core-strings.xml", "possible_hotkeys");
 
     @Override
     public void botReply(Update update, TelegramBot bot, PrefObj prefs) {
@@ -21,11 +24,11 @@ public class ChangeHotkey extends Command {
             if (update.getMessage().getText().trim().equals(prefs.getHotkey() + "chkey".trim())) {
                 bot.sendMessage(prefs.getString("chkey_help")
                         .replace("%1", prefs.getHotkey())
-                        .replace("%2", supportedHotkeys), update);
+                        .replace("%2", Objects.requireNonNull(supportedHotkeys)), update);
             } else {
                 if (update.getMessage().getText().contains(" ")) {
                     String msg = update.getMessage().getText().trim().split(" ")[1];
-                    if (supportedHotkeys.contains(msg)) {
+                    if (Objects.requireNonNull(supportedHotkeys).contains(msg)) {
                         DbThings.changeHotkey(prefs.getId(), msg);
                         prefs = DbThings.selectIntoPrefsTable(prefs.getId());
                         bot.sendMessage(prefs.getString("chkey_cur_hotkey")

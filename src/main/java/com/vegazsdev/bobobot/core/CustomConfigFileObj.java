@@ -1,5 +1,6 @@
 package com.vegazsdev.bobobot.core;
 
+@SuppressWarnings("unused") /* Don't need to warn about unused methods, it's useless for now */
 public class CustomConfigFileObj {
 
     private String confName;

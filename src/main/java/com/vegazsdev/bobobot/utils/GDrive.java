@@ -22,7 +22,6 @@ import org.apache.logging.log4j.core.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class GDrive {
 
     private static String APPLICATION_NAME = "Google Drive API Java Quickstart";
 
-    private static java.io.File CREDENTIALS_FOLDER = new java.io.File("credentials");
+    private static final java.io.File CREDENTIALS_FOLDER = new java.io.File("credentials");
 
     private static JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
@@ -52,8 +51,7 @@ public class GDrive {
 
     private static Drive _driveService;
 
-    public static File createGoogleFolder(String folderIdParent, String folderName) throws IOException {
-
+    public static void createGoogleFolder(String folderIdParent, String folderName) throws IOException {
         File fileMetadata = new File();
 
         fileMetadata.setName(folderName);
@@ -66,7 +64,7 @@ public class GDrive {
         Drive driveService = getDriveService();
         // Create a Folder.
         // Returns File object with id & name fields will be assigned values
-        return driveService.files().create(fileMetadata).setFields("id, name").execute();
+        driveService.files().create(fileMetadata).setFields("id, name").execute();
     }
 
     private static Drive getDriveService() throws IOException {
@@ -93,7 +91,6 @@ public class GDrive {
     }
 
     private static Credential getCredentials() throws IOException {
-
         java.io.File clientSecretFilePath = new java.io.File(CREDENTIALS_FOLDER, CLIENT_SECRET_FILE_NAME);
 
         if (!clientSecretFilePath.exists()) {
@@ -121,9 +118,9 @@ public class GDrive {
         Drive driveService = getDriveService();
 
         String pageToken = null;
-        List<File> list = new ArrayList<File>();
+        List<File> list = new ArrayList<>();
 
-        String query = null;
+        String query;
         if (googleFolderIdParent == null) {
             query = " mimeType = 'application/vnd.google-apps.folder' " //
                     + " and 'root' in parents";
@@ -137,36 +134,27 @@ public class GDrive {
                     // Fields will be assigned values: id, name, createdTime
                     .setFields("nextPageToken, files(id, name, createdTime)")//
                     .setPageToken(pageToken).execute();
-            for (File file : result.getFiles()) {
-                list.add(file);
-            }
+            list.addAll(result.getFiles());
             pageToken = result.getNextPageToken();
         } while (pageToken != null);
         //
         return list;
     }
 
-    public static File createGoogleFile(String googleFolderIdParent, String contentType, //
+    public static void createGoogleFile(String googleFolderIdParent, String contentType, //
                                         String customFileName, java.io.File uploadFile) throws IOException {
         AbstractInputStreamContent uploadStreamContent = new FileContent(contentType, uploadFile);
-        return _createGoogleFile(googleFolderIdParent, contentType, customFileName, uploadStreamContent);
+        _createGoogleFile(googleFolderIdParent, customFileName);
     }
 
-    private static File _createGoogleFile(String googleFolderIdParent, String contentType, //
-                                          String customFileName, AbstractInputStreamContent uploadStreamContent) throws IOException {
-
+    private static void _createGoogleFile(String googleFolderIdParent, String customFileName) throws IOException {
         File fileMetadata = new File();
         fileMetadata.setName(customFileName);
 
-        List<String> parents = Arrays.asList(googleFolderIdParent);
+        List<String> parents = Collections.singletonList(googleFolderIdParent);
         fileMetadata.setParents(parents);
 
         Drive driveService = getDriveService();
-
-        File file = driveService.files().create(fileMetadata, uploadStreamContent)
-                .setFields("id, webContentLink, webViewLink, parents").execute();
-
-        return file;
     }
 
     public static List<File> showFiles(String parent) throws IOException {
@@ -174,7 +162,7 @@ public class GDrive {
         Drive driveService = getDriveService();
 
         String pageToken = null;
-        List<File> list = new ArrayList<File>();
+        List<File> list = new ArrayList<>();
 
         do {
             FileList result = driveService.files().list()
@@ -183,16 +171,14 @@ public class GDrive {
                     .setFields("nextPageToken, files(id, name, parents)")
                     .setPageToken(pageToken)
                     .execute();
-            for (File file : result.getFiles()) {
-                list.add(file);
-            }
+            list.addAll(result.getFiles());
             pageToken = result.getNextPageToken();
         } while (pageToken != null);
         //
         return list;
     }
 
-    public static Permission createPublicPermission(String googleFileId) throws IOException {
+    public static void createPublicPermission(String googleFileId) throws IOException {
         // All values: user - group - domain - anyone
         String permissionType = "anyone";
         // All values: organizer - owner - writer - commenter - reader
@@ -203,7 +189,7 @@ public class GDrive {
         newPermission.setRole(permissionRole);
 
         Drive driveService = getDriveService();
-        return driveService.permissions().create(googleFileId, newPermission).execute();
+        driveService.permissions().create(googleFileId, newPermission).execute();
     }
 
 

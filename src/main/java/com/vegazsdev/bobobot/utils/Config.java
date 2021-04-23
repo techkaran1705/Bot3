@@ -15,7 +15,7 @@ public class Config {
 
     private static final Logger LOGGER = (Logger) LogManager.getLogger(Config.class);
 
-    public boolean createDefConfig() {
+    public void createDefConfig() {
         try {
             FileTools.createFolder("configs");
             Properties saveProps = new Properties();
@@ -25,10 +25,8 @@ public class Config {
             saveProps.store(new FileOutputStream("configs/" +
                     Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "config_file"))
             ), "Bo³+t config file");
-            return true;
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            return false;
         }
     }
 
@@ -43,7 +41,7 @@ public class Config {
         return null;
     }
 
-    public static boolean createCustomConfig(ArrayList<CustomConfigFileObj> configs, String configFile, String comment) {
+    public static void createCustomConfig(ArrayList<CustomConfigFileObj> configs, String configFile, String comment) {
         FileTools.createFolder("configs");
         try {
             Properties saveProps = new Properties();
@@ -51,10 +49,8 @@ public class Config {
                 saveProps.setProperty(config.getConfName(), config.getConfDefValue());
             }
             saveProps.store(new FileOutputStream("configs/" + configFile), comment);
-            return true;
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            return false;
         }
     }
 
@@ -68,5 +64,4 @@ public class Config {
         }
         return null;
     }
-
 }

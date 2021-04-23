@@ -19,11 +19,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Objects;
 
+@SuppressWarnings("unused")
 public class SetupGDrive extends Command {
 
     private static final Logger LOGGER = (Logger) LogManager.getLogger(SetupGDrive.class);
 
-    private String configFile = "gdrive.config";
+    private final String configFile = "gdrive.config";
 
     private String validateURL = "https://accounts.google.com/o/oauth2/auth?access_type=offline&" +
             "client_id=$CLIENT_ID$" +

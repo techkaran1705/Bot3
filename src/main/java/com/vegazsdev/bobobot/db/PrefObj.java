@@ -2,6 +2,7 @@ package com.vegazsdev.bobobot.db;
 
 import com.vegazsdev.bobobot.utils.XMLs;
 
+@SuppressWarnings("unused") /* Don't need to warn about unused methods, it's useless for now */
 public class PrefObj {
     private double id;
     private String lang;

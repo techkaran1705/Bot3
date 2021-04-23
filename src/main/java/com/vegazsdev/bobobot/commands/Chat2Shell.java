@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
+@SuppressWarnings("unused")
 public class Chat2Shell extends Command {
 
     private static final Logger LOGGER = (Logger) LogManager.getLogger(Chat2Shell.class);
@@ -37,7 +38,7 @@ public class Chat2Shell extends Command {
                 while ((line = reader.readLine()) != null) {
                     text.append(line).append("\n");
                 }
-                bot.sendMessage("`" + text.toString() + "`", update);
+                bot.sendMessage("`" + text + "`", update);
             } catch (Exception e) {
                 bot.sendMessage(prefs.getString("something_went_wrong"), update);
                 LOGGER.error(e.getMessage(), e);

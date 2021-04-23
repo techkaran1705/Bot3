@@ -59,9 +59,9 @@ public class DbThings {
     public static void insertIntoPrefsTable(double id) {
         String sql = "INSERT INTO chat_prefs(group_id) VALUES(?)";
         try (Connection conn = connect("prefs.db");
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setDouble(1, id);
-            pstmt.executeUpdate();
+             PreparedStatement prepareStatement = conn.prepareStatement(sql)) {
+            prepareStatement.setDouble(1, id);
+            prepareStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -82,24 +82,23 @@ public class DbThings {
         return prefObj;
     }
 
-    public static void changeLanguage(double groupid, String newlang) {
-        String sql = "UPDATE chat_prefs SET lang = '" + newlang + "' WHERE group_id = " + groupid;
+    public static void changeLanguage(double groupId, String newLang) {
+        String sql = "UPDATE chat_prefs SET lang = '" + newLang + "' WHERE group_id = " + groupId;
         try (Connection conn = connect("prefs.db");
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.executeUpdate();
+             PreparedStatement prepareStatement = conn.prepareStatement(sql)) {
+            prepareStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
     }
 
-    public static void changeHotkey(double groupid, String newhotkey) {
-        String sql = "UPDATE chat_prefs SET hotkey = '" + newhotkey + "' WHERE group_id = " + groupid;
+    public static void changeHotkey(double groupId, String newHotkey) {
+        String sql = "UPDATE chat_prefs SET hotkey = '" + newHotkey + "' WHERE group_id = " + groupId;
         try (Connection conn = connect("prefs.db");
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.executeUpdate();
+             PreparedStatement prepareStatement = conn.prepareStatement(sql)) {
+            prepareStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
         }
     }
-
 }

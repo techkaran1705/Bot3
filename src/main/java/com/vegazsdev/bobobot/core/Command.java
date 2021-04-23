@@ -4,6 +4,7 @@ import com.vegazsdev.bobobot.TelegramBot;
 import com.vegazsdev.bobobot.db.PrefObj;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+@SuppressWarnings("unused") /* Don't need to warn about unused methods, it's useless for now */
 public abstract class Command {
 
     private String alias;

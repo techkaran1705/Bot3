@@ -1,5 +1,10 @@
 package com.vegazsdev.bobobot.core;
 
+@SuppressWarnings({"unused", "rawtypes"})
+/*
+ * Don't need to warn about unused methods, it's useless for now,
+ * and it is unnecessary to warn about classes that are 'parameterized'
+ */
 public class CommandWithClass {
 
     private Class clazz;

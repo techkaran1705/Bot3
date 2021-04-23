@@ -26,6 +26,7 @@ public class JSONs {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     public static ArrayList getArrayFromJSON(String file) {
         try {
             FileInputStream fis = new FileInputStream(file);
@@ -45,6 +46,4 @@ public class JSONs {
         }
 
     }
-
-
 }

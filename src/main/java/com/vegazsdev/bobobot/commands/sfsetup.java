@@ -22,7 +22,7 @@ public class sfsetup extends Command {
         bot.sendMessage("Check your config folder", update);
     }
 
-    public boolean mkSfConf() {
+    public void mkSfConf() {
         try {
             FileTools.createFolder("configs");
             Properties saveProps = new Properties();
@@ -33,9 +33,7 @@ public class sfsetup extends Command {
             saveProps.setProperty("bot-send-announcement", "false");
             saveProps.setProperty("bot-announcement-id", "none");
             saveProps.store(new FileOutputStream("configs/sf-creds.config"), "Config file");
-            return true;
         } catch (Exception e) {
-            return false;
         }
     }
 
@@ -49,6 +47,4 @@ public class sfsetup extends Command {
         }
         return null;
     }
-
-
 }
