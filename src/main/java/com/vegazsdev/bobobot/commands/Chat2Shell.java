@@ -4,8 +4,8 @@ import com.vegazsdev.bobobot.TelegramBot;
 import com.vegazsdev.bobobot.core.Command;
 import com.vegazsdev.bobobot.db.PrefObj;
 import com.vegazsdev.bobobot.utils.Config;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.io.BufferedReader;
@@ -16,7 +16,7 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 public class Chat2Shell extends Command {
 
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(Chat2Shell.class);
+    private static final Logger logger = LoggerFactory.getLogger(Download2GDrive.class);
 
     public Chat2Shell() {
         super("shell", "Run shell (bash) commands via chat");
@@ -41,7 +41,7 @@ public class Chat2Shell extends Command {
                 bot.sendMessage("`" + text + "`", update);
             } catch (Exception e) {
                 bot.sendMessage(prefs.getString("something_went_wrong"), update);
-                LOGGER.error(e.getMessage(), e);
+                logger.error(e.getMessage(), e);
             }
         }
     }

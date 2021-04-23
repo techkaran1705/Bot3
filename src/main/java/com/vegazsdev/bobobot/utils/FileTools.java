@@ -1,7 +1,7 @@
 package com.vegazsdev.bobobot.utils;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.zip.GZIPOutputStream;
 
 public class FileTools {
 
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(FileTools.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileTools.class);
 
     public boolean checkFileExistsCurPath(String file) {
         File f = new File(file);
@@ -54,7 +54,7 @@ public class FileTools {
 
 
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
     }
 

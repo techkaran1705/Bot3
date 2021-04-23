@@ -6,8 +6,8 @@ import com.vegazsdev.bobobot.db.DbThings;
 import com.vegazsdev.bobobot.utils.Config;
 import com.vegazsdev.bobobot.utils.FileTools;
 import com.vegazsdev.bobobot.utils.XMLs;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
@@ -18,20 +18,20 @@ import java.util.Objects;
 
 public class Main {
 
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(Main.class);
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static String DEF_CORE_STRINGS_XML = "core-strings.xml";
 
     public static void main(String[] args) {
 
-        LOGGER.info(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "bot_init"));
+        logger.info(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "bot_init"));
 
         // detect config file
 
         if (!new FileTools().checkFileExistsCurPath("configs/" + XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file"))) {
-            LOGGER.info(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_not_found"));
+            logger.info(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_not_found"));
             new Config().createDefConfig();
-            LOGGER.warn(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_info"));
+            logger.warn(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_info"));
             System.exit(0);
         }
 
@@ -50,7 +50,7 @@ public class Main {
                         Method method = ((Class<?>) clazz).getSuperclass().getDeclaredMethod("getAlias");
                         method.invoke(instance);
                         commandClasses.add(clazz);
-                        LOGGER.info(Objects.requireNonNull(
+                        logger.info(Objects.requireNonNull(
                                 XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "cc_init_cmd"))
                                 .replace("%1", clazz.getSimpleName()));
                     } catch (Exception e) {
@@ -60,14 +60,14 @@ public class Main {
                 }
             }
         } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
 
         // create a bot object
 
         if ((Config.getDefConfig("bot-token") != null && Objects.requireNonNull(Config.getDefConfig("bot-token")).contains(" "))
                 || (Config.getDefConfig("bot-username") != null && Objects.requireNonNull(Config.getDefConfig("bot-username")).contains(" "))) {
-            LOGGER.warn(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_info"));
+            logger.warn(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_info"));
             System.exit(0);
         }
 
@@ -92,11 +92,9 @@ public class Main {
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             botsApi.registerBot(new TelegramBot(bot, commandClasses));
-            LOGGER.info(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "bot_started"));
+            logger.info(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "bot_started"));
         } catch (Exception e) {
-            LOGGER.error(e.toString(), e);
+            logger.error(e.toString(), e);
         }
-
     }
-
 }

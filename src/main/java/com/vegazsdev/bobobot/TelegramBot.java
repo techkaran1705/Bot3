@@ -5,8 +5,8 @@ import com.vegazsdev.bobobot.core.CommandWithClass;
 import com.vegazsdev.bobobot.db.DbThings;
 import com.vegazsdev.bobobot.db.PrefObj;
 import com.vegazsdev.bobobot.utils.XMLs;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -22,7 +22,7 @@ import java.util.Objects;
 @SuppressWarnings("rawtypes")
 public class TelegramBot extends TelegramLongPollingBot {
 
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(TelegramBot.class);
+    private static final Logger logger = LoggerFactory.getLogger(TelegramBot.class);
 
     private final Bot bot;
     private ArrayList<Class> commandClasses;
@@ -74,11 +74,11 @@ public class TelegramBot extends TelegramLongPollingBot {
                             if (commandWithClass.getAlias().equals(adjustCommand)) {
                                 try {
                                     runMethod(commandWithClass.getClazz(), update, tBot, chatPrefs);
-                                    LOGGER.info(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_ok"))
+                                    logger.info(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_ok"))
                                             .replace("%1", String.valueOf(usrId))
                                             .replace("%2", adjustCommand));
                                 } catch (Exception e) {
-                                    LOGGER.error(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_failure"))
+                                    logger.error(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_failure"))
                                             .replace("%1", commandWithClass.getAlias())
                                             .replace("%2", e.getMessage()), e);
                                 }
@@ -99,7 +99,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         try {
             return execute(sendMessage).getMessageId();
         } catch (TelegramApiException e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         return 0;
     }
@@ -115,7 +115,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         try {
             return execute(sendMessage).getMessageId();
         } catch (TelegramApiException e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         return 0;
     }
@@ -129,7 +129,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         try {
             return execute(sendMessage).getMessageId();
         } catch (TelegramApiException e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         return 0;
     }
@@ -144,7 +144,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             execute(editMessageText);
         } catch (TelegramApiException e) {
             // ignoring errors on edit, keep caution
-            //LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
     }
 
@@ -168,7 +168,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                         return false;
                 }
             } catch (Exception e) {
-                LOGGER.error(e.getMessage(), e);
+                logger.error(e.getMessage(), e);
                 return false;
             }
         }
@@ -180,7 +180,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             Method method = ((Class<?>) aClass).getDeclaredMethod("botReply", Update.class, TelegramBot.class, PrefObj.class);
             method.invoke(instance, update, tBot, prefs);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
     }
 

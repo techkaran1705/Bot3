@@ -2,8 +2,8 @@ package com.vegazsdev.bobobot.utils;
 
 import com.vegazsdev.bobobot.Main;
 import com.vegazsdev.bobobot.core.CustomConfigFileObj;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,7 +13,7 @@ import java.util.Properties;
 
 public class Config {
 
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(Config.class);
+    private static final Logger logger = LoggerFactory.getLogger(Config.class);
 
     public void createDefConfig() {
         try {
@@ -26,7 +26,7 @@ public class Config {
                     Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "config_file"))
             ), "Bo³+t config file");
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
     }
 
@@ -36,7 +36,7 @@ public class Config {
             getProps.load(new FileInputStream("configs/config.prop"));
             return getProps.getProperty(prop);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         return null;
     }
@@ -50,7 +50,7 @@ public class Config {
             }
             saveProps.store(new FileOutputStream("configs/" + configFile), comment);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
     }
 
@@ -60,7 +60,7 @@ public class Config {
             getProps.load(new FileInputStream(filename));
             return getProps.getProperty(prop);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         return null;
     }

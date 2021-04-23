@@ -5,6 +5,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.vegazsdev.bobobot.TelegramBot;
 import com.vegazsdev.bobobot.core.Command;
+import com.vegazsdev.bobobot.db.DbThings;
 import com.vegazsdev.bobobot.db.PrefObj;
 import com.vegazsdev.bobobot.utils.Config;
 import com.vegazsdev.bobobot.utils.FileTools;
@@ -14,8 +15,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.io.*;
@@ -29,7 +30,7 @@ import java.util.stream.Stream;
 
 public class ErfanGSIs extends Command {
 
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(ErfanGSIs.class);
+    private static final Logger logger = LoggerFactory.getLogger(ErfanGSIs.class);
 
     private static boolean isPorting = false;
     private static ArrayList<GSICmdObj> queue = new ArrayList<>();
@@ -163,7 +164,7 @@ public class ErfanGSIs extends Command {
             gsiCmdObj.setUpdate(update);
             return gsiCmdObj;
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             return null;
         }
     }
@@ -187,7 +188,7 @@ public class ErfanGSIs extends Command {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             return false;
         }
         return false;
@@ -318,11 +319,11 @@ public class ErfanGSIs extends Command {
                                     + "\n\n*Thanks to:* [Contributors List](https://github.com/erfanoabdi/ErfanGSIs/graphs/contributors)"
                                     + "\n\n[Ported using ErfanGSIs Tool](https://github.com/erfanoabdi/ErfanGSIs)", Long.parseLong(sfsetup.getSfConf("bot-announcement-id")));
                         }catch (Exception e){
-                            LOGGER.error("bot-announcement-id looks wrong or not set");
+                            logger.error("bot-announcement-id looks wrong or not set");
                         }
                     }
                 }catch (Exception e){
-                    LOGGER.warn("bot-send-announcement is not set");
+                    logger.warn("bot-send-announcement is not set");
                 }
 
                 fullLogs.append("\n").append("Finished!");
@@ -332,7 +333,7 @@ public class ErfanGSIs extends Command {
                 throw new Exception("Task finished without generating a valid GSI");
             }
         } catch (Exception ex) {
-            LOGGER.error(fullLogs);
+            logger.error(String.valueOf(fullLogs));
         }
     }
 
@@ -365,7 +366,7 @@ public class ErfanGSIs extends Command {
             }
             return true;
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             return false;
         }
     }

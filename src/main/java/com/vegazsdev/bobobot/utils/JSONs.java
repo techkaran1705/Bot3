@@ -2,8 +2,8 @@ package com.vegazsdev.bobobot.utils;
 
 import com.google.gson.Gson;
 import com.vegazsdev.bobobot.Main;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class JSONs {
 
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(JSONs.class);
+    private static final Logger logger = LoggerFactory.getLogger(JSONs.class);
 
     public static void writeArrayToJSON(ArrayList<String> values, String file) {
         Gson gson = new Gson();
@@ -22,7 +22,7 @@ public class JSONs {
             fileOutputStream.write(gson.toJson(values).getBytes());
             fileOutputStream.close();
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
     }
 
@@ -41,9 +41,8 @@ public class JSONs {
             Gson gson = new Gson();
             return gson.fromJson(json, ArrayList.class);
         } catch (Exception e) {
-            LOGGER.error(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "config_file_not_found") + "\n" + e.getMessage(), e);
+            logger.error(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "config_file_not_found") + "\n" + e.getMessage(), e);
             return null;
         }
-
     }
 }

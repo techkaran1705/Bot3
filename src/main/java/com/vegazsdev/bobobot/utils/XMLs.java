@@ -1,7 +1,7 @@
 package com.vegazsdev.bobobot.utils;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class XMLs {
 
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(XMLs.class);
+    private static final Logger logger = LoggerFactory.getLogger(JSONs.class);
 
     private static Element getElementFromStrings(String xmlFile) {
         try {
@@ -21,7 +21,7 @@ public class XMLs {
             Document document = builder.parse(Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResourceAsStream("strings/" + xmlFile)));
             return document.getDocumentElement();
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             return null;
         }
     }
@@ -38,7 +38,7 @@ public class XMLs {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         return null;
     }

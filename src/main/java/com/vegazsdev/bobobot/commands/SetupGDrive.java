@@ -3,14 +3,15 @@ package com.vegazsdev.bobobot.commands;
 import com.vegazsdev.bobobot.TelegramBot;
 import com.vegazsdev.bobobot.core.Command;
 import com.vegazsdev.bobobot.core.CustomConfigFileObj;
+import com.vegazsdev.bobobot.db.DbThings;
 import com.vegazsdev.bobobot.db.PrefObj;
 import com.vegazsdev.bobobot.utils.Config;
 import com.vegazsdev.bobobot.utils.FileTools;
 import com.vegazsdev.bobobot.utils.GDrive;
 import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.io.*;
@@ -22,7 +23,7 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 public class SetupGDrive extends Command {
 
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(SetupGDrive.class);
+    private static final Logger logger = LoggerFactory.getLogger(DbThings.class);
 
     private final String configFile = "gdrive.config";
 
@@ -60,7 +61,7 @@ public class SetupGDrive extends Command {
                         bot.sendMessage(prefs.getString("gdrive_setup_complete"), update);
                     }
                 } catch (Exception e) {
-                    LOGGER.error(e.getMessage(), e);
+                    logger.error(e.getMessage(), e);
                 }
             } else if (update.getMessage().getText().contains("mykey")) {
                 String apikey = update.getMessage().getText().trim().split(" ")[2];
@@ -108,11 +109,11 @@ public class SetupGDrive extends Command {
                                     GDrive.getGoogleRootFolders();
                                     bot.sendMessage(prefs.getString("gdrive_setup_complete").replace("%1", prefs.getHotkey()), update);
                                 } catch (IOException e) {
-                                    LOGGER.error(e.getMessage(), e);
+                                    logger.error(e.getMessage(), e);
                                 }
                             }).start();
                         } catch (Exception e) {
-                            LOGGER.error(e.getMessage(), e);
+                            logger.error(e.getMessage(), e);
                         }
                 }
             }
@@ -127,7 +128,6 @@ public class SetupGDrive extends Command {
         ArrayList<CustomConfigFileObj> configs = new ArrayList<>();
         configs.add(new CustomConfigFileObj("client-secret", key));
         Config.createCustomConfig(configs, configFile, prefs.getString("gdrive_setup_info"));
-        LOGGER.info(prefs.getString("gdrive_conf_file_created"));
+        logger.info(prefs.getString("gdrive_conf_file_created"));
     }
-
 }

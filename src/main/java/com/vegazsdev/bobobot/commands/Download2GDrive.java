@@ -6,8 +6,8 @@ import com.vegazsdev.bobobot.db.PrefObj;
 import com.vegazsdev.bobobot.utils.Config;
 import com.vegazsdev.bobobot.utils.GDrive;
 import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.io.File;
@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 @SuppressWarnings("unused")
 public class Download2GDrive extends Command {
 
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(Download2GDrive.class);
+    private static final Logger logger = LoggerFactory.getLogger(Download2GDrive.class);
 
     public Download2GDrive() {
         super("d2gdrive", "Download and Send a File to your own Google Drive" +
@@ -66,7 +66,7 @@ public class Download2GDrive extends Command {
                 }
             } catch (Exception e) {
                 bot.sendMessage(prefs.getString("something_went_wrong"), update);
-                LOGGER.error(e.getMessage(), e);
+                logger.error(e.getMessage(), e);
             }
 
         } else {

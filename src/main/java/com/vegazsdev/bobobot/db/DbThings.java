@@ -3,15 +3,15 @@ package com.vegazsdev.bobobot.db;
 import com.vegazsdev.bobobot.Main;
 import com.vegazsdev.bobobot.utils.FileTools;
 import com.vegazsdev.bobobot.utils.XMLs;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.Objects;
 
 public class DbThings {
 
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(DbThings.class);
+    private static final Logger logger = LoggerFactory.getLogger(DbThings.class);
 
     // Generic Methods
 
@@ -22,15 +22,15 @@ public class DbThings {
         try (Connection conn = connect(database)) {
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData();
-                LOGGER.info(Objects.requireNonNull(
+                logger.info(Objects.requireNonNull(
                         XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "sql_driver_info"))
                         .replace("%1", meta.getDriverName()));
-                LOGGER.info(Objects.requireNonNull(
+                logger.info(Objects.requireNonNull(
                         XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "sql_db_ok"))
                         .replace("%1", database));
             }
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
     }
 
@@ -40,7 +40,7 @@ public class DbThings {
         try {
             conn = DriverManager.getConnection(url);
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         return conn;
     }
@@ -50,7 +50,7 @@ public class DbThings {
              Statement stmt = conn.createStatement()) {
             stmt.execute(query);
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
     }
 
@@ -63,7 +63,7 @@ public class DbThings {
             prepareStatement.setDouble(1, id);
             prepareStatement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
     }
 
@@ -77,7 +77,7 @@ public class DbThings {
                 prefObj = new PrefObj(rs.getDouble("group_id"), rs.getString("lang"), rs.getString("hotkey"));
             }
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         return prefObj;
     }
@@ -88,7 +88,7 @@ public class DbThings {
              PreparedStatement prepareStatement = conn.prepareStatement(sql)) {
             prepareStatement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
     }
 
@@ -98,7 +98,7 @@ public class DbThings {
              PreparedStatement prepareStatement = conn.prepareStatement(sql)) {
             prepareStatement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
     }
 }

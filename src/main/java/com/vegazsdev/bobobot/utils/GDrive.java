@@ -17,8 +17,8 @@ import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import com.google.api.services.drive.model.Permission;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class GDrive {
     // most of code here is from: https://o7planning.org/en/11889/manipulating-files-and-folders-on-google-drive-using-java
     // and from: https://developers.google.com/drive/api/v3/quickstart/java
 
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(GDrive.class);
+    private static final Logger logger = LoggerFactory.getLogger(GDrive.class);
 
     private static String APPLICATION_NAME = "Google Drive API Java Quickstart";
 
@@ -85,7 +85,7 @@ public class GDrive {
             DATA_STORE_FACTORY = new FileDataStoreFactory(CREDENTIALS_FOLDER);
             HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         _driveService = null;
     }
@@ -191,6 +191,4 @@ public class GDrive {
         Drive driveService = getDriveService();
         driveService.permissions().create(googleFileId, newPermission).execute();
     }
-
-
 }
