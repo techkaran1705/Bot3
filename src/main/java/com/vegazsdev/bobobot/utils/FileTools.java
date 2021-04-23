@@ -12,11 +12,6 @@ public class FileTools {
 
     private static final Logger logger = LoggerFactory.getLogger(FileTools.class);
 
-    public boolean checkFileExistsCurPath(String file) {
-        File f = new File(file);
-        return f.exists() && !f.isDirectory();
-    }
-
     public static boolean checkIfFolderExists(String folder) {
         return !new File(folder).exists();
     }
@@ -30,16 +25,22 @@ public class FileTools {
         }
     }
 
+    public boolean checkFileExistsCurPath(String file) {
+        File f = new File(file);
+        return f.exists() && !f.isDirectory();
+    }
+
     public void gzipFile(String source_filepath, String dest) {
+        FileOutputStream fileOutputStream = null;
+        GZIPOutputStream gzipOutputStream = null;
+        FileInputStream fileInput = null;
 
         byte[] buffer = new byte[1024];
 
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream(dest);
-
-            GZIPOutputStream gzipOutputStream = new GZIPOutputStream(fileOutputStream);
-
-            FileInputStream fileInput = new FileInputStream(source_filepath);
+            fileOutputStream = new FileOutputStream(dest);
+            gzipOutputStream = new GZIPOutputStream(fileOutputStream);
+            fileInput = new FileInputStream(source_filepath);
 
             int bytes_read;
 
@@ -48,16 +49,26 @@ public class FileTools {
             }
 
             fileInput.close();
-
-            gzipOutputStream.finish();
-            gzipOutputStream.close();
-
-
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
+        } finally {
+            try {
+                if (gzipOutputStream != null) {
+                    gzipOutputStream.finish();
+                    gzipOutputStream.close();
+                }
+
+                if (fileInput != null) fileInput.close();
+
+                if (fileOutputStream != null) {
+                    fileOutputStream.flush();
+                    fileOutputStream.close();
+                }
+            } catch (Exception exception) {
+                logger.error(exception.getMessage());
+            }
         }
     }
-
 
     public String readFile(String fileName) throws Exception {
         BufferedReader br = new BufferedReader(new FileReader(fileName));
@@ -70,7 +81,6 @@ public class FileTools {
         }
         return sb.toString();
     }
-
 
     public List<String> getResourceFiles(String path) throws IOException {
         List<String> filenames = new ArrayList<>();

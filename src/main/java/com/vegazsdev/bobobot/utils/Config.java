@@ -1,6 +1,5 @@
 package com.vegazsdev.bobobot.utils;
 
-import com.vegazsdev.bobobot.Main;
 import com.vegazsdev.bobobot.core.CustomConfigFileObj;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,60 +7,78 @@ import org.slf4j.LoggerFactory;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Properties;
 
 public class Config {
 
     private static final Logger logger = LoggerFactory.getLogger(Config.class);
 
-    public void createDefConfig() {
-        try {
-            FileTools.createFolder("configs");
-            Properties saveProps = new Properties();
-            saveProps.setProperty("bot-token", "put your telegram bot token here");
-            saveProps.setProperty("bot-username", "put your bot user name, without @");
-            saveProps.setProperty("bot-master", "put your telegram user id here");
-            saveProps.store(new FileOutputStream("configs/" +
-                    Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "config_file"))
-            ), "Bo³+t config file");
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
-    }
-
     public static String getDefConfig(String prop) {
+        FileInputStream fileInputStream = null;
         try {
             Properties getProps = new Properties();
-            getProps.load(new FileInputStream("configs/config.prop"));
+            fileInputStream = new FileInputStream("configs/config.prop");
+            getProps.load(fileInputStream);
             return getProps.getProperty(prop);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
+        } finally {
+            try {
+                if (fileInputStream != null) fileInputStream.close();
+            } catch (Exception exception) {
+                logger.error(exception.getMessage());
+            }
         }
         return null;
     }
 
     public static void createCustomConfig(ArrayList<CustomConfigFileObj> configs, String configFile, String comment) {
         FileTools.createFolder("configs");
+        FileOutputStream fileOutputStream = null;
         try {
             Properties saveProps = new Properties();
+
             for (CustomConfigFileObj config : configs) {
                 saveProps.setProperty(config.getConfName(), config.getConfDefValue());
             }
-            saveProps.store(new FileOutputStream("configs/" + configFile), comment);
+
+            fileOutputStream = new FileOutputStream("configs/configs.prop");
+            saveProps.store(fileOutputStream, comment);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
+        } finally {
+            try {
+                if (fileOutputStream != null) {
+                    fileOutputStream.flush();
+                    fileOutputStream.close();
+                }
+            } catch (Exception exception) {
+                logger.error(exception.getMessage());
+            }
         }
     }
 
-    public String getCustomConfig(String filename, String prop) {
+    public void createDefConfig() {
+        FileOutputStream fileOutputStream = null;
         try {
-            Properties getProps = new Properties();
-            getProps.load(new FileInputStream(filename));
-            return getProps.getProperty(prop);
+            FileTools.createFolder("configs");
+            Properties saveProps = new Properties();
+            saveProps.setProperty("bot-token", "put your telegram bot token here");
+            saveProps.setProperty("bot-username", "put your bot user name, without @");
+            saveProps.setProperty("bot-master", "put your telegram user id here");
+            fileOutputStream = new FileOutputStream("configs/configs.prop");
+            saveProps.store(fileOutputStream, null);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
+        } finally {
+            try {
+                if (fileOutputStream != null) {
+                    fileOutputStream.flush();
+                    fileOutputStream.close();
+                }
+            } catch (Exception exception) {
+                logger.error(exception.getMessage());
+            }
         }
-        return null;
     }
 }

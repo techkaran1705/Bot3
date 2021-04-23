@@ -1,4 +1,4 @@
-package com.vegazsdev.bobobot.commands;
+package com.vegazsdev.bobobot.commands.owner;
 
 import com.vegazsdev.bobobot.TelegramBot;
 import com.vegazsdev.bobobot.core.Command;
@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"SpellCheckingInspection", "unused"})
 public class SetupGDrive extends Command {
 
     private static final Logger logger = LoggerFactory.getLogger(DbThings.class);
@@ -37,9 +37,6 @@ public class SetupGDrive extends Command {
 
     @Override
     public void botReply(Update update, TelegramBot bot, PrefObj prefs) {
-
-        // allow configuration only in master's private chat
-
         if (update.getMessage().getFrom().getId() == Float.parseFloat(Objects.requireNonNull(Config.getDefConfig("bot-master")))) {
             if (update.getMessage().getText().contains("http") && !update.getMessage().getText().contains("json")) {
                 String callback = update.getMessage().getText();
@@ -120,8 +117,6 @@ public class SetupGDrive extends Command {
         } else {
             bot.sendMessage(prefs.getString("only_master_can_run"), update);
         }
-
-
     }
 
     private void createConfigFile(String key, PrefObj prefs) {

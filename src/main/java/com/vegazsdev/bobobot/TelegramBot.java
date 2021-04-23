@@ -18,6 +18,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 @SuppressWarnings("rawtypes")
 public class TelegramBot extends TelegramLongPollingBot {
@@ -62,9 +63,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     }
 
                     if (msg.startsWith(Objects.requireNonNull(chatPrefs.getHotkey()))) {
-
                         for (CommandWithClass commandWithClass : getActiveCommandsAsCmdObject()) {
-
                             String adjustCommand = msg.replace(Objects.requireNonNull(chatPrefs.getHotkey()), "");
 
                             if (adjustCommand.contains(" ")) {
@@ -96,10 +95,11 @@ public class TelegramBot extends TelegramLongPollingBot {
         sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
         sendMessage.enableMarkdown(true);
         sendMessage.disableWebPagePreview();
+
         try {
-            return execute(sendMessage).getMessageId();
-        } catch (TelegramApiException e) {
-            logger.error(e.getMessage(), e);
+            return executeAsync(sendMessage).get().getMessageId();
+        } catch (TelegramApiException | ExecutionException | InterruptedException e) {
+            logger.error(e.getMessage());
         }
         return 0;
     }
@@ -112,26 +112,27 @@ public class TelegramBot extends TelegramLongPollingBot {
         sendMessage.enableMarkdown(true);
         sendMessage.setReplyToMessageId(update.getMessage().getMessageId());
         sendMessage.disableWebPagePreview();
+
         try {
-            return execute(sendMessage).getMessageId();
-        } catch (TelegramApiException e) {
-            logger.error(e.getMessage(), e);
+            return executeAsync(sendMessage).get().getMessageId();
+        } catch (TelegramApiException | ExecutionException | InterruptedException e) {
+            logger.error(e.getMessage());
         }
         return 0;
     }
 
-    public int sendMessage2ID(String msg, long id) {
+    public void sendMessage2ID(String msg, long id) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(msg);
         sendMessage.setChatId(String.valueOf(id));
         sendMessage.enableMarkdown(true);
         sendMessage.disableWebPagePreview();
+
         try {
-            return execute(sendMessage).getMessageId();
-        } catch (TelegramApiException e) {
-            logger.error(e.getMessage(), e);
+            executeAsync(sendMessage).get().getMessageId();
+        } catch (TelegramApiException | ExecutionException | InterruptedException e) {
+            logger.error(e.getMessage());
         }
-        return 0;
     }
 
     public void editMessage(String msg, Update update, int id) {
@@ -140,27 +141,29 @@ public class TelegramBot extends TelegramLongPollingBot {
         editMessageText.setChatId(String.valueOf(update.getMessage().getChatId()));
         editMessageText.setMessageId(id);
         editMessageText.enableMarkdown(true);
+
         try {
-            execute(editMessageText);
+            executeAsync(editMessageText);
         } catch (TelegramApiException e) {
-            // ignoring errors on edit, keep caution
-            logger.error(e.getMessage(), e);
+            logger.error(e.getMessage());
         }
     }
 
     public boolean isUserAdminOrPV(Update update) {
-        String id1 = update.getMessage().getFrom().getId().toString();
-        String id2 = update.getMessage().getChat().getId().toString();
-        if (id1.equals(id2)) {
-            // private chat
+        String userID = update.getMessage().getFrom().getId().toString();
+        String chatID = update.getMessage().getChat().getId().toString();
+
+        if (userID.equals(chatID)) {
             return true;
         } else {
             try {
-                GetChatMember z = new GetChatMember();
-                z.setChatId(String.valueOf(update.getMessage().getChatId()));
-                z.setUserId(update.getMessage().getFrom().getId());
-                ChatMember cx = execute(z);
-                switch (cx.getStatus()) {
+                GetChatMember getChatMember = new GetChatMember();
+                getChatMember.setChatId(String.valueOf(update.getMessage().getChatId()));
+                getChatMember.setUserId(update.getMessage().getFrom().getId());
+
+                ChatMember chatMember = execute(getChatMember);
+
+                switch (chatMember.getStatus()) {
                     case "administrator":
                     case "creator":
                         return true;
@@ -168,7 +171,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                         return false;
                 }
             } catch (Exception e) {
-                logger.error(e.getMessage(), e);
+                logger.error(e.getMessage());
                 return false;
             }
         }
@@ -180,7 +183,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             Method method = ((Class<?>) aClass).getDeclaredMethod("botReply", Update.class, TelegramBot.class, PrefObj.class);
             method.invoke(instance, update, tBot, prefs);
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            logger.error(e.getMessage());
         }
     }
 
@@ -196,7 +199,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 CommandWithClass c = new CommandWithClass(clazz, alias, desc);
                 allCommandsArObj.add(c);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
         }
         return allCommandsArObj;

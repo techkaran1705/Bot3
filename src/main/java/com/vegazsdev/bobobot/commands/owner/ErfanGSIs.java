@@ -1,11 +1,10 @@
-package com.vegazsdev.bobobot.commands;
+package com.vegazsdev.bobobot.commands.owner;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.vegazsdev.bobobot.TelegramBot;
 import com.vegazsdev.bobobot.core.Command;
-import com.vegazsdev.bobobot.db.DbThings;
 import com.vegazsdev.bobobot.db.PrefObj;
 import com.vegazsdev.bobobot.utils.Config;
 import com.vegazsdev.bobobot.utils.FileTools;
@@ -13,7 +12,6 @@ import com.vegazsdev.bobobot.utils.GDrive;
 import com.vegazsdev.bobobot.utils.JSONs;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,20 +26,36 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
+@SuppressWarnings({"SpellCheckingInspection", "unused"})
 public class ErfanGSIs extends Command {
 
     private static final Logger logger = LoggerFactory.getLogger(ErfanGSIs.class);
-
+    private static final ArrayList<GSICmdObj> queue = new ArrayList<>();
     private static boolean isPorting = false;
-    private static ArrayList<GSICmdObj> queue = new ArrayList<>();
     private final String toolPath = "ErfanGSIs/";
+
     private final File[] supportedGSIs9 = new File(toolPath + "roms/9").listFiles(File::isDirectory);
     private final File[] supportedGSIs10 = new File(toolPath + "roms/10").listFiles(File::isDirectory);
     private final File[] supportedGSIs11 = new File(toolPath + "roms/11").listFiles(File::isDirectory);
+
     private String infoGSI = "";
 
     public ErfanGSIs() {
         super("jurl2gsi", "Can port gsi");
+    }
+
+    private static String[] listFilesForFolder(final File folder) {
+        StringBuilder paths = new StringBuilder();
+        for (final File fileEntry : Objects.requireNonNull(folder.listFiles())) {
+            if (fileEntry.isDirectory()) {
+                listFilesForFolder(fileEntry);
+            } else {
+                if (fileEntry.getName().contains(".img")) {
+                    paths.append(fileEntry.getAbsolutePath()).append("\n");
+                }
+            }
+        }
+        return paths.toString().split("\n");
     }
 
     @Override
@@ -132,17 +146,14 @@ public class ErfanGSIs extends Command {
 
 
             } else {
-                // no perm
                 bot.sendReply("No Permissions", update);
             }
 
         }
     }
 
-
     private String try2AvoidCodeInjection(String parameters) {
         try {
-            // should be regex.
             parameters = parameters.replace("&", "")
                     .replace("\\", "").replace(";", "").replace("<", "")
                     .replace(">", "").replace("|", "");
@@ -153,11 +164,13 @@ public class ErfanGSIs extends Command {
     }
 
     private GSICmdObj isCommandValid(Update update) {
+
         GSICmdObj gsiCmdObj = new GSICmdObj();
         String msg = update.getMessage().getText().replace(Config.getDefConfig("bot-hotkey") + this.getAlias() + " ", "");
         String url;
         String gsi;
         String param;
+
         try {
             url = msg.split(" ")[1];
             gsiCmdObj.setUrl(url);
@@ -189,21 +202,35 @@ public class ErfanGSIs extends Command {
     private void createGSI(GSICmdObj gsiCmdObj, TelegramBot bot) {
         Update update = gsiCmdObj.getUpdate();
         ProcessBuilder pb;
+
         pb = new ProcessBuilder("/bin/bash", "-c",
                 "cd " + toolPath + " ; ./url2GSI.sh '" + gsiCmdObj.getUrl() + "' " + gsiCmdObj.getGsi() + " " + gsiCmdObj.getParam()
         );
+
         boolean success = false;
+
         StringBuilder fullLogs = new StringBuilder();
         fullLogs.append("Starting process!");
+
+        InputStream inputStream = null;
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
+
         int id = bot.sendReply(fullLogs.toString(), update);
+
         try {
             pb.redirectErrorStream(true);
             Process process = pb.start();
-            InputStream is = process.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+            inputStream = process.getInputStream();
+            inputStreamReader = new InputStreamReader(inputStream);
+            bufferedReader = new BufferedReader(inputStreamReader);
+
             String line;
+
             boolean weDontNeedAria2Logs = true;
-            while ((line = reader.readLine()) != null) {
+
+            while ((line = bufferedReader.readLine()) != null) {
                 System.out.println(line);
                 line = "`" + line + "`";
                 if (line.contains("Downloading firmware to:")) {
@@ -211,9 +238,11 @@ public class ErfanGSIs extends Command {
                     fullLogs.append("\n").append(line);
                     bot.editMessage(fullLogs.toString(), update, id);
                 }
+
                 if (line.contains("Create Temp and out dir")) {
                     weDontNeedAria2Logs = true;
                 }
+
                 if (weDontNeedAria2Logs) {
                     fullLogs.append("\n").append(line);
                     bot.editMessage(fullLogs.toString(), update, id);
@@ -224,9 +253,6 @@ public class ErfanGSIs extends Command {
             }
 
             if (success) {
-
-                // gzip files!
-
                 fullLogs.append("\n").append("Creating gzip...");
                 bot.editMessage(fullLogs.toString(), update, id);
 
@@ -235,76 +261,72 @@ public class ErfanGSIs extends Command {
                     new FileTools().gzipFile(gzipFile, gzipFile + ".gz");
                 }
 
-                // send to google drive
-
                 ArrayList<String> arr = new ArrayList<>();
 
                 AtomicReference<String> aonly = new AtomicReference<>("");
-                AtomicReference<String> ab= new AtomicReference<>("");
+                AtomicReference<String> ab = new AtomicReference<>("");
 
                 try (Stream<Path> paths = Files.walk(Paths.get("ErfanGSIs/output/"))) {
                     paths
                             .filter(Files::isRegularFile)
-                            .forEach(a -> {
-                                if (a.toString().endsWith(".img.gz")) {
-                                    arr.add(a.toString());
-                                    if(a.toString().contains("Aonly")){
-                                        aonly.set(FilenameUtils.getBaseName(a.toString()) + "." + FilenameUtils.getExtension(a.toString()));
-                                    }else{
-                                        ab.set(FilenameUtils.getBaseName(a.toString()) + "." + FilenameUtils.getExtension(a.toString()));
+                            .forEach(fileName -> {
+                                if (fileName.toString().endsWith(".img.gz")) {
+                                    arr.add(fileName.toString());
+                                    if (fileName.toString().contains("Aonly")) {
+                                        aonly.set(FilenameUtils.getBaseName(fileName.toString()) + "." + FilenameUtils.getExtension(fileName.toString()));
+                                    } else {
+                                        ab.set(FilenameUtils.getBaseName(fileName.toString()) + "." + FilenameUtils.getExtension(fileName.toString()));
                                     }
                                 }
-                                if (a.toString().contains(".txt")) {
-                                    infoGSI = a.toString();
+                                if (fileName.toString().contains(".txt")) {
+                                    infoGSI = fileName.toString();
                                 }
                             });
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage());
                 }
-
-                // arr == full path
 
                 fullLogs.append("\n").append("Sending files to SF...");
                 bot.editMessage(fullLogs.toString(), update, id);
 
-                String re = new sfUpload().uploadGsi(arr, gsiCmdObj.getGsi());
-                re=re+"/";
+                String re = new SourceForgeUpload().uploadGsi(arr, gsiCmdObj.getGsi());
+                re = re + "/";
 
                 if (gsiCmdObj.getGsi().contains(":")) {
                     gsiCmdObj.setGsi(gsiCmdObj.getGsi().split(":")[1]);
-                    gsiCmdObj.setGsi(gsiCmdObj.getGsi().replace("-"," "));
+                    gsiCmdObj.setGsi(gsiCmdObj.getGsi().replace("-", " "));
                 }
 
                 StringBuilder generateLinks = new StringBuilder();
 
                 if (!aonly.toString().trim().equals("")) {
-                    generateLinks.append("\n*Download A-Only:* [SourceForge](https://sourceforge.net/projects/").append(sfsetup.getSfConf("bot-sf-proj")).append("/files/").append(re).append(aonly.toString()).append(")");
+                    generateLinks.append("\n*Download A-Only:* [SourceForge](https://sourceforge.net/projects/").append(SourceForgeSetup.getSfConf("bot-sf-proj")).append("/files/").append(re).append(aonly).append(")");
                 }
                 if (!ab.toString().trim().equals("")) {
-                    generateLinks.append("\n*Download AB:* [SourceForge](https://sourceforge.net/projects/").append(sfsetup.getSfConf("bot-sf-proj")).append("/files/").append(re).append(ab.toString()).append(")");
+                    generateLinks.append("\n*Download AB:* [SourceForge](https://sourceforge.net/projects/").append(SourceForgeSetup.getSfConf("bot-sf-proj")).append("/files/").append(re).append(ab).append(")");
                 }
 
-                generateLinks.append("\n*Folder:* [SourceForge](https://sourceforge.net/projects/").append(sfsetup.getSfConf("bot-sf-proj")).append("/files/").append(re).append(")");
+                generateLinks.append("\n*Folder:* [SourceForge](https://sourceforge.net/projects/").append(SourceForgeSetup.getSfConf("bot-sf-proj")).append("/files/").append(re).append(")");
 
                 String descGSI = "" + new FileTools().readFile(infoGSI).trim();
 
                 bot.sendReply("Job Finished", update);
 
                 try {
-                    if (sfsetup.getSfConf("bot-send-announcement").equals("true")) {
+                    if (Objects.equals(SourceForgeSetup.getSfConf("bot-send-announcement"), "true")) {
                         try {
                             bot.sendMessage2ID("*GSI: " + gsiCmdObj.getGsi() + "*\n\n"
                                     + "*Firmware Base: *" + "[URL](" + gsiCmdObj.getUrl() + ")"
                                     + "\n\n*Information:*\n`" + descGSI
-                                    + "`\n" + generateLinks.toString()
+                                    + "`\n" + generateLinks
                                     + "\n\nFile not found? wait some minutes\nSlow downloads? try a mirror :)"
                                     + "\n\n*Thanks to:* [Contributors List](https://github.com/erfanoabdi/ErfanGSIs/graphs/contributors)"
-                                    + "\n\n[Ported using ErfanGSIs Tool](https://github.com/erfanoabdi/ErfanGSIs)", Long.parseLong(sfsetup.getSfConf("bot-announcement-id")));
-                        }catch (Exception e){
+                                    + "\n\n[Ported using ErfanGSIs Tool](https://github.com/erfanoabdi/ErfanGSIs)", Long.parseLong(Objects.requireNonNull(SourceForgeSetup.getSfConf("bot-announcement-id"))));
+                        } catch (Exception e) {
                             logger.error("bot-announcement-id looks wrong or not set");
                         }
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     logger.warn("bot-send-announcement is not set");
                 }
 
@@ -316,35 +338,46 @@ public class ErfanGSIs extends Command {
             }
         } catch (Exception ex) {
             logger.error(String.valueOf(fullLogs));
-        }
-    }
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException ioException) {
+                    logger.error(ioException.getMessage(), ioException);
+                }
+            }
 
-    private static String[] listFilesForFolder(final File folder) {
-        StringBuilder paths = new StringBuilder();
-        for (final File fileEntry : Objects.requireNonNull(folder.listFiles())) {
-            if (fileEntry.isDirectory()) {
-                listFilesForFolder(fileEntry);
-            } else {
-                if (fileEntry.getName().contains(".img")) {
-                    paths.append(fileEntry.getAbsolutePath()).append("\n");
+            if (inputStreamReader != null) {
+                try {
+                    inputStreamReader.close();
+                } catch (IOException ioException) {
+                    logger.error(ioException.getMessage(), ioException);
+                }
+            }
+
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException ioException) {
+                    logger.error(ioException.getMessage(), ioException);
                 }
             }
         }
-        return paths.toString().split("\n");
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private boolean addPortPerm(String id) {
         try {
             if (new FileTools().checkFileExistsCurPath("configs/allowed2port.json")) {
-                ArrayList z = JSONs.getArrayFromJSON("configs/allowed2port.json");
-                if (z != null) {
-                    z.add(id);
+                ArrayList arrayList = JSONs.getArrayFromJSON("configs/allowed2port.json");
+                if (arrayList != null) {
+                    arrayList.add(id);
                 }
-                JSONs.writeArrayToJSON(z, "configs/allowed2port.json");
+                JSONs.writeArrayToJSON(arrayList, "configs/allowed2port.json");
             } else {
-                ArrayList<String> z = new ArrayList<>();
-                z.add(id);
-                JSONs.writeArrayToJSON(z, "configs/allowed2port.json");
+                ArrayList<String> arrayList = new ArrayList<>();
+                arrayList.add(id);
+                JSONs.writeArrayToJSON(arrayList, "configs/allowed2port.json");
             }
             return true;
         } catch (Exception e) {
@@ -352,9 +385,9 @@ public class ErfanGSIs extends Command {
             return false;
         }
     }
-
 }
 
+@SuppressWarnings({"SpellCheckingInspection", "unused"})
 class GSIUpload {
 
     GDriveGSI enviarGSI(String gsi, ArrayList<String> var) {
@@ -362,22 +395,28 @@ class GSIUpload {
         String date = new SimpleDateFormat("dd/MM/yyyy HH:mm z").format(Calendar.getInstance().getTime());
         try {
             String uid = gsi + " GSI " + date + " " + rand;
+
             GDrive.createGoogleFolder(null, uid);
+
             List<com.google.api.services.drive.model.File> googleRootFolders = GDrive.getGoogleRootFolders();
+
             String folderId = "";
+
             for (com.google.api.services.drive.model.File folder : googleRootFolders) {
                 if (folder.getName().equals(uid)) {
                     folderId = folder.getId();
-                    //System.out.println("Folder ID: " + folder.getId() + " --- Name: " + folder.getName());
                 }
             }
+
             for (String sendFile : var) {
                 String fileTrim = sendFile.split("output/")[1];
                 File uploadFile = new File(sendFile);
                 GDrive.createGoogleFile(folderId, "application/gzip", fileTrim, uploadFile);
             }
+
             String aonly = "";
             String ab = "";
+
             List<com.google.api.services.drive.model.File> arquivosNaPasta = GDrive.showFiles(folderId);
             for (com.google.api.services.drive.model.File f : arquivosNaPasta) {
                 if (!f.getName().contains(".txt")) {
@@ -388,13 +427,16 @@ class GSIUpload {
                     }
                 }
             }
+
             GDriveGSI links = new GDriveGSI();
             if (ab != null && !ab.trim().equals("")) {
                 links.setAb(ab);
             }
+
             if (aonly != null && !aonly.trim().equals("")) {
                 links.setA(aonly);
             }
+
             links.setFolder(folderId);
             GDrive.createPublicPermission(folderId);
             return links;
@@ -412,8 +454,7 @@ class GSICmdObj {
     private String param;
     private Update update;
 
-    GSICmdObj() {
-    }
+    GSICmdObj() {}
 
     String getUrl() {
         return url;
@@ -448,14 +489,14 @@ class GSICmdObj {
     }
 }
 
+@SuppressWarnings("unused")
 class GDriveGSI {
 
     private String ab;
     private String a;
     private String folder;
 
-    GDriveGSI() {
-    }
+    GDriveGSI() {}
 
     String getAb() {
         return ab;
@@ -482,49 +523,53 @@ class GDriveGSI {
     }
 }
 
-class sfUpload {
+class SourceForgeUpload {
+
+    private static final Logger logger = LoggerFactory.getLogger(SourceForgeSetup.class);
 
     String user;
     String host;
     String pass;
     String proj;
 
-    sfUpload(){
-        this.user = sfsetup.getSfConf("bot-sf-user");
-        this.host =  sfsetup.getSfConf("bot-sf-host");
-        this.pass =  sfsetup.getSfConf("bot-sf-pass");
-        this.proj =  sfsetup.getSfConf("bot-sf-proj");
+    SourceForgeUpload() {
+        this.user = SourceForgeSetup.getSfConf("bot-sf-user");
+        this.host = SourceForgeSetup.getSfConf("bot-sf-host");
+        this.pass = SourceForgeSetup.getSfConf("bot-sf-pass");
+        this.proj = SourceForgeSetup.getSfConf("bot-sf-proj");
     }
 
-    public String uploadGsi(ArrayList<String> aar, String name){
+    public String uploadGsi(ArrayList<String> arrayList, String name) {
 
-        if(name.contains(":")){
-            // should be better to regex any special char
-            name=name.replace(":", " - ");
+        if (name.contains(":")) {
+            name = name.replace(":", " - ");
         }
 
-        name=name + " - " + RandomStringUtils.randomAlphanumeric(10).toUpperCase();
-        String path = "/home/frs/project/" + proj + "/"+name;
+        name = name + " - " + RandomStringUtils.randomAlphanumeric(10).toUpperCase();
+        String path = "/home/frs/project/" + proj + "/" + name;
 
-        try{
+        try {
             JSch jsch = new JSch();
+
             Session session = jsch.getSession(user, host);
             session.setConfig("StrictHostKeyChecking", "no");
             session.setPassword(pass);
             session.connect();
+
             ChannelSftp sftpChannel = (ChannelSftp) session.openChannel("sftp");
+
             sftpChannel.connect();
             sftpChannel.mkdir(path);
-            for (int i = 0; i < aar.size(); i++) {
-                if(!aar.get(i).endsWith(".img")){
-                    sftpChannel.put(aar.get(i), path);
-                }// dont send .img files, they should be compressed//
+
+            for (String s : arrayList) {
+                if (!s.endsWith(".img")) {
+                    sftpChannel.put(s, path);
+                }
             }
             return name;
-        } catch (Exception e){
-            System.out.println(e);
+        } catch (Exception exception) {
+            logger.error(exception.getMessage());
         }
         return null;
     }
-
 }

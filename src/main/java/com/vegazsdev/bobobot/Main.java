@@ -12,7 +12,6 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -22,11 +21,10 @@ public class Main {
 
     public static String DEF_CORE_STRINGS_XML = "core-strings.xml";
 
+    @SuppressWarnings({"SpellCheckingInspection", "UnstableApiUsage", "rawtypes"})
     public static void main(String[] args) {
 
         logger.info(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "bot_init"));
-
-        // detect config file
 
         if (!new FileTools().checkFileExistsCurPath("configs/" + XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file"))) {
             logger.info(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_not_found"));
@@ -34,8 +32,6 @@ public class Main {
             logger.warn(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_info"));
             System.exit(0);
         }
-
-        // initialize all commands inside commands package
 
         ArrayList<Class> commandClasses = new ArrayList<>();
 
@@ -46,24 +42,18 @@ public class Main {
                 if (info.getName().startsWith("com.vegazsdev.bobobot.commands")) {
                     final Class<?> clazz = info.load();
                     try {
-                        Object instance = ((Class<?>) clazz).getDeclaredConstructor().newInstance();
-                        Method method = ((Class<?>) clazz).getSuperclass().getDeclaredMethod("getAlias");
-                        method.invoke(instance);
                         commandClasses.add(clazz);
                         logger.info(Objects.requireNonNull(
                                 XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "cc_init_cmd"))
                                 .replace("%1", clazz.getSimpleName()));
                     } catch (Exception e) {
-                        // by now, ignoring exceptions here
-                        // LOGGER.error(e.getMessage(), e);
+                        logger.error(e.getMessage());
                     }
                 }
             }
         } catch (IOException e) {
-            logger.error(e.getMessage(), e);
+            logger.error(e.getMessage());
         }
-
-        // create a bot object
 
         if ((Config.getDefConfig("bot-token") != null && Objects.requireNonNull(Config.getDefConfig("bot-token")).contains(" "))
                 || (Config.getDefConfig("bot-username") != null && Objects.requireNonNull(Config.getDefConfig("bot-username")).contains(" "))) {
@@ -76,9 +66,6 @@ public class Main {
                         Config.getDefConfig("bot-token"),
                         Config.getDefConfig("bot-username"));
 
-        // database
-        // create a new database if current one doesn't exists
-
         if (!new FileTools().checkFileExistsCurPath("databases/prefs.db")) {
             DbThings.createNewDatabase("prefs.db");
             DbThings.createTable("prefs.db",
@@ -86,7 +73,8 @@ public class Main {
                             + "group_id real UNIQUE PRIMARY KEY,"
                             + "hotkey text DEFAULT '!',"
                             + "lang text DEFAULT 'strings-en.xml'"
-                            + ");");
+                            + ");"
+            );
         }
 
         try {
@@ -94,7 +82,7 @@ public class Main {
             botsApi.registerBot(new TelegramBot(bot, commandClasses));
             logger.info(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "bot_started"));
         } catch (Exception e) {
-            logger.error(e.toString(), e);
+            logger.error(e.toString());
         }
     }
 }
