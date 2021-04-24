@@ -1,4 +1,4 @@
-package com.vegazsdev.bobobot.commands.owner;
+package com.vegazsdev.bobobot.commands.gsi;
 
 import com.vegazsdev.bobobot.TelegramBot;
 import com.vegazsdev.bobobot.core.Command;

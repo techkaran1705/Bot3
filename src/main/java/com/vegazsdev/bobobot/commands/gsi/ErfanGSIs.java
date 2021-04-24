@@ -1,4 +1,4 @@
-package com.vegazsdev.bobobot.commands.owner;
+package com.vegazsdev.bobobot.commands.gsi;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;

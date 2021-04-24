@@ -15,6 +15,6 @@ public class Bot {
     }
 
     public String getUsername() {
-        return username;
+        return username.replace("@", "");
     }
 }

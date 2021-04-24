@@ -63,4 +63,17 @@
     <chkey_help>Current bot hotkey on this chat: *%1*&#xA;*Supported Hotkeys: %2*&#xA;To change hotkey on this group, run this command again, passing the desired hotkey&#xA;*eg: %1chkey /*</chkey_help>
     <chkey_cur_hotkey>Current hotkey now is: *%1*</chkey_cur_hotkey>
 
+    <!-- Request Command -->
+    <gsi_order>📩 ***New GSI order received!***</gsi_order>
+    <addinfo>❕ ***Additional information***</addinfo>
+    <user_info>❔ ***User info***</user_info>
+    <request_done>Hello [%1](tg://user?id=%2) (`%3`), your request has been sent! Just wait now.</request_done>
+    <first_and_last_name>***• Name:*** `%1`</first_and_last_name>
+    <username>***• Username:*** `%1`</username>
+    <user_id>***• User ID:*** `%1`</user_id>
+    <lang_code>***• Language code:*** `%1`</lang_code>
+    <dont_have>Don't have</dont_have>
+    <info_not_shared>Information not shared by the user.</info_not_shared>
+    <invalid_link>Hello [%1](tg://user?id=%2) (`%3`), the link you sent appears to be invalid! Use with http parameters and try again.</invalid_link>
+    <cant_be_used>This bot cannot be used in other locations!</cant_be_used>
 </strings>

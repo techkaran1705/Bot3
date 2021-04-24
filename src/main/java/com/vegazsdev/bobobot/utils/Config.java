@@ -64,8 +64,10 @@ public class Config {
             FileTools.createFolder("configs");
             Properties saveProps = new Properties();
             saveProps.setProperty("bot-token", "put your telegram bot token here");
-            saveProps.setProperty("bot-username", "put your bot user name, without @");
+            saveProps.setProperty("bot-username", "put your bot user name");
             saveProps.setProperty("bot-master", "put your telegram user id here");
+            saveProps.setProperty("requestChat", "put your main chat id for request here");
+            saveProps.setProperty("privateChat", "put your private (adm) chat id for request here");
             fileOutputStream = new FileOutputStream("configs/configs.prop");
             saveProps.store(fileOutputStream, null);
         } catch (Exception e) {

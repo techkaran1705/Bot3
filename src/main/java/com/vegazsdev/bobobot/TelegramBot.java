@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.ChatMember;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -102,6 +103,29 @@ public class TelegramBot extends TelegramLongPollingBot {
             logger.error(e.getMessage());
         }
         return 0;
+    }
+
+    public void sendMessageSync(SendMessage message) {
+        /*
+         * Don't use Async because it repeats the same message for unknown reason
+         */
+        try {
+            execute(message);
+        } catch (TelegramApiException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    public void deleteMessage(String chatID, Integer messageID) {
+        DeleteMessage deleteMessage = new DeleteMessage();
+        deleteMessage.setMessageId(messageID);
+        deleteMessage.setChatId(chatID);
+
+        try {
+            executeAsync(deleteMessage);
+        } catch (TelegramApiException e) {
+            logger.error(e.getMessage(), e);
+        }
     }
 
 

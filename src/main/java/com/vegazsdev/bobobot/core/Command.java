@@ -32,5 +32,4 @@ public abstract class Command {
     }
 
     public abstract void botReply(Update update, TelegramBot bot, PrefObj prefs);
-
 }
