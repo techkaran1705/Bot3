@@ -24,8 +24,7 @@ public class FileTools {
             return false;
         }
     }
-
-    public boolean checkFileExistsCurPath(String file) {
+    public static boolean checkFileExistsCurPath(String file) {
         File f = new File(file);
         return f.exists() && !f.isDirectory();
     }

@@ -66,7 +66,7 @@ public class Main {
                         Config.getDefConfig("bot-token"),
                         Config.getDefConfig("bot-username"));
 
-        if (!new FileTools().checkFileExistsCurPath("databases/prefs.db")) {
+        if (!FileTools.checkFileExistsCurPath("databases/prefs.db")) {
             DbThings.createNewDatabase("prefs.db");
             DbThings.createTable("prefs.db",
                     "CREATE TABLE IF NOT EXISTS chat_prefs ("
