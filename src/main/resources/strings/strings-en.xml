@@ -19,6 +19,11 @@
     <only_admin_can_run>Only Administrators can use this command</only_admin_can_run>
     <bad_usage>Bad usage.</bad_usage>
 
+    <!-- About Command -->
+    <about_bot>***─ About***&#xA;***Bo³+t*** is written in java and originally developed by @VegaZS&#xA;&#xA;***─ Developer/Maintainer of Bo³+t*** (Official/Unofficial)&#xA;[VegaZS](https://github.com/VegaBobo) - Original dev&#xA;[Velosh](https://github.com/Velosh) - Unofficial maintainer of ***Bo³+t*** for Treble Experience&#xA;&#xA;***─ Build Info***&#xA;`%1`</about_bot>
+    <about_sourcode>❕ Source code</about_sourcode>
+    <about_treble_channel>🌐 Treble Channel</about_treble_channel>
+
     <!-- Hello Command -->
 
     <hello>Hello!&#xA;Your message was: %1</hello>
