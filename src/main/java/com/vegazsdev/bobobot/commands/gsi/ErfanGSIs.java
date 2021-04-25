@@ -410,7 +410,7 @@ public class ErfanGSIs extends Command {
                 sendMessage.setText("*Requested " + gsiCmdObj.getGsi() + " GSI*"
                         + "\n*From* " + getModelOfOutput()
                         + "\n\n*Information*\n`" + descGSI
-                        + "\n\n*Credits*" + "\n"
+                        + "`\n\n*Credits*" + "\n"
                         + "[Erfan Abdi](https://github.com/erfanoabdi/)" + " | "
                         + "[Bo³+t](https://github.com/VeloshGSIs/Bot3)" + "\n\n"
                         + "*Treble Experience*" + "\n"
