@@ -51,6 +51,7 @@
 
     <chkey_help>Hotkey atual neste chat: *%1*&#xA;*Hotkeys Suportadas: %2*&#xA;Para trocar a hotkey deste chat, execute esse comando novamente, passando a Hotkey desejada&#xA;*ex: %1chkey /*</chkey_help>
     <chkey_cur_hotkey>Hotkey atual deste chat: *%1*</chkey_cur_hotkey>
+    <chkey_error>Desculpe, não é possível trocar, provavelmente essa hotkey não é compatível</chkey_error>
 
     <!-- Request Command -->
     <gsi_order>📩 ***Novo pedido de GSI recebido!***</gsi_order>

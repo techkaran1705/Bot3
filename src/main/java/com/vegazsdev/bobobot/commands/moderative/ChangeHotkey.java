@@ -35,7 +35,7 @@ public class ChangeHotkey extends Command {
                             bot.sendMessage(prefs.getString("chkey_cur_hotkey")
                                     .replace("%1", prefs.getHotkey()), update);
                         } else {
-                            bot.sendMessage(prefs.getString("only_admin_can_run"), update);
+                            bot.sendMessage(prefs.getString("chkey_error"), update);
                         }
                     } else {
                         bot.sendMessage(prefs.getString("something_went_wrong"), update);

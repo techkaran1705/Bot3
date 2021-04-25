@@ -62,6 +62,7 @@
 
     <chkey_help>Current bot hotkey on this chat: *%1*&#xA;*Supported Hotkeys: %2*&#xA;To change hotkey on this group, run this command again, passing the desired hotkey&#xA;*eg: %1chkey /*</chkey_help>
     <chkey_cur_hotkey>Current hotkey now is: *%1*</chkey_cur_hotkey>
+    <chkey_error>Sorry, it is not possible to change, this hotkey is probably not compatible</chkey_error>
 
     <!-- Request Command -->
     <gsi_order>📩 ***New GSI order received!***</gsi_order>
