@@ -247,4 +247,8 @@ public class TelegramBot extends TelegramLongPollingBot {
     public String getBotToken() {
         return bot.getToken();
     }
+
+    public String getVersionID() {
+        return bot.getVersionID();
+    }
 }

@@ -26,7 +26,9 @@ public class About extends Command {
                 + "***Bo³+t*** is written in java and originally developed by [VegaZS](tg://user?id=705707638)" + "\n\n"
                 + "***─ Developer/Maintainer of Bo³+t*** (Official/Unofficial)" + "\n"
                 + "[VegaZS](https://github.com/VegaBobo) - Original dev" + "\n"
-                + "[Velosh](https://github.com/Velosh) - Unofficial maintainer of ***Bo³+t*** for Treble Experience"
+                + "[Velosh](https://github.com/Velosh) - Unofficial maintainer of ***Bo³+t*** for Treble Experience" + "\n\n"
+                + "***─ Build Info***" + "\n"
+                + "`" + bot.getVersionID() + "`"
         );
         sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
         sendMessage.setDisableWebPagePreview(true);

@@ -2,6 +2,7 @@ package com.vegazsdev.bobobot;
 
 import com.google.common.reflect.ClassPath;
 import com.vegazsdev.bobobot.core.bot.Bot;
+import com.vegazsdev.bobobot.core.bot.BuildInfo;
 import com.vegazsdev.bobobot.db.DbThings;
 import com.vegazsdev.bobobot.exception.BotTokenException;
 import com.vegazsdev.bobobot.utils.Config;
@@ -62,11 +63,14 @@ public class Main {
             System.exit(0);
         }
 
+        BuildInfo buildInfo = new BuildInfo(false);
+
         Bot bot = null;
         try {
             bot = new Bot(
                     Objects.requireNonNull(Config.getDefConfig("bot-token")),
-                    Config.getDefConfig("bot-username"));
+                    Config.getDefConfig("bot-username"),
+                    buildInfo.getVersion());
         } catch (BotTokenException e) {
             logger.error(e.getMessage());
             System.exit(1);
