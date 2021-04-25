@@ -27,7 +27,7 @@ public class Main {
 
         logger.info(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "bot_init"));
 
-        if (!new FileTools().checkFileExistsCurPath("configs/" + XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file"))) {
+        if (!FileTools.checkFileExistsCurPath("configs/" + XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file"))) {
             logger.info(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_not_found"));
             new Config().createDefConfig();
             logger.warn(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_info"));
