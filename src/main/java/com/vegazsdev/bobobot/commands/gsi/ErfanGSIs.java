@@ -12,7 +12,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -354,48 +357,67 @@ public class ErfanGSIs extends Command {
                     gsiCmdObj.setGsi(gsiCmdObj.getGsi().replace("-", " "));
                 }
 
-                StringBuilder generateLinks = new StringBuilder();
-
-                generateLinks.append("\n*▫ Download* - ").append("[Folder](https://sourceforge.net/projects/").append(SourceForgeSetup.getSfConf("bot-sf-proj")).append("/files/").append(re).append(")\n");
+                /*
+                 * Prepare GSI message
+                 */
+                SendMessage sendMessage = new SendMessage();
+                sendMessage.setDisableWebPagePreview(true);
+                sendMessage.enableMarkdown(true);
 
                 /*
-                 * Fuck, dummy code...
+                 * Prepare InlineKeyboardButton
                  */
+                InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+                List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+
                 if (!aonly.toString().trim().equals("")) {
-                    generateLinks.append("[Aonly](https://sourceforge.net/projects/").append(SourceForgeSetup.getSfConf("bot-sf-proj")).append("/files/").append(re).append(aonly).append(")");
+                    List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
+                    InlineKeyboardButton inlineKeyboardButtonAonly = new InlineKeyboardButton();
+                    inlineKeyboardButtonAonly.setText("Aonly Download");
+                    inlineKeyboardButtonAonly.setUrl("https://sourceforge.net/projects/" + SourceForgeSetup.getSfConf("bot-sf-proj") + "/files/" + re + aonly);
+                    rowInline2.add(inlineKeyboardButtonAonly);
+                    rowsInline.add(rowInline2);
                 }
 
-                if (!aonly.toString().trim().equals("") && !ab.toString().trim().equals("")) {
-                    generateLinks.append(" | ");
-                }
                 if (!ab.toString().trim().equals("")) {
-                    generateLinks.append("[AB](https://sourceforge.net/projects/").append(SourceForgeSetup.getSfConf("bot-sf-proj")).append("/files/").append(re).append(ab).append(")");
+                    List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                    InlineKeyboardButton inlineKeyboardButtonAB = new InlineKeyboardButton();
+                    inlineKeyboardButtonAB.setText("A/B Download");
+                    inlineKeyboardButtonAB.setUrl("https://sourceforge.net/projects/" + SourceForgeSetup.getSfConf("bot-sf-proj") + "/files" + re + ab);
+                    rowInline.add(inlineKeyboardButtonAB);
+                    rowsInline.add(rowInline);
                 }
 
+                /*
+                 * Finish InlineKeyboardButton setup
+                 */
+                markupInline.setKeyboard(rowsInline);
+                sendMessage.setReplyMarkup(markupInline);
+
+                /*
+                 * Info of GSI image
+                 */
                 String descGSI = "" + new FileTools().readFile(infoGSI).trim();
 
+                /*
+                 * Reply the sucess of the build
+                 */
                 bot.sendReply("Done!", update);
 
-                try {
-                    if (Objects.equals(SourceForgeSetup.getSfConf("bot-send-announcement"), "true")) {
-                        try {
-                            bot.sendMessage2ID("*Requested " + gsiCmdObj.getGsi() + " GSI*"
-                                    + "\n*From* " + getModelOfOutput()
-                                    + "\n\n*Information*\n`" + descGSI
-                                    + "`\n" + generateLinks
-                                    + "\n\n*Credits*" + "\n"
-                                    + "[Erfan Abdi](https://github.com/erfanoabdi/)" + " | "
-                                    + "[Bo³+t](https://github.com/VeloshGSIs/Bot3)" + "\n\n"
-                                    + "*Treble Experience*" + "\n"
-                                    + "[Channel](https://t.me/TrebleExperience) | [Chat](https://t.me/TrebleExperience_chat) | [GitHub](https://github.com/VeloshGSIs)"
-                                    , Long.parseLong(Objects.requireNonNull(SourceForgeSetup.getSfConf("bot-announcement-id"))));
-                        } catch (Exception e) {
-                            logger.error("bot-announcement-id looks wrong or not set");
-                        }
-                    }
-                } catch (Exception e) {
-                    logger.warn("bot-send-announcement is not set");
-                }
+                /*
+                 * Send GSI message
+                 */
+                sendMessage.setText("*Requested " + gsiCmdObj.getGsi() + " GSI*"
+                        + "\n*From* " + getModelOfOutput()
+                        + "\n\n*Information*\n`" + descGSI
+                        + "\n\n*Credits*" + "\n"
+                        + "[Erfan Abdi](https://github.com/erfanoabdi/)" + " | "
+                        + "[Bo³+t](https://github.com/VeloshGSIs/Bot3)" + "\n\n"
+                        + "*Treble Experience*" + "\n"
+                        + "[Channel](https://t.me/TrebleExperience) | [Chat](https://t.me/TrebleExperience_chat) | [GitHub](https://github.com/VeloshGSIs)"
+                );
+                sendMessage.setChatId(Objects.requireNonNull(SourceForgeSetup.getSfConf("bot-announcement-id")));
+                bot.sendMessageSync(sendMessage);
 
                 fullLogs.append("\n").append("Finished!");
                 bot.editMessage(fullLogs.toString(), update, id);
