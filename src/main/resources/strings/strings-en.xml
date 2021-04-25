@@ -77,6 +77,9 @@
     <info_not_shared>Information not shared by the user.</info_not_shared>
     <invalid_link>Hello [%1](tg://user?id=%2) (`%3`), the link you sent appears to be invalid! Use with http parameters and try again.</invalid_link>
     <cant_be_used>This bot cannot be used in other locations!</cant_be_used>
+    <issue_with_privatechat>Can't send request, the private chat variable does not exist or has no value.</issue_with_privatechat>
+    <issue_with_publicchat>Can't send request, the public chat variable does not exist or has no value.</issue_with_publicchat>
+    <issue_with_index_chat>The chat (public and private) variables must be used and implemented in the form of Bot API, check if it is correct.</issue_with_index_chat>
 
     <!-- SourceForgeSetup Command -->
     <unable_to_create>It is impossible to create, as a SourceForge properties file already exists</unable_to_create>
