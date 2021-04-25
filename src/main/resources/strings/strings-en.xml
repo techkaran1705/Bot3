@@ -17,6 +17,7 @@
     <something_went_wrong>Something went wrong, try to do the process again</something_went_wrong>
     <only_master_can_run>Only Bot Master can use this command</only_master_can_run>
     <only_admin_can_run>Only Administrators can use this command</only_admin_can_run>
+    <bad_usage>Bad usage.</bad_usage>
 
     <!-- Hello Command -->
 
@@ -26,6 +27,7 @@
 
     <available_lang>Available Languages:</available_lang>
     <lang_updated>Language Updated!</lang_updated>
+    <unknown_lang>Language not available, type %1chlang to see available languages</unknown_lang>
 
     <!-- SetupGDrive Command -->
 

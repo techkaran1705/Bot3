@@ -6,6 +6,7 @@
     <something_went_wrong>Algo deu errado, Tente fazer o processo novamente</something_went_wrong>
     <only_master_can_run>Apenas o Mestre do Bot pode usar esse comando</only_master_can_run>
     <only_admin_can_run>Apenas Administradores podem usar esse comando</only_admin_can_run>
+    <bad_usage>Mal uso.</bad_usage>
 
     <!-- Hello Command -->
 
@@ -15,6 +16,7 @@
 
     <available_lang>Linguagens Disponíveis:</available_lang>
     <lang_updated>Linguagem Atualizada!</lang_updated>
+    <unknown_lang>Idioma não disponível, digite %1chlang para ver os idiomas disponíveis</unknown_lang>
 
     <!-- SetupGDrive Command -->
 
