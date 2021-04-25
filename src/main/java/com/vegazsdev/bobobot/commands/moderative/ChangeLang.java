@@ -2,7 +2,7 @@ package com.vegazsdev.bobobot.commands.moderative;
 
 import com.vegazsdev.bobobot.Main;
 import com.vegazsdev.bobobot.TelegramBot;
-import com.vegazsdev.bobobot.core.Command;
+import com.vegazsdev.bobobot.core.command.Command;
 import com.vegazsdev.bobobot.db.DbThings;
 import com.vegazsdev.bobobot.db.PrefObj;
 import com.vegazsdev.bobobot.utils.XMLs;

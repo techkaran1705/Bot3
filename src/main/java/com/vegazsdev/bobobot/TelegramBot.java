@@ -1,7 +1,7 @@
 package com.vegazsdev.bobobot;
 
-import com.vegazsdev.bobobot.core.Bot;
-import com.vegazsdev.bobobot.core.CommandWithClass;
+import com.vegazsdev.bobobot.core.bot.Bot;
+import com.vegazsdev.bobobot.core.command.CommandWithClass;
 import com.vegazsdev.bobobot.db.DbThings;
 import com.vegazsdev.bobobot.db.PrefObj;
 import com.vegazsdev.bobobot.utils.XMLs;
@@ -112,7 +112,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         try {
             execute(message);
         } catch (TelegramApiException e) {
-            logger.error(e.getMessage());
+            logger.error(e.getMessage(), e);
         }
     }
 

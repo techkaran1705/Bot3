@@ -1,4 +1,4 @@
-package com.vegazsdev.bobobot.core;
+package com.vegazsdev.bobobot.core.command;
 
 import com.vegazsdev.bobobot.TelegramBot;
 import com.vegazsdev.bobobot.db.PrefObj;

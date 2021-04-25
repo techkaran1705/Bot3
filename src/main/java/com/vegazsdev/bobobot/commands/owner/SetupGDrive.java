@@ -1,7 +1,7 @@
 package com.vegazsdev.bobobot.commands.owner;
 
 import com.vegazsdev.bobobot.TelegramBot;
-import com.vegazsdev.bobobot.core.Command;
+import com.vegazsdev.bobobot.core.command.Command;
 import com.vegazsdev.bobobot.core.CustomConfigFileObj;
 import com.vegazsdev.bobobot.db.DbThings;
 import com.vegazsdev.bobobot.db.PrefObj;

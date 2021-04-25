@@ -1,18 +1,15 @@
 package com.vegazsdev.bobobot.commands.gsi;
 
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Session;
 import com.vegazsdev.bobobot.TelegramBot;
-import com.vegazsdev.bobobot.core.Command;
+import com.vegazsdev.bobobot.core.command.Command;
+import com.vegazsdev.bobobot.core.gsi.GSICmdObj;
+import com.vegazsdev.bobobot.core.gsi.SourceForgeUpload;
 import com.vegazsdev.bobobot.db.PrefObj;
 import com.vegazsdev.bobobot.utils.Config;
 import com.vegazsdev.bobobot.utils.FileTools;
-import com.vegazsdev.bobobot.utils.GDrive;
 import com.vegazsdev.bobobot.utils.JSONs;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -21,7 +18,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
@@ -368,7 +364,7 @@ public class ErfanGSIs extends Command {
     @SuppressWarnings({"rawtypes", "unchecked"})
     private boolean addPortPerm(String id) {
         try {
-            if (new FileTools().checkFileExistsCurPath("configs/allowed2port.json")) {
+            if (FileTools.checkFileExistsCurPath("configs/allowed2port.json")) {
                 ArrayList arrayList = JSONs.getArrayFromJSON("configs/allowed2port.json");
                 if (arrayList != null) {
                     arrayList.add(id);
@@ -384,192 +380,5 @@ public class ErfanGSIs extends Command {
             logger.error(e.getMessage(), e);
             return false;
         }
-    }
-}
-
-@SuppressWarnings({"SpellCheckingInspection", "unused"})
-class GSIUpload {
-
-    GDriveGSI enviarGSI(String gsi, ArrayList<String> var) {
-        String rand = RandomStringUtils.randomAlphabetic(8);
-        String date = new SimpleDateFormat("dd/MM/yyyy HH:mm z").format(Calendar.getInstance().getTime());
-        try {
-            String uid = gsi + " GSI " + date + " " + rand;
-
-            GDrive.createGoogleFolder(null, uid);
-
-            List<com.google.api.services.drive.model.File> googleRootFolders = GDrive.getGoogleRootFolders();
-
-            String folderId = "";
-
-            for (com.google.api.services.drive.model.File folder : googleRootFolders) {
-                if (folder.getName().equals(uid)) {
-                    folderId = folder.getId();
-                }
-            }
-
-            for (String sendFile : var) {
-                String fileTrim = sendFile.split("output/")[1];
-                File uploadFile = new File(sendFile);
-                GDrive.createGoogleFile(folderId, "application/gzip", fileTrim, uploadFile);
-            }
-
-            String aonly = "";
-            String ab = "";
-
-            List<com.google.api.services.drive.model.File> arquivosNaPasta = GDrive.showFiles(folderId);
-            for (com.google.api.services.drive.model.File f : arquivosNaPasta) {
-                if (!f.getName().contains(".txt")) {
-                    if (f.getName().contains("Aonly")) {
-                        aonly = f.getId();
-                    } else if (f.getName().contains("AB")) {
-                        ab = f.getId();
-                    }
-                }
-            }
-
-            GDriveGSI links = new GDriveGSI();
-            if (ab != null && !ab.trim().equals("")) {
-                links.setAb(ab);
-            }
-
-            if (aonly != null && !aonly.trim().equals("")) {
-                links.setA(aonly);
-            }
-
-            links.setFolder(folderId);
-            GDrive.createPublicPermission(folderId);
-            return links;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-}
-
-class GSICmdObj {
-
-    private String url;
-    private String gsi;
-    private String param;
-    private Update update;
-
-    GSICmdObj() {}
-
-    String getUrl() {
-        return url;
-    }
-
-    void setUrl(String url) {
-        this.url = url;
-    }
-
-    String getGsi() {
-        return gsi;
-    }
-
-    void setGsi(String gsi) {
-        this.gsi = gsi;
-    }
-
-    String getParam() {
-        return param;
-    }
-
-    void setParam(String param) {
-        this.param = param;
-    }
-
-    public Update getUpdate() {
-        return update;
-    }
-
-    public void setUpdate(Update update) {
-        this.update = update;
-    }
-}
-
-@SuppressWarnings("unused")
-class GDriveGSI {
-
-    private String ab;
-    private String a;
-    private String folder;
-
-    GDriveGSI() {}
-
-    String getAb() {
-        return ab;
-    }
-
-    void setAb(String ab) {
-        this.ab = ab;
-    }
-
-    String getA() {
-        return a;
-    }
-
-    void setA(String a) {
-        this.a = a;
-    }
-
-    String getFolder() {
-        return folder;
-    }
-
-    void setFolder(String folder) {
-        this.folder = folder;
-    }
-}
-
-class SourceForgeUpload {
-
-    private static final Logger logger = LoggerFactory.getLogger(SourceForgeSetup.class);
-
-    String user;
-    String host;
-    String pass;
-    String proj;
-
-    SourceForgeUpload() {
-        this.user = SourceForgeSetup.getSfConf("bot-sf-user");
-        this.host = SourceForgeSetup.getSfConf("bot-sf-host");
-        this.pass = SourceForgeSetup.getSfConf("bot-sf-pass");
-        this.proj = SourceForgeSetup.getSfConf("bot-sf-proj");
-    }
-
-    public String uploadGsi(ArrayList<String> arrayList, String name) {
-
-        if (name.contains(":")) {
-            name = name.replace(":", " - ");
-        }
-
-        name = name + " - " + RandomStringUtils.randomAlphanumeric(10).toUpperCase();
-        String path = "/home/frs/project/" + proj + "/" + name;
-
-        try {
-            JSch jsch = new JSch();
-
-            Session session = jsch.getSession(user, host);
-            session.setConfig("StrictHostKeyChecking", "no");
-            session.setPassword(pass);
-            session.connect();
-
-            ChannelSftp sftpChannel = (ChannelSftp) session.openChannel("sftp");
-
-            sftpChannel.connect();
-            sftpChannel.mkdir(path);
-
-            for (String s : arrayList) {
-                if (!s.endsWith(".img")) {
-                    sftpChannel.put(s, path);
-                }
-            }
-            return name;
-        } catch (Exception exception) {
-            logger.error(exception.getMessage());
-        }
-        return null;
     }
 }

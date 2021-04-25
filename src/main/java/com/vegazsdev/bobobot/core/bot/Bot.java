@@ -1,4 +1,4 @@
-package com.vegazsdev.bobobot.core;
+package com.vegazsdev.bobobot.core.bot;
 
 public class Bot {
 

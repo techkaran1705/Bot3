@@ -1,7 +1,7 @@
 package com.vegazsdev.bobobot.commands.fun;
 
 import com.vegazsdev.bobobot.TelegramBot;
-import com.vegazsdev.bobobot.core.Command;
+import com.vegazsdev.bobobot.core.command.Command;
 import com.vegazsdev.bobobot.db.PrefObj;
 import org.telegram.telegrambots.meta.api.objects.Update;
 

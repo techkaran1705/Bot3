@@ -1,7 +1,7 @@
 package com.vegazsdev.bobobot;
 
 import com.google.common.reflect.ClassPath;
-import com.vegazsdev.bobobot.core.Bot;
+import com.vegazsdev.bobobot.core.bot.Bot;
 import com.vegazsdev.bobobot.db.DbThings;
 import com.vegazsdev.bobobot.utils.Config;
 import com.vegazsdev.bobobot.utils.FileTools;
