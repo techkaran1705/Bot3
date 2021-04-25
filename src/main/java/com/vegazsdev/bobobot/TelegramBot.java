@@ -222,7 +222,9 @@ public class TelegramBot extends TelegramLongPollingBot {
                 String desc = (String) methodInf.invoke(instance);
                 CommandWithClass c = new CommandWithClass(clazz, alias, desc);
                 allCommandsArObj.add(c);
-            } catch (Exception ignored) {}
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
         }
         return allCommandsArObj;
     }
