@@ -3,6 +3,7 @@ package com.vegazsdev.bobobot;
 import com.google.common.reflect.ClassPath;
 import com.vegazsdev.bobobot.core.bot.Bot;
 import com.vegazsdev.bobobot.db.DbThings;
+import com.vegazsdev.bobobot.exception.BotTokenException;
 import com.vegazsdev.bobobot.utils.Config;
 import com.vegazsdev.bobobot.utils.FileTools;
 import com.vegazsdev.bobobot.utils.XMLs;
@@ -61,10 +62,15 @@ public class Main {
             System.exit(0);
         }
 
-        Bot bot =
-                new Bot(
-                        Config.getDefConfig("bot-token"),
-                        Config.getDefConfig("bot-username"));
+        Bot bot = null;
+        try {
+            bot = new Bot(
+                    Objects.requireNonNull(Config.getDefConfig("bot-token")),
+                    Config.getDefConfig("bot-username"));
+        } catch (BotTokenException e) {
+            logger.error(e.getMessage());
+            System.exit(1);
+        }
 
         if (!FileTools.checkFileExistsCurPath("databases/prefs.db")) {
             DbThings.createNewDatabase("prefs.db");
