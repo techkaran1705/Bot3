@@ -59,11 +59,11 @@ public class ErfanGSIs extends Command {
 
     @Override
     public void botReply(Update update, TelegramBot bot, PrefObj prefs) {
-
+        String[] msgComparableRaw = update.getMessage().getText().split(" ");
         String msg = update.getMessage().getText();
         String idAsString = update.getMessage().getFrom().getId().toString();
 
-        if (msg.contains(" allowuser") && Objects.equals(Config.getDefConfig("bot-master"), idAsString)) {
+        if (msgComparableRaw[1].equals("allowuser") && Objects.equals(Config.getDefConfig("bot-master"), idAsString)) {
             if (update.getMessage().getReplyToMessage() != null) {
                 String userid = update.getMessage().getReplyToMessage().getFrom().getId().toString();
                 if (addPortPerm(userid)) {
@@ -78,7 +78,7 @@ public class ErfanGSIs extends Command {
                 bot.sendReply(prefs.getString("egsi_allow_by_reply").replace("%1", prefs.getHotkey())
                         .replace("%2", this.getAlias()), update);
             }
-        } else if (msg.contains(" queue")) {
+        } else if (msgComparableRaw[1].equals("queue")) {
             if (!queue.isEmpty()) {
                 StringBuilder v = new StringBuilder();
                 for (int i = 0; i < queue.size(); i++) {
@@ -90,7 +90,7 @@ public class ErfanGSIs extends Command {
             } else {
                 bot.sendReply(prefs.getString("egsi_no_ports_queue"), update);
             }
-        } else if (msg.contains(" cancel")) {
+        } else if (msgComparableRaw[1].equals("cancel")) {
 
             // cancel by now, maybe work, not tested
             // will exit only on when porting is "active" (when url2gsi.sh is running)
