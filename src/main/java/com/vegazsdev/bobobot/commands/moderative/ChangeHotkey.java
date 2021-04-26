@@ -43,7 +43,7 @@ public class ChangeHotkey extends Command {
                 }
             }
         } else {
-            bot.sendMessage("Bad usage.", update);
+            bot.sendMessage(prefs.getString("bad_usage"), update);
         }
     }
 }
