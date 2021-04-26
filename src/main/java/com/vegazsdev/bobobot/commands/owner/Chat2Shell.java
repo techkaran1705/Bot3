@@ -17,7 +17,7 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 public class Chat2Shell extends Command {
 
-    private static final Logger logger = LoggerFactory.getLogger(Download2GDrive.class);
+    private static final Logger logger = LoggerFactory.getLogger(Chat2Shell.class);
 
     public Chat2Shell() {
         super("shell", "Run shell (bash) commands via chat");
