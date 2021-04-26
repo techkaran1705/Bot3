@@ -170,21 +170,26 @@ public class ErfanGSIs extends Command {
 
     private GSICmdObj isCommandValid(Update update) {
         GSICmdObj gsiCmdObj = new GSICmdObj();
+        String[] msgComparableRaw = update.getMessage().getText().split(" ");
         String msg = update.getMessage().getText().replace(Config.getDefConfig("bot-hotkey") + this.getAlias() + " ", "");
         String url, gsi, param;
 
-        try {
-            url = msg.split(" ")[1];
-            gsiCmdObj.setUrl(url);
-            gsi = msg.split(" ")[2];
-            gsiCmdObj.setGsi(gsi);
-            param = msg.replace(url + " ", "").replace(gsi, "").trim();
-            param = try2AvoidCodeInjection(param);
-            gsiCmdObj.setParam(param);
-            gsiCmdObj.setUpdate(update);
-            return gsiCmdObj;
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+        if (msgComparableRaw.length >= 3) {
+            try {
+                url = msg.split(" ")[1];
+                gsiCmdObj.setUrl(url);
+                gsi = msg.split(" ")[2];
+                gsiCmdObj.setGsi(gsi);
+                param = msg.replace(url + " ", "").replace(gsi, "").trim();
+                param = try2AvoidCodeInjection(param);
+                gsiCmdObj.setParam(param);
+                gsiCmdObj.setUpdate(update);
+                return gsiCmdObj;
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                return null;
+            }
+        } else {
             return null;
         }
     }
