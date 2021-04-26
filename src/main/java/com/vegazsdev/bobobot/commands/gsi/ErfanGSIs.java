@@ -383,7 +383,7 @@ public class ErfanGSIs extends Command {
                     List<InlineKeyboardButton> rowInline = new ArrayList<>();
                     InlineKeyboardButton inlineKeyboardButtonAB = new InlineKeyboardButton();
                     inlineKeyboardButtonAB.setText("A/B Download");
-                    inlineKeyboardButtonAB.setUrl("https://sourceforge.net/projects/" + SourceForgeSetup.getSfConf("bot-sf-proj") + "/files" + re + ab);
+                    inlineKeyboardButtonAB.setUrl("https://sourceforge.net/projects/" + SourceForgeSetup.getSfConf("bot-sf-proj") + "/files/" + re + ab);
                     rowInline.add(inlineKeyboardButtonAB);
                     rowsInline.add(rowInline);
                 }
