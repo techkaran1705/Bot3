@@ -17,7 +17,7 @@ public class Config {
         FileInputStream fileInputStream = null;
         try {
             Properties getProps = new Properties();
-            fileInputStream = new FileInputStream("configs/config.prop");
+            fileInputStream = new FileInputStream("configs/configs.prop");
             getProps.load(fileInputStream);
             return getProps.getProperty(prop);
         } catch (Exception e) {

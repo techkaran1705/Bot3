@@ -74,7 +74,7 @@ public class Download2GDrive extends Command {
                     logger.error(e.getMessage(), e);
                 }
             } else {
-                bot.sendMessage("Bad usage!", update);
+                bot.sendMessage(prefs.getString("bad_usage"), update);
             }
         } else {
             bot.sendMessage(prefs.getString("only_master_can_run"), update);
