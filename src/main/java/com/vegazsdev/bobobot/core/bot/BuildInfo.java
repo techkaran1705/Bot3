@@ -19,7 +19,7 @@ public class BuildInfo {
     }
 
     private static class Variables {
-        public final String VERSION = "v1.0.0-";
+        public final String VERSION = "v1.0.1-";
         public final String STABLE = "STABLE";
         public final String STAGING = "BETA";
     }
