@@ -10,7 +10,7 @@
 
     <!-- Configuration Files -->
 
-    <config_file>config.prop</config_file>
+    <config_file>configs.prop</config_file>
     <possible_hotkeys>! / ; - * \ , .'</possible_hotkeys>
     <disp_lang>en, br</disp_lang>
 
