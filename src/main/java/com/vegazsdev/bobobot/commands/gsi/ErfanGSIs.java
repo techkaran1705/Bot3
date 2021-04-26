@@ -10,6 +10,7 @@ import com.vegazsdev.bobobot.utils.FileTools;
 import com.vegazsdev.bobobot.utils.JSONs;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -36,6 +37,7 @@ public class ErfanGSIs extends Command {
     private final File[] supportedGSIs9 = new File(toolPath + "roms/9").listFiles(File::isDirectory);
     private final File[] supportedGSIs10 = new File(toolPath + "roms/10").listFiles(File::isDirectory);
     private final File[] supportedGSIs11 = new File(toolPath + "roms/11").listFiles(File::isDirectory);
+    private final File[] supportedGSIs12 = new File(toolPath + "roms/S").listFiles(File::isDirectory);
 
     private String infoGSI = "";
 
@@ -139,6 +141,10 @@ public class ErfanGSIs extends Command {
                                 .replace("%3",
                                         Arrays.toString(supportedGSIs11).replace(toolPath + "roms/11/", "")
                                                 .replace("[", "")
+                                                .replace("]", ""))
+                                .replace("%4",
+                                        Arrays.toString(supportedGSIs12).replace(toolPath + "roms/S/", "")
+                                                .replace("[", "")
                                                 .replace("]", "")), update);
                     }
                 }
@@ -163,31 +169,67 @@ public class ErfanGSIs extends Command {
     }
 
     private GSICmdObj isCommandValid(Update update) {
-
         GSICmdObj gsiCmdObj = new GSICmdObj();
+        String[] msgComparableRaw = update.getMessage().getText().split(" ");
         String msg = update.getMessage().getText().replace(Config.getDefConfig("bot-hotkey") + this.getAlias() + " ", "");
-        String url;
-        String gsi;
-        String param;
+        String url, gsi, param;
 
-        try {
-            url = msg.split(" ")[1];
-            gsiCmdObj.setUrl(url);
-            gsi = msg.split(" ")[2];
-            gsiCmdObj.setGsi(gsi);
-            param = msg.replace(url + " ", "").replace(gsi, "").trim();
-            param = try2AvoidCodeInjection(param);
-            gsiCmdObj.setParam(param);
-            gsiCmdObj.setUpdate(update);
-            return gsiCmdObj;
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+        if (msgComparableRaw.length >= 3) {
+            try {
+                url = msg.split(" ")[1];
+                gsiCmdObj.setUrl(url);
+                gsi = msg.split(" ")[2];
+                gsiCmdObj.setGsi(gsi);
+                param = msg.replace(url + " ", "").replace(gsi, "").trim();
+                param = try2AvoidCodeInjection(param);
+                gsiCmdObj.setParam(param);
+                gsiCmdObj.setUpdate(update);
+                return gsiCmdObj;
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                return null;
+            }
+        } else {
             return null;
         }
     }
 
     private boolean isGSIValid(String gsi) {
-        return true;
+        File[] supportedGSIsPandQ = ArrayUtils.addAll(supportedGSIs9, supportedGSIs10);
+        File[] supportedGSIsRandS = ArrayUtils.addAll(supportedGSIs11, supportedGSIs12);
+
+        boolean canRunYet = true;
+
+        try {
+            String gsi2 = null;
+
+            if (gsi.contains(":")) {
+                gsi2 = gsi.split(":")[0];
+            }
+
+            for (File supportedGSI : supportedGSIsPandQ) {
+                canRunYet = false;
+                if (gsi2 != null) {
+                    if (gsi2.equals(supportedGSI.getName())) return true;
+                } else {
+                    if (gsi.equals(supportedGSI.getName())) return true;
+                }
+            }
+
+            if (canRunYet) {
+                for (File supportedGSI : supportedGSIsRandS) {
+                    if (gsi2 != null) {
+                        if (gsi2.equals(supportedGSI.getName())) return true;
+                    } else {
+                        if (gsi.equals(supportedGSI.getName())) return true;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return false;
+        }
+        return false;
     }
 
     private boolean userHasPortPermissions(String idAsString) {
