@@ -1,6 +1,7 @@
 package com.vegazsdev.bobobot;
 
 import com.google.common.reflect.ClassPath;
+import com.vegazsdev.bobobot.commands.owner.Chat2Shell;
 import com.vegazsdev.bobobot.core.bot.Bot;
 import com.vegazsdev.bobobot.core.bot.BuildInfo;
 import com.vegazsdev.bobobot.db.DbThings;
@@ -32,6 +33,7 @@ public class Main {
             logger.info(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_not_found"));
             new Config().createDefConfig();
             logger.warn(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_info"));
+            if (!FileTools.checkFileExistsCurPath("configs/allowed2port.json")) Chat2Shell.runBash("echo \"[]\" >> configs/opList.json");
             System.exit(0);
         }
 
