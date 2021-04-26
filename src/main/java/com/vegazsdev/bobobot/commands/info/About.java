@@ -35,7 +35,7 @@ public class About extends Command {
         List<InlineKeyboardButton> rowInline = new ArrayList<>();
         InlineKeyboardButton RIL = new InlineKeyboardButton();
         RIL.setText(prefs.getString("about_sourcode"));
-        RIL.setUrl("https://github.com/VeloshGSIs/Bot3");
+        RIL.setUrl("https://github.com/TrebleExperience/Bot3");
         rowInline.add(RIL);
 
         List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
