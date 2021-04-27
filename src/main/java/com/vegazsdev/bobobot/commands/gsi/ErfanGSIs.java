@@ -454,9 +454,9 @@ public class ErfanGSIs extends Command {
                         + "\n\n*Information*\n`" + descGSI
                         + "`\n\n*Credits*" + "\n"
                         + "[Erfan Abdi](https://github.com/erfanoabdi/)" + " | "
-                        + "[Bo³+t](https://github.com/VeloshGSIs/Bot3)" + "\n\n"
+                        + "[Bo³+t](https://github.com/TrebleExperience/Bot3)" + "\n\n"
                         + "*Treble Experience*" + "\n"
-                        + "[Channel](https://t.me/TrebleExperience) | [Chat](https://t.me/TrebleExperience_chat) | [GitHub](https://github.com/VeloshGSIs)"
+                        + "[Channel](https://t.me/TrebleExperience) | [Chat](https://t.me/TrebleExperience_chat) | [GitHub](https://github.com/TrebleExperience)"
                 );
                 sendMessage.setChatId(Objects.requireNonNull(SourceForgeSetup.getSfConf("bot-announcement-id")));
                 bot.sendMessageSync(sendMessage);
