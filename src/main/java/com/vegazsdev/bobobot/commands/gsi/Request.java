@@ -6,7 +6,11 @@ import com.vegazsdev.bobobot.db.PrefObj;
 import com.vegazsdev.bobobot.utils.Config;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -67,12 +71,29 @@ public class Request extends Command {
                             }
                             if (addInfo.equals("")) addInfo = prefs.getString("info_not_shared");
 
+                            /*
+                             * Prepare InlineKeyboardButton
+                             */
+                            InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+                            List<List<InlineKeyboardButton>> inlineKeyboardButton = new ArrayList<>();
+
+                            List<InlineKeyboardButton> inlineKeyboardButtonArrayList = new ArrayList<>();
+                            InlineKeyboardButton inlineKeyboardButtonAonly = new InlineKeyboardButton();
+                            inlineKeyboardButtonAonly.setText("\uD83D\uDCE6 Firmware/ROM Link");
+                            inlineKeyboardButtonAonly.setUrl(msgComparableRaw[1]);
+                            inlineKeyboardButtonArrayList.add(inlineKeyboardButtonAonly);
+                            inlineKeyboardButton.add(inlineKeyboardButtonArrayList);
+
+                            /*
+                             * Finish InlineKeyboardButton setup
+                             */
+                            markupInline.setKeyboard(inlineKeyboardButton);
+                            message.setReplyMarkup(markupInline);
+
                             // Initial to the message base
                             message.setChatId(Objects.requireNonNull(Config.getDefConfig("privateChat")));
                             message.setText(
                                     prefs.getString("gsi_order") + "\n\n"
-                                            + "\uD83D\uDCE6 ***Firmware/ROM Link***\n"
-                                            + "`" + msgComparableRaw[1] + "`\n\n"
                                             + prefs.getString("addinfo") + "\n"
                                             + "`" + addInfo + "`"
                                             + "\n\n"
