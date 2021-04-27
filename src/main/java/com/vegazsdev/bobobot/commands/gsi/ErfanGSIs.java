@@ -207,7 +207,7 @@ public class ErfanGSIs extends Command {
                 gsi2 = gsi.split(":")[0];
             }
 
-            for (File supportedGSI : supportedGSIsPandQ) {
+            for (File supportedGSI : Objects.requireNonNull(supportedGSIsPandQ)) {
                 canRunYet = false;
                 if (gsi2 != null) {
                     if (gsi2.equals(supportedGSI.getName())) return true;
@@ -217,7 +217,7 @@ public class ErfanGSIs extends Command {
             }
 
             if (canRunYet) {
-                for (File supportedGSI : supportedGSIsRandS) {
+                for (File supportedGSI : Objects.requireNonNull(supportedGSIsRandS)) {
                     if (gsi2 != null) {
                         if (gsi2.equals(supportedGSI.getName())) return true;
                     } else {
@@ -454,9 +454,9 @@ public class ErfanGSIs extends Command {
                         + "\n\n*Information*\n`" + descGSI
                         + "`\n\n*Credits*" + "\n"
                         + "[Erfan Abdi](https://github.com/erfanoabdi/)" + " | "
-                        + "[Bo³+t](https://github.com/VeloshGSIs/Bot3)" + "\n\n"
+                        + "[Bo³+t](https://github.com/TrebleExperience/Bot3)" + "\n\n"
                         + "*Treble Experience*" + "\n"
-                        + "[Channel](https://t.me/TrebleExperience) | [Chat](https://t.me/TrebleExperience_chat) | [GitHub](https://github.com/VeloshGSIs)"
+                        + "[Channel](https://t.me/TrebleExperience) | [Chat](https://t.me/TrebleExperience_chat) | [GitHub](https://github.com/TrebleExperience)"
                 );
                 sendMessage.setChatId(Objects.requireNonNull(SourceForgeSetup.getSfConf("bot-announcement-id")));
                 bot.sendMessageSync(sendMessage);

@@ -33,7 +33,7 @@ public class Main {
             logger.info(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_not_found"));
             new Config().createDefConfig();
             logger.warn(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_info"));
-            if (!FileTools.checkFileExistsCurPath("configs/allowed2port.json")) Chat2Shell.runBash("echo \"[]\" >> configs/opList.json");
+            if (!FileTools.checkFileExistsCurPath("configs/allowed2port.json")) Chat2Shell.runBash("echo \"[]\" >> configs/allowed2port.json");
             System.exit(0);
         }
 
