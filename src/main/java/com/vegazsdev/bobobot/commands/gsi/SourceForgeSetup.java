@@ -65,7 +65,7 @@ public class SourceForgeSetup extends Command {
         try {
             Properties saveProps = new Properties();
 
-            if (!FileTools.checkIfFolderExists("configs")) if (FileTools.createFolder("configs")) {
+            if (!FileTools.checkFileExistsCurPath("configs/sf-creds.prop")) {
                 saveProps.setProperty("bot-sf-user", "put your sf username");
                 saveProps.setProperty("bot-sf-host", "frs.sourceforge.net");
                 saveProps.setProperty("bot-sf-pass", "put your sf pass");
