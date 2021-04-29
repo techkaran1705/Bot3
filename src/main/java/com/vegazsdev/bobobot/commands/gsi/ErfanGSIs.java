@@ -264,19 +264,62 @@ public class ErfanGSIs extends Command {
 
             String line;
 
+            /*
+             * Get codename
+             */
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.contains("qssi"))
-                    line = "QSSI (Qualcomm Generic)";
-                else if (line.contains("miatoll"))
+                if (line.length() < 1)
+                    line = "Generic";
+                else if (line.toLowerCase().contains("qssi"))
+                    line = "Qualcomm Single System Image";
+                else if (line.toLowerCase().contains("miatoll"))
                     line = "MiAtoll";
-                else if (line.contains("surya"))
+                else if (line.toLowerCase().contains("surya"))
                     line = "Poco X3";
+                else if (line.toLowerCase().contains("mainline"))
+                    line = "AOSP/Pixel (Mainline) Device";
+                else if (line.toLowerCase().contains("sm6250"))
+                    line = "Atoll device";
+                else if (line.toLowerCase().contains("msi"))
+                    line = "Motorola System Image";
+                else if (line.toLowerCase().contains("mssi"))
+                    line = "MIUI Single System Image";
+                else if (line.equals(" "))
+                    line = "Generic";
 
                 fullLogs.append(line);
             }
+
+            /*
+             * First check
+             */
+            String stringToBeCheked = fullLogs.toString().toLowerCase();
+            boolean testPass = false;
+
+            char[] characterSearch = {
+                    'q','w','e', 'r', 't', 'y', 'u',
+                    'i', 'o', 'p', 'a', 's', 'd', 'f',
+                    'g', 'h', 'j', 'k', 'l', 'z', 'x',
+                    'c', 'v', 'b', 'n', 'm',
+            };
+
+            for (int i = 0; i < stringToBeCheked.length(); i++) {
+                char character = stringToBeCheked.charAt(i);
+                for (char search : characterSearch) {
+                    if (search == character) {
+                        testPass = true;
+                        break;
+                    }
+                }
+            }
+
+            /*
+             * Second check
+             */
+            if (!testPass) return "Generic";
             return String.valueOf(fullLogs);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         } finally {
             if (inputStream != null) {
                 try {
