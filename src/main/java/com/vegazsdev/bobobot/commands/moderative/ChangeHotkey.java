@@ -21,25 +21,29 @@ public class ChangeHotkey extends Command {
     @Override
     public void botReply(Update update, TelegramBot bot, PrefObj prefs) {
         if (update.getMessage().getText().contains(" ")) {
-            if (bot.isPM(update)) {
-                if (update.getMessage().getText().trim().equals(prefs.getHotkey() + "chkey".trim())) {
-                    bot.sendMessage(prefs.getString("chkey_help")
-                            .replace("%1", prefs.getHotkey())
-                            .replace("%2", Objects.requireNonNull(supportedHotkeys)), update);
-                } else {
-                    if (update.getMessage().getText().contains(" ")) {
-                        String msg = update.getMessage().getText().trim().split(" ")[1];
-                        if (Objects.requireNonNull(supportedHotkeys).contains(msg)) {
-                            DbThings.changeHotkey(prefs.getId(), msg);
-                            prefs = DbThings.selectIntoPrefsTable(prefs.getId());
-                            bot.sendMessage(prefs.getString("chkey_cur_hotkey")
-                                    .replace("%1", prefs.getHotkey()), update);
-                        } else {
-                            bot.sendMessage(prefs.getString("chkey_error"), update);
-                        }
+            if (bot.isPM(update.getMessage().getChatId().toString(), update.getMessage().getFrom().getId().toString())) {
+                if (bot.isAdmin(update.getMessage().getChatId().toString(), update.getMessage().getFrom().getId().toString())) {
+                    if (update.getMessage().getText().trim().equals(prefs.getHotkey() + "chkey".trim())) {
+                        bot.sendMessage(prefs.getString("chkey_help")
+                                .replace("%1", prefs.getHotkey())
+                                .replace("%2", Objects.requireNonNull(supportedHotkeys)), update);
                     } else {
-                        bot.sendMessage(prefs.getString("something_went_wrong"), update);
+                        if (update.getMessage().getText().contains(" ")) {
+                            String msg = update.getMessage().getText().trim().split(" ")[1];
+                            if (Objects.requireNonNull(supportedHotkeys).contains(msg)) {
+                                DbThings.changeHotkey(prefs.getId(), msg);
+                                prefs = DbThings.selectIntoPrefsTable(prefs.getId());
+                                bot.sendMessage(prefs.getString("chkey_cur_hotkey")
+                                        .replace("%1", prefs.getHotkey()), update);
+                            } else {
+                                bot.sendMessage(prefs.getString("chkey_error"), update);
+                            }
+                        } else {
+                            bot.sendMessage(prefs.getString("something_went_wrong"), update);
+                        }
                     }
+                } else {
+                    bot.sendMessage(prefs.getString("only_admin_can_run"), update);
                 }
             }
         } else {

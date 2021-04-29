@@ -9,9 +9,11 @@ import com.vegazsdev.bobobot.utils.XMLs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.ChatMember;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -172,11 +174,33 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    public boolean isPM(Update update) {
-        String chatID = update.getMessage().getChatId().toString();
-        String userID = update.getMessage().getFrom().getId().toString();
-
+    public boolean isPM(String userID, String chatID) {
         return !chatID.equals(userID);
+    }
+
+    public boolean isAdmin(String userID, String chatID) {
+        if (userID.equals(chatID)) {
+            return true;
+        } else {
+            try {
+                GetChatMember getChatMember = new GetChatMember();
+                getChatMember.setChatId(chatID);
+                getChatMember.setUserId(Long.valueOf(userID));
+
+                ChatMember chatMember = execute(getChatMember);
+
+                switch (chatMember.getStatus()) {
+                    case "administrator":
+                    case "creator":
+                        return true;
+                    default:
+                        return false;
+                }
+            } catch (Exception exception) {
+                logger.error(exception.getMessage() + " (CID: " + chatID + " | UID: " + userID + ")");
+                return false;
+            }
+        }
     }
 
     private void runMethod(Class aClass, Update update, TelegramBot tBot, PrefObj prefs) {
