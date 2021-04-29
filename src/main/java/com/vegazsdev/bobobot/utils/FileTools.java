@@ -68,15 +68,35 @@ public class FileTools {
         }
     }
 
-    public String readFile(String fileName) throws Exception {
-        BufferedReader br = new BufferedReader(new FileReader(fileName));
-        StringBuilder sb = new StringBuilder();
-        String line = br.readLine();
-        while (line != null) {
-            sb.append(line);
-            sb.append("\n");
-            line = br.readLine();
+    public String readFile(String fileName) {
+        BufferedReader bufferedReader = null;
+        FileReader fileReader = null;
+
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+
+        try {
+            fileReader = new FileReader(fileName);
+            bufferedReader = new BufferedReader(fileReader);
+
+            line = bufferedReader.readLine();
+
+            while (line != null) {
+                stringBuilder.append(line);
+                stringBuilder.append("\n");
+                line = bufferedReader.readLine();
+            }
+            return stringBuilder.toString();
+        } catch (Exception exception) {
+            logger.error(exception.getMessage());
+        } finally {
+            try {
+                if (fileReader != null) fileReader.close();
+                if (bufferedReader != null) bufferedReader.close();
+            } catch (Exception exception) {
+                logger.error(exception.getMessage());
+            }
         }
-        return sb.toString();
+        return null;
     }
 }
