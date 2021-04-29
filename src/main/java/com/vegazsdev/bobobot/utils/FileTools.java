@@ -4,8 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.zip.GZIPOutputStream;
 
 public class FileTools {
@@ -24,6 +22,7 @@ public class FileTools {
             return false;
         }
     }
+
     public static boolean checkFileExistsCurPath(String file) {
         File f = new File(file);
         return f.exists() && !f.isDirectory();
@@ -79,32 +78,5 @@ public class FileTools {
             line = br.readLine();
         }
         return sb.toString();
-    }
-
-    public List<String> getResourceFiles(String path) throws IOException {
-        List<String> filenames = new ArrayList<>();
-
-        try (
-                InputStream in = getResourceAsStream(path);
-                BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
-            String resource;
-
-            while ((resource = br.readLine()) != null) {
-                filenames.add(resource);
-            }
-        }
-
-        return filenames;
-    }
-
-    private InputStream getResourceAsStream(String resource) {
-        final InputStream in
-                = getContextClassLoader().getResourceAsStream(resource);
-
-        return in == null ? getClass().getResourceAsStream(resource) : in;
-    }
-
-    private ClassLoader getContextClassLoader() {
-        return Thread.currentThread().getContextClassLoader();
     }
 }

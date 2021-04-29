@@ -45,6 +45,7 @@ public class SourceForgeSetup extends Command {
         return null;
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     @Override
     public void botReply(Update update, TelegramBot bot, PrefObj prefs) {
         if (update.getMessage().getFrom().getId() == Float.parseFloat(Objects.requireNonNull(Config.getDefConfig("bot-master")))) {
@@ -60,20 +61,21 @@ public class SourceForgeSetup extends Command {
     @SuppressWarnings("SpellCheckingInspection")
     public void mkSfConf() {
         FileOutputStream fileOutputStream = null;
+
         try {
             Properties saveProps = new Properties();
 
-            if (!FileTools.checkIfFolderExists("configs")) FileTools.createFolder("configs");
+            if (!FileTools.checkIfFolderExists("configs")) if (FileTools.createFolder("configs")) {
+                saveProps.setProperty("bot-sf-user", "put your sf username");
+                saveProps.setProperty("bot-sf-host", "frs.sourceforge.net");
+                saveProps.setProperty("bot-sf-pass", "put your sf pass");
+                saveProps.setProperty("bot-sf-proj", "put your sf project name");
+                saveProps.setProperty("bot-send-announcement", "false");
+                saveProps.setProperty("bot-announcement-id", "none");
 
-            saveProps.setProperty("bot-sf-user", "put your sf username");
-            saveProps.setProperty("bot-sf-host", "frs.sourceforge.net");
-            saveProps.setProperty("bot-sf-pass", "put your sf pass");
-            saveProps.setProperty("bot-sf-proj", "put your sf project name");
-            saveProps.setProperty("bot-send-announcement", "false");
-            saveProps.setProperty("bot-announcement-id", "none");
-
-            fileOutputStream = new FileOutputStream("configs/sf-creds.prop");
-            saveProps.store(fileOutputStream, null);
+                fileOutputStream = new FileOutputStream("configs/sf-creds.prop");
+                saveProps.store(fileOutputStream, null);
+            }
         } catch (Exception exception) {
             logger.error(exception.getMessage());
         } finally {

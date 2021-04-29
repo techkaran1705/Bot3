@@ -22,7 +22,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
@@ -459,7 +462,7 @@ public class ErfanGSIs extends Command {
                         + "[Channel](https://t.me/TrebleExperience) | [Chat](https://t.me/TrebleExperience_chat) | [GitHub](https://github.com/TrebleExperience)"
                 );
                 sendMessage.setChatId(Objects.requireNonNull(SourceForgeSetup.getSfConf("bot-announcement-id")));
-                bot.sendMessageSync(sendMessage);
+                bot.sendMessageSync(sendMessage, update);
 
                 fullLogs.append("\n").append("Finished!");
                 bot.editMessage(fullLogs.toString(), update, id);
@@ -474,7 +477,7 @@ public class ErfanGSIs extends Command {
                 try {
                     inputStream.close();
                 } catch (IOException ioException) {
-                    logger.error(ioException.getMessage(), ioException);
+                    logger.error(ioException.getMessage());
                 }
             }
 
@@ -482,7 +485,7 @@ public class ErfanGSIs extends Command {
                 try {
                     inputStreamReader.close();
                 } catch (IOException ioException) {
-                    logger.error(ioException.getMessage(), ioException);
+                    logger.error(ioException.getMessage());
                 }
             }
 
@@ -490,7 +493,7 @@ public class ErfanGSIs extends Command {
                 try {
                     bufferedReader.close();
                 } catch (IOException ioException) {
-                    logger.error(ioException.getMessage(), ioException);
+                    logger.error(ioException.getMessage());
                 }
             }
         }

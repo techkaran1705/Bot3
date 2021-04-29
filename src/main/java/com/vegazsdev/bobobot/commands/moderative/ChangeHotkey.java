@@ -21,7 +21,7 @@ public class ChangeHotkey extends Command {
     @Override
     public void botReply(Update update, TelegramBot bot, PrefObj prefs) {
         if (update.getMessage().getText().contains(" ")) {
-            if (bot.isUserAdminOrPV(update)) {
+            if (bot.isPM(update)) {
                 if (update.getMessage().getText().trim().equals(prefs.getHotkey() + "chkey".trim())) {
                     bot.sendMessage(prefs.getString("chkey_help")
                             .replace("%1", prefs.getHotkey())

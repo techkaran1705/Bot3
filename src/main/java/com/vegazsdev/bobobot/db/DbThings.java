@@ -63,7 +63,7 @@ public class DbThings {
             prepareStatement.setDouble(1, id);
             prepareStatement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            logger.error(e.getMessage());
         }
     }
 
@@ -77,7 +77,7 @@ public class DbThings {
                 prefObj = new PrefObj(rs.getDouble("group_id"), rs.getString("lang"), rs.getString("hotkey"));
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            logger.error(e.getMessage());
         }
         return prefObj;
     }
@@ -88,7 +88,7 @@ public class DbThings {
              PreparedStatement prepareStatement = conn.prepareStatement(sql)) {
             prepareStatement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            logger.error(e.getMessage());
         }
     }
 
@@ -98,7 +98,7 @@ public class DbThings {
              PreparedStatement prepareStatement = conn.prepareStatement(sql)) {
             prepareStatement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            logger.error(e.getMessage());
         }
     }
 }

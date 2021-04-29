@@ -23,6 +23,63 @@ public class Chat2Shell extends Command {
         super("shell", "Run shell (bash) commands via chat");
     }
 
+    public static String runBash(String command) {
+        StringBuilder baseCommand = new StringBuilder();
+        InputStream inputStream = null;
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
+        try {
+            /*
+             * Process base
+             */
+            ProcessBuilder pb;
+            pb = new ProcessBuilder("/bin/bash", "-c", command);
+            pb.redirectErrorStream(true);
+            Process process = pb.start();
+
+            /*
+             * Stream base
+             */
+            inputStream = process.getInputStream();
+            inputStreamReader = new InputStreamReader(inputStream);
+            bufferedReader = new BufferedReader(inputStreamReader);
+
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null) {
+                baseCommand.append(line);
+            }
+            return String.valueOf(baseCommand);
+        } catch (Exception exception) {
+            logger.error(exception.getMessage(), exception);
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException ioException) {
+                    logger.error(ioException.getMessage(), ioException);
+                }
+            }
+
+            if (inputStreamReader != null) {
+                try {
+                    inputStreamReader.close();
+                } catch (IOException ioException) {
+                    logger.error(ioException.getMessage(), ioException);
+                }
+            }
+
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException ioException) {
+                    logger.error(ioException.getMessage(), ioException);
+                }
+            }
+        }
+        return null;
+    }
+
     @Override
     public void botReply(Update update, TelegramBot bot, PrefObj prefs) {
         if (update.getMessage().getFrom().getId() == Float.parseFloat(Objects.requireNonNull(Config.getDefConfig("bot-master")))) {
@@ -82,62 +139,5 @@ public class Chat2Shell extends Command {
                 }
             }
         }
-    }
-
-    public static String runBash(String command) {
-        StringBuilder baseCommand = new StringBuilder();
-        InputStream inputStream = null;
-        InputStreamReader inputStreamReader = null;
-        BufferedReader bufferedReader = null;
-        try {
-            /*
-             * Process base
-             */
-            ProcessBuilder pb;
-            pb = new ProcessBuilder("/bin/bash", "-c", command);
-            pb.redirectErrorStream(true);
-            Process process = pb.start();
-
-            /*
-             * Stream base
-             */
-            inputStream = process.getInputStream();
-            inputStreamReader = new InputStreamReader(inputStream);
-            bufferedReader = new BufferedReader(inputStreamReader);
-
-            String line;
-
-            while ((line = bufferedReader.readLine()) != null) {
-                baseCommand.append(line);
-            }
-            return String.valueOf(baseCommand);
-        } catch (Exception exception) {
-            logger.error(exception.getMessage(), exception);
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException ioException) {
-                    logger.error(ioException.getMessage(), ioException);
-                }
-            }
-
-            if (inputStreamReader != null) {
-                try {
-                    inputStreamReader.close();
-                } catch (IOException ioException) {
-                    logger.error(ioException.getMessage(), ioException);
-                }
-            }
-
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException ioException) {
-                    logger.error(ioException.getMessage(), ioException);
-                }
-            }
-        }
-        return null;
     }
 }

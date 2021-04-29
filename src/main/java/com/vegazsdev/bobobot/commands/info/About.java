@@ -49,6 +49,6 @@ public class About extends Command {
         markupInline.setKeyboard(rowsInline);
         sendMessage.setReplyMarkup(markupInline);
 
-        bot.sendMessageSync(sendMessage);
+        bot.sendMessageSync(sendMessage, update);
     }
 }
