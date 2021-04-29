@@ -18,7 +18,7 @@ public class ChangeLang extends Command {
     @Override
     public void botReply(Update update, TelegramBot bot, PrefObj prefs) {
         if (update.getMessage().getText().contains(" ")) {
-            if (bot.isUserAdminOrPV(update)) {
+            if (bot.isPM(update)) {
                 if (update.getMessage().getText().equals(prefs.getHotkey() + "chlang".trim())) {
                     bot.sendMessage(prefs.getString("available_lang") + "\n" + XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "disp_lang"), update);
                 } else {

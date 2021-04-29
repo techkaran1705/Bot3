@@ -4,15 +4,14 @@ import com.vegazsdev.bobobot.core.bot.Bot;
 import com.vegazsdev.bobobot.core.command.CommandWithClass;
 import com.vegazsdev.bobobot.db.DbThings;
 import com.vegazsdev.bobobot.db.PrefObj;
+import com.vegazsdev.bobobot.utils.FileTools;
 import com.vegazsdev.bobobot.utils.XMLs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
-import org.telegram.telegrambots.meta.api.objects.ChatMember;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -40,6 +39,20 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        /*
+         * Avoid hotkey problem
+         */
+        if (!FileTools.checkFileExistsCurPath("databases/prefs.db")) {
+            DbThings.createNewDatabase("prefs.db");
+            DbThings.createTable("prefs.db",
+                    "CREATE TABLE IF NOT EXISTS chat_prefs ("
+                            + "group_id real UNIQUE PRIMARY KEY,"
+                            + "hotkey text DEFAULT '!',"
+                            + "lang text DEFAULT 'strings-en.xml'"
+                            + ");"
+            );
+        }
+
         new Thread(new Runnable() {
             private TelegramBot tBot;
 
@@ -63,7 +76,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                         chatPrefs = new PrefObj(0, "strings-en.xml", "!");
                     }
 
-                    if (msg.startsWith(Objects.requireNonNull(chatPrefs.getHotkey()))) {
+                    if (chatPrefs.getHotkey() != null && msg.startsWith(Objects.requireNonNull(chatPrefs.getHotkey()))) {
                         for (CommandWithClass commandWithClass : getActiveCommandsAsCmdObject()) {
                             String adjustCommand = msg.replace(Objects.requireNonNull(chatPrefs.getHotkey()), "");
 
@@ -99,32 +112,32 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         try {
             return executeAsync(sendMessage).get().getMessageId();
-        } catch (TelegramApiException | ExecutionException | InterruptedException e) {
-            logger.error(e.getMessage());
+        } catch (TelegramApiException | ExecutionException | InterruptedException exception) {
+            logger.error(exception.getMessage() + " (CID: " + update.getMessage().getChat().getId() + " | UID: " + update.getMessage().getFrom().getId() + ")");
         }
         return 0;
     }
 
-    public void sendMessageSync(SendMessage message) {
+    public void sendMessageSync(SendMessage message, Update update) {
         /*
          * Don't use Async because it repeats the same message for unknown reason
          */
         try {
             execute(message);
-        } catch (TelegramApiException e) {
-            logger.error(e.getMessage(), e);
+        } catch (TelegramApiException telegramApiException) {
+            logger.error(telegramApiException.getMessage() + " (CID: " + update.getMessage().getChat().getId() + " | UID: " + update.getMessage().getFrom().getId() + ")");
         }
     }
 
-    public void deleteMessage(String chatID, Integer messageID) {
+    public void deleteMessage(String chatID, Integer messageID, Update update) {
         DeleteMessage deleteMessage = new DeleteMessage();
         deleteMessage.setMessageId(messageID);
         deleteMessage.setChatId(chatID);
 
         try {
             executeAsync(deleteMessage);
-        } catch (TelegramApiException e) {
-            logger.error(e.getMessage(), e);
+        } catch (TelegramApiException telegramApiException) {
+            logger.error(telegramApiException.getMessage() + " (CID: " + update.getMessage().getChat().getId() + " | UID: " + update.getMessage().getFrom().getId() + ")");
         }
     }
 
@@ -139,24 +152,10 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         try {
             return executeAsync(sendMessage).get().getMessageId();
-        } catch (TelegramApiException | ExecutionException | InterruptedException e) {
-            logger.error(e.getMessage());
+        } catch (TelegramApiException | ExecutionException | InterruptedException exception) {
+            logger.error(exception.getMessage() + " (CID: " + update.getMessage().getChat().getId() + " | UID: " + update.getMessage().getFrom().getId() + ")");
         }
         return 0;
-    }
-
-    public void sendMessage2ID(String msg, long id) {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setText(msg);
-        sendMessage.setChatId(String.valueOf(id));
-        sendMessage.enableMarkdown(true);
-        sendMessage.disableWebPagePreview();
-
-        try {
-            executeAsync(sendMessage).get().getMessageId();
-        } catch (TelegramApiException | ExecutionException | InterruptedException e) {
-            logger.error(e.getMessage());
-        }
     }
 
     public void editMessage(String msg, Update update, int id) {
@@ -168,37 +167,16 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         try {
             executeAsync(editMessageText);
-        } catch (TelegramApiException e) {
-            logger.error(e.getMessage());
+        } catch (TelegramApiException telegramApiException) {
+            logger.error(telegramApiException.getMessage() + " (CID: " + update.getMessage().getChat().getId() + " | UID: " + update.getMessage().getFrom().getId() + ")");
         }
     }
 
-    public boolean isUserAdminOrPV(Update update) {
+    public boolean isPM(Update update) {
+        String chatID = update.getMessage().getChatId().toString();
         String userID = update.getMessage().getFrom().getId().toString();
-        String chatID = update.getMessage().getChat().getId().toString();
 
-        if (userID.equals(chatID)) {
-            return true;
-        } else {
-            try {
-                GetChatMember getChatMember = new GetChatMember();
-                getChatMember.setChatId(String.valueOf(update.getMessage().getChatId()));
-                getChatMember.setUserId(update.getMessage().getFrom().getId());
-
-                ChatMember chatMember = execute(getChatMember);
-
-                switch (chatMember.getStatus()) {
-                    case "administrator":
-                    case "creator":
-                        return true;
-                    default:
-                        return false;
-                }
-            } catch (Exception e) {
-                logger.error(e.getMessage());
-                return false;
-            }
-        }
+        return !chatID.equals(userID);
     }
 
     private void runMethod(Class aClass, Update update, TelegramBot tBot, PrefObj prefs) {

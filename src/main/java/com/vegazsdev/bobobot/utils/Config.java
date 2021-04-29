@@ -1,12 +1,10 @@
 package com.vegazsdev.bobobot.utils;
 
-import com.vegazsdev.bobobot.core.CustomConfigFileObj;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.Properties;
 
 public class Config {
@@ -30,32 +28,6 @@ public class Config {
             }
         }
         return null;
-    }
-
-    public static void createCustomConfig(ArrayList<CustomConfigFileObj> configs, String configFile, String comment) {
-        FileTools.createFolder("configs");
-        FileOutputStream fileOutputStream = null;
-        try {
-            Properties saveProps = new Properties();
-
-            for (CustomConfigFileObj config : configs) {
-                saveProps.setProperty(config.getConfName(), config.getConfDefValue());
-            }
-
-            fileOutputStream = new FileOutputStream("configs/configs.prop");
-            saveProps.store(fileOutputStream, comment);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        } finally {
-            try {
-                if (fileOutputStream != null) {
-                    fileOutputStream.flush();
-                    fileOutputStream.close();
-                }
-            } catch (Exception exception) {
-                logger.error(exception.getMessage());
-            }
-        }
     }
 
     public void createDefConfig() {

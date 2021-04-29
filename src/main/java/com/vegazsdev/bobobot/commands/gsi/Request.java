@@ -48,7 +48,7 @@ public class Request extends Command {
                     if (update.getMessage().getChatId() == Float.parseFloat(Objects.requireNonNull(Config.getDefConfig("requestChat")))) {
                         if (Pattern.matches(validLink, msgComparableRaw[1])) {
                             // Delete the message who user sent
-                            bot.deleteMessage(chatId, update.getMessage().getMessageId());
+                            bot.deleteMessage(chatId, update.getMessage().getMessageId(), update);
 
                             // Set to thanks message
                             message.setText(prefs.getString("request_done")
@@ -57,7 +57,7 @@ public class Request extends Command {
                                     .replace("%3", String.valueOf(update.getMessage().getFrom().getId()))
                             );
                             message.setChatId(chatId); // Get to stock chat id
-                            bot.sendMessageSync(message);
+                            bot.sendMessageSync(message, update);
 
                             // Set dontHaveUsername
                             dontHaveUsername = prefs.getString("dont_have");
@@ -115,7 +115,7 @@ public class Request extends Command {
                             );
 
                             // Delete the message who user sent
-                            bot.deleteMessage(chatId, update.getMessage().getMessageId());
+                            bot.deleteMessage(chatId, update.getMessage().getMessageId(), update);
                         }
                     } else {
                         message.setText(prefs.getString("cant_be_used"));
@@ -124,9 +124,9 @@ public class Request extends Command {
                     /*
                      * Send the message
                      */
-                    bot.sendMessageSync(message);
+                    bot.sendMessageSync(message, update);
                 } else {
-                    bot.deleteMessage(chatId, update.getMessage().getMessageId());
+                    bot.deleteMessage(chatId, update.getMessage().getMessageId(), update);
                 }
             } else {
                 bot.sendReply(prefs.getString("issue_with_index_chat"), update);
