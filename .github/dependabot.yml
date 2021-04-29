@@ -1,0 +1,20 @@
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: com.google.guava:guava
+    versions:
+    - "23.0"
+  - dependency-name: org.telegram:telegrambots
+    versions:
+    - 5.2.0
+  - dependency-name: com.google.api-client:google-api-client
+    versions:
+    - 1.31.4
+  - dependency-name: com.google.apis:google-api-services-drive
+    versions:
+    - v3-rev20210419-1.31.0
