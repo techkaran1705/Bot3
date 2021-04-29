@@ -65,7 +65,7 @@ public class Main {
             System.exit(0);
         }
 
-        BuildInfo buildInfo = new BuildInfo(false);
+        BuildInfo buildInfo = new BuildInfo(true);
 
         Bot bot = null;
         try {
