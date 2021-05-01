@@ -68,7 +68,6 @@
     <first_and_last_name>***• Nome:*** `%1`</first_and_last_name>
     <user_name>***• Nome de usuário:*** `%1`</user_name>
     <user_id>***• ID do usuário:*** `%1`</user_id>
-    <lang_code>***• Código de linguagem:*** `%1`</lang_code>
     <dont_have>Não tem</dont_have>
     <info_not_shared>Informação não compartilhada pelo usuário.</info_not_shared>
     <invalid_link>Olá [%1](tg://user?id=%2) (`%3`), o link que você enviou parece ser inválido! Use com parâmetros http e tente novamente.</invalid_link>

@@ -79,7 +79,6 @@
     <first_and_last_name>***• Name:*** `%1`</first_and_last_name>
     <user_name>***• Username:*** `%1`</user_name>
     <user_id>***• User ID:*** `%1`</user_id>
-    <lang_code>***• Language code:*** `%1`</lang_code>
     <dont_have>Don't have</dont_have>
     <info_not_shared>Information not shared by the user.</info_not_shared>
     <invalid_link>Hello [%1](tg://user?id=%2) (`%3`), the link you sent appears to be invalid! Use with http parameters and try again.</invalid_link>

@@ -103,9 +103,7 @@ public class Request extends Command {
                                             + prefs.getString("user_name")
                                             .replace("%1", validateUsername(update.getMessage().getFrom().getUserName())) + "\n"
                                             + prefs.getString("user_id")
-                                            .replace("%1", String.valueOf(update.getMessage().getFrom().getId())) + "\n"
-                                            + prefs.getString("lang_code")
-                                            .replace("%1", update.getMessage().getFrom().getLanguageCode())
+                                            .replace("%1", String.valueOf(update.getMessage().getFrom().getId()))
                             );
                         } else {
                             message.setText(prefs.getString("invalid_link")
