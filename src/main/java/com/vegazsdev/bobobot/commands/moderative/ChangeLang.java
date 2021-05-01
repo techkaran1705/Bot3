@@ -19,7 +19,7 @@ public class ChangeLang extends Command {
     public void botReply(Update update, TelegramBot bot, PrefObj prefs) {
         if (update.getMessage().getText().contains(" ")) {
             if (bot.isPM(update.getMessage().getChatId().toString(), update.getMessage().getFrom().getId().toString())) {
-                if (bot.isAdmin(update.getMessage().getChatId().toString(), update.getMessage().getFrom().getId().toString())) {
+                if (bot.isAdmin(update.getMessage().getFrom().getId().toString(), update.getMessage().getChatId().toString())) {
                     if (update.getMessage().getText().equals(prefs.getHotkey() + "chlang".trim())) {
                         bot.sendMessage(prefs.getString("available_lang") + "\n" + XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "disp_lang"), update);
                     } else {

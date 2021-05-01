@@ -22,7 +22,7 @@ public class ChangeHotkey extends Command {
     public void botReply(Update update, TelegramBot bot, PrefObj prefs) {
         if (update.getMessage().getText().contains(" ")) {
             if (bot.isPM(update.getMessage().getChatId().toString(), update.getMessage().getFrom().getId().toString())) {
-                if (bot.isAdmin(update.getMessage().getChatId().toString(), update.getMessage().getFrom().getId().toString())) {
+                if (bot.isAdmin(update.getMessage().getFrom().getId().toString(), update.getMessage().getChatId().toString())) {
                     if (update.getMessage().getText().trim().equals(prefs.getHotkey() + "chkey".trim())) {
                         bot.sendMessage(prefs.getString("chkey_help")
                                 .replace("%1", prefs.getHotkey())
