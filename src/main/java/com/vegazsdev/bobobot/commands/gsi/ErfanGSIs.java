@@ -499,7 +499,7 @@ public class ErfanGSIs extends Command {
                         + "\n<b>From</b> " + getModelOfOutput()
                         + "\n\n<b>Information</b>\n<code>" + descGSI
                         + "</code>\n\n<b>Credits</b>" + "\n"
-                        + "<a href=\"hhttps://github.com/erfanoabdi/\">Erfan Abdi</a>" + " | "
+                        + "<a href=\"https://github.com/Erfanoabdi\">Erfan Abdi</a>" + " | "
                         + "<a href=\"https://github.com/TrebleExperience/Bot3\">Bo³+t</a>" + "\n\n"
                         + "<b>Treble Experience</b>" + "\n"
                         + "<a href=\"https://t.me/TrebleExperience\">Channel</a> | <a href=\"https://t.me/TrebleExperience_chat\">Chat</a> | <a href=\"https://github.com/TrebleExperience\">GitHub</a>"
