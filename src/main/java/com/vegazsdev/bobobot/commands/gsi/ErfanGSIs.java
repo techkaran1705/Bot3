@@ -450,7 +450,7 @@ public class ErfanGSIs extends Command {
                  */
                 SendMessage sendMessage = new SendMessage();
                 sendMessage.setDisableWebPagePreview(true);
-                sendMessage.enableMarkdown(true);
+                sendMessage.enableHtml(true);
 
                 /*
                  * Prepare InlineKeyboardButton
@@ -495,14 +495,14 @@ public class ErfanGSIs extends Command {
                 /*
                  * Send GSI message
                  */
-                sendMessage.setText("*Requested " + gsiCmdObj.getGsi() + " GSI*"
-                        + "\n*From* " + getModelOfOutput()
-                        + "\n\n*Information*\n`" + descGSI
-                        + "`\n\n*Credits*" + "\n"
-                        + "[Erfan Abdi](https://github.com/erfanoabdi/)" + " | "
-                        + "[Bo³+t](https://github.com/TrebleExperience/Bot3)" + "\n\n"
-                        + "*Treble Experience*" + "\n"
-                        + "[Channel](https://t.me/TrebleExperience) | [Chat](https://t.me/TrebleExperience_chat) | [GitHub](https://github.com/TrebleExperience)"
+                sendMessage.setText("<b>Requested " + gsiCmdObj.getGsi() + " GSI</b>"
+                        + "\n<b>From</b> " + getModelOfOutput()
+                        + "\n\n<b>Information</b>\n<code>" + descGSI
+                        + "</code>\n\n<b>Credits</b>" + "\n"
+                        + "<a href=\"hhttps://github.com/erfanoabdi/\">Erfan Abdi</a>" + " | "
+                        + "<a href=\"https://github.com/TrebleExperience/Bot3\">Bo³+t</a>" + "\n\n"
+                        + "<b>Treble Experience</b>" + "\n"
+                        + "<a href=\"https://t.me/TrebleExperience\">Channel</a> | <a href=\"https://t.me/TrebleExperience_chat\">Chat</a> | <a href=\"https://github.com/TrebleExperience\">GitHub</a>"
                 );
                 sendMessage.setChatId(Objects.requireNonNull(SourceForgeSetup.getSfConf("bot-announcement-id")));
                 bot.sendMessageSync(sendMessage, update);
