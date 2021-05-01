@@ -180,7 +180,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     public boolean isAdmin(String userID, String chatID) {
         if (userID.equals(chatID)) {
-            return true;
+            return false;
         } else {
             try {
                 GetChatMember getChatMember = new GetChatMember();
