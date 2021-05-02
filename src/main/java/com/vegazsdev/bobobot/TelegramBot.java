@@ -35,7 +35,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             "Why do you use this command? Well, nobody cares", "Life is random chaos, ordered by time",
             "They got lost again, bunch of idiots!", "Breaking the rules is worse than trash, but abandoning your friends is worse than that.",
             "A chance in a million is better than no chance!", "When you love, there is a risk of hating.",
-            "Have you washed the dishes yet?", "You're cringe."
+            "Have you washed the dishes yet?", "You're cringe.",
+            "owo", "lmao...", "( ͡° ͜ʖ ͡°)"
     };
 
     private static final Logger logger = LoggerFactory.getLogger(TelegramBot.class);
@@ -126,7 +127,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                      * Random number/XP (or lucky)
                      */
                     Random random = new Random();
-                    int low = 0, high = 12, lowLucky = 0, highLucky = 100;
+                    int low = 0, high = 15, lowLucky = 0, highLucky = 1000;
                     int randomInt = random.nextInt(high - low) + low;
                     int randomXP = random.nextInt(highLucky - lowLucky) + lowLucky;
 
@@ -153,14 +154,15 @@ public class TelegramBot extends TelegramLongPollingBot {
         return 0;
     }
 
-    public void sendMessageSync(SendMessage message, Update update) {
+    public int sendMessageSync(SendMessage message, Update update) {
         /*
          * Don't use Async because it repeats the same message for unknown reason
          */
         try {
-            execute(message);
+            return execute(message).getMessageId();
         } catch (TelegramApiException telegramApiException) {
             logger.error(telegramApiException.getMessage() + " (CID: " + update.getMessage().getChat().getId() + " | UID: " + update.getMessage().getFrom().getId() + ")");
+            return 0;
         }
     }
 
