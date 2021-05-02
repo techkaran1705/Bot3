@@ -27,4 +27,8 @@
     <sql_driver_info>The driver name is %1</sql_driver_info>
     <sql_db_ok>A new database: %1 has been created.</sql_db_ok>
 
+
+    <!-- Core Strings -->
+    <run_command_again>Run this command again, it was not possible to run because the database did not exist.</run_command_again>
+
 </strings>

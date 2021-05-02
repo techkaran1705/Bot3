@@ -70,32 +70,40 @@ public class TelegramBot extends TelegramLongPollingBot {
                         && Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "possible_hotkeys"))
                         .indexOf(update.getMessage().getText().charAt(0)) >= 0) {
 
+                    boolean trueToRun;
+
                     String msg = update.getMessage().getText();
                     long usrId = update.getMessage().getFrom().getId();
                     PrefObj chatPrefs = getPrefs(update);
 
                     if (chatPrefs == null) {
                         chatPrefs = new PrefObj(0, "strings-en.xml", "!");
+                        sendReply(XMLs.getFromStringsXML("core-strings.xml", "run_command_again"), update);
+                        trueToRun = false;
+                    } else {
+                        trueToRun = true;
                     }
 
-                    if (chatPrefs.getHotkey() != null && msg.startsWith(Objects.requireNonNull(chatPrefs.getHotkey()))) {
-                        for (CommandWithClass commandWithClass : getActiveCommandsAsCmdObject()) {
-                            String adjustCommand = msg.replace(Objects.requireNonNull(chatPrefs.getHotkey()), "");
+                    if (trueToRun) {
+                        if (chatPrefs.getHotkey() != null && msg.startsWith(Objects.requireNonNull(chatPrefs.getHotkey()))) {
+                            for (CommandWithClass commandWithClass : getActiveCommandsAsCmdObject()) {
+                                String adjustCommand = msg.replace(Objects.requireNonNull(chatPrefs.getHotkey()), "");
 
-                            if (adjustCommand.contains(" ")) {
-                                adjustCommand = adjustCommand.split(" ")[0];
-                            }
+                                if (adjustCommand.contains(" ")) {
+                                    adjustCommand = adjustCommand.split(" ")[0];
+                                }
 
-                            if (commandWithClass.getAlias().equals(adjustCommand)) {
-                                try {
-                                    runMethod(commandWithClass.getClazz(), update, tBot, chatPrefs);
-                                    logger.info(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_ok"))
-                                            .replace("%1", update.getMessage().getFrom().getFirstName() + " (" + usrId + ")")
-                                            .replace("%2", adjustCommand));
-                                } catch (Exception e) {
-                                    logger.error(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_failure"))
-                                            .replace("%1", commandWithClass.getAlias())
-                                            .replace("%2", e.getMessage()), e);
+                                if (commandWithClass.getAlias().equals(adjustCommand)) {
+                                    try {
+                                        runMethod(commandWithClass.getClazz(), update, tBot, chatPrefs);
+                                        logger.info(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_ok"))
+                                                .replace("%1", update.getMessage().getFrom().getFirstName() + " (" + usrId + ")")
+                                                .replace("%2", adjustCommand));
+                                    } catch (Exception e) {
+                                        logger.error(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_failure"))
+                                                .replace("%1", commandWithClass.getAlias())
+                                                .replace("%2", e.getMessage()), e);
+                                    }
                                 }
                             }
                         }
