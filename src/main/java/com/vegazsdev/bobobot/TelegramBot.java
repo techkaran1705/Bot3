@@ -20,10 +20,23 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 @SuppressWarnings("rawtypes")
 public class TelegramBot extends TelegramLongPollingBot {
+
+    /*
+     * Don't be angry guys, just a joke
+     */
+    private final String[] messages = {
+            "Go back to the kitchen", "Uninstall the telegram, no one will care",
+            "Have you ever wondered why you were born? There is no reason", "Go sleep",
+            "Why do you use this command? Well, nobody cares", "Life is random chaos, ordered by time",
+            "They got lost again, bunch of idiots!", "Breaking the rules is worse than trash, but abandoning your friends is worse than that.",
+            "A chance in a million is better than no chance!", "When you love, there is a risk of hating.",
+            "Have you washed the dishes yet?", "You're cringe."
+    };
 
     private static final Logger logger = LoggerFactory.getLogger(TelegramBot.class);
 
@@ -108,6 +121,18 @@ public class TelegramBot extends TelegramLongPollingBot {
                             }
                         }
                     }
+                } else {
+                    /*
+                     * Random number/XP (or lucky)
+                     */
+                    Random random = new Random();
+                    int low = 0, high = 12, lowLucky = 0, highLucky = 100;
+                    int randomInt = random.nextInt(high - low) + low;
+                    int randomXP = random.nextInt(highLucky - lowLucky) + lowLucky;
+
+                    if (randomInt > randomXP) {
+                        sendReply(messages[randomInt], update);
+                    }
                 }
             }
         }.init(this)).start();
@@ -167,6 +192,53 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
         return 0;
     }
+
+    public void sendReply2ID(String msg, int id, Update update) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText(msg);
+        sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
+        sendMessage.enableMarkdown(true);
+        sendMessage.setReplyToMessageId(id);
+        sendMessage.disableWebPagePreview();
+
+        try {
+            executeAsync(sendMessage).get().getMessageId();
+        } catch (TelegramApiException | ExecutionException | InterruptedException exception) {
+            logger.error(exception.getMessage() + " (CID: " + update.getMessage().getChat().getId() + " | UID: " + update.getMessage().getFrom().getId() + ")");
+        }
+    }
+
+    // START: Until the bot uses HTML instead of Markdown
+    public int sendReplyForShell(String msg, Update update) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText(msg);
+        sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
+        sendMessage.enableHtml(true);
+        sendMessage.setReplyToMessageId(update.getMessage().getMessageId());
+        sendMessage.disableWebPagePreview();
+
+        try {
+            return executeAsync(sendMessage).get().getMessageId();
+        } catch (TelegramApiException | ExecutionException | InterruptedException exception) {
+            logger.error(exception.getMessage() + " (CID: " + update.getMessage().getChat().getId() + " | UID: " + update.getMessage().getFrom().getId() + ")");
+        }
+        return 0;
+    }
+
+    public void editMessageForShell(String msg, Update update, int id) {
+        EditMessageText editMessageText = new EditMessageText();
+        editMessageText.setText(msg);
+        editMessageText.setChatId(String.valueOf(update.getMessage().getChatId()));
+        editMessageText.setMessageId(id);
+        editMessageText.enableHtml(true);
+
+        try {
+            executeAsync(editMessageText);
+        } catch (TelegramApiException telegramApiException) {
+            logger.error(telegramApiException.getMessage() + " (CID: " + update.getMessage().getChat().getId() + " | UID: " + update.getMessage().getFrom().getId() + ")");
+        }
+    }
+    // END: Until the bot uses HTML instead of Markdown
 
     public void editMessage(String msg, Update update, int id) {
         EditMessageText editMessageText = new EditMessageText();

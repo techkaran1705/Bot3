@@ -14,6 +14,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
+import static com.vegazsdev.bobobot.Main.shellStatus;
+
 @SuppressWarnings("unused")
 public class Chat2Shell extends Command {
 
@@ -80,63 +82,82 @@ public class Chat2Shell extends Command {
         return null;
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     @Override
     public void botReply(Update update, TelegramBot bot, PrefObj prefs) {
         if (update.getMessage().getFrom().getId() == Float.parseFloat(Objects.requireNonNull(Config.getDefConfig("bot-master")))) {
-            String msg = update.getMessage().getText().substring(7);
+            if (shellStatus.canRun() && !shellStatus.isRunning()) {
+                /*
+                 * Lock status, until the Shell process ends
+                 */
+                shellStatus.lockStatus();
 
-            ProcessBuilder processBuilder;
-            processBuilder = new ProcessBuilder("/bin/bash", "-c", msg);
+                String msg = update.getMessage().getText().substring(7);
 
-            StringBuilder fullLogs = new StringBuilder();
-            fullLogs.append("***$ ").append(msg).append("***\n");
+                ProcessBuilder processBuilder;
+                processBuilder = new ProcessBuilder("/bin/bash", "-c", msg);
 
-            int id = bot.sendReply(fullLogs.toString(), update);
+                StringBuilder fullLogs = new StringBuilder();
+                fullLogs.append("<code>").append(runBash("whoami")).append("</code>").append(" (<code>").append(runBash("uname -n")).append("</code>)").append(" ~ ").append(update.getMessage().getText().substring(7)).append("\n");
 
-            InputStream inputStream = null;
-            InputStreamReader inputStreamReader = null;
-            BufferedReader bufferedReader = null;
-            try {
-                processBuilder.redirectErrorStream(true);
-                Process process = processBuilder.start();
+                int id = bot.sendReplyForShell(fullLogs.toString(), update);
 
-                inputStream = process.getInputStream();
-                inputStreamReader = new InputStreamReader(inputStream);
-                bufferedReader = new BufferedReader(inputStreamReader);
+                InputStream inputStream = null;
+                InputStreamReader inputStreamReader = null;
+                BufferedReader bufferedReader = null;
+                try {
+                    processBuilder.redirectErrorStream(true);
+                    Process process = processBuilder.start();
 
-                String line;
+                    inputStream = process.getInputStream();
+                    inputStreamReader = new InputStreamReader(inputStream);
+                    bufferedReader = new BufferedReader(inputStreamReader);
 
-                while ((line = bufferedReader.readLine()) != null) {
-                    fullLogs.append("`").append(line).append("`").append("\n");
-                    bot.editMessage(fullLogs.toString(), update, id);
-                }
-            } catch (Exception e) {
-                bot.sendMessage(prefs.getString("something_went_wrong"), update);
-                logger.error(e.getMessage(), e);
-            } finally {
-                if (inputStream != null) {
-                    try {
-                        inputStream.close();
-                    } catch (IOException ioException) {
-                        logger.error(ioException.getMessage(), ioException);
+                    String line;
+
+                    while ((line = bufferedReader.readLine()) != null) {
+                        fullLogs.append("<code>").append(line).append("</code>").append("\n");
+                        bot.editMessageForShell(fullLogs.toString(), update, id);
+                    }
+
+                    process.waitFor();
+                    bot.sendReply2ID(prefs.getString("return_code_shell")
+                            .replace("%1", String.valueOf(process.exitValue())), id, update
+                    );
+                    shellStatus.unlockStatus();
+                } catch (Exception e) {
+                    if (!shellStatus.canRun())
+                        shellStatus.unlockStatus();
+
+                    bot.sendMessage(prefs.getString("something_went_wrong"), update);
+                    logger.error(e.getMessage());
+                } finally {
+                    if (inputStream != null) {
+                        try {
+                            inputStream.close();
+                        } catch (IOException ioException) {
+                            logger.error(ioException.getMessage(), ioException);
+                        }
+                    }
+
+                    if (inputStreamReader != null) {
+                        try {
+                            inputStreamReader.close();
+                        } catch (IOException ioException) {
+                            logger.error(ioException.getMessage(), ioException);
+                        }
+                    }
+
+                    if (bufferedReader != null) {
+                        try {
+                            bufferedReader.close();
+                        } catch (IOException ioException) {
+                            logger.error(ioException.getMessage(), ioException);
+                        }
                     }
                 }
-
-                if (inputStreamReader != null) {
-                    try {
-                        inputStreamReader.close();
-                    } catch (IOException ioException) {
-                        logger.error(ioException.getMessage(), ioException);
-                    }
-                }
-
-                if (bufferedReader != null) {
-                    try {
-                        bufferedReader.close();
-                    } catch (IOException ioException) {
-                        logger.error(ioException.getMessage(), ioException);
-                    }
-                }
+            } else {
+                bot.sendReply(prefs.getString("cant_run_shell"), update);
             }
         }
     }

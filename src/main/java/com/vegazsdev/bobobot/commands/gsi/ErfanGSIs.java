@@ -270,6 +270,8 @@ public class ErfanGSIs extends Command {
             while ((line = bufferedReader.readLine()) != null) {
                 if (line.length() < 1)
                     line = "Generic";
+                else if (line.toLowerCase().contains("x00qd"))
+                    line = "Asus Zenfone 5";
                 else if (line.toLowerCase().contains("qssi"))
                     line = "Qualcomm Single System Image";
                 else if (line.toLowerCase().contains("miatoll"))
@@ -284,6 +286,12 @@ public class ErfanGSIs extends Command {
                     line = "Motorola System Image";
                 else if (line.toLowerCase().contains("mssi"))
                     line = "MIUI Single System Image";
+                else if (line.toLowerCase().contains("a30"))
+                    line = "Samsung Galaxy A30";
+                else if (line.toLowerCase().contains("a20"))
+                    line = "Samsung Galaxy A20";
+                else if (line.toLowerCase().contains("a10"))
+                    line = "Samsung Galaxy A10";
                 else if (line.equals(" "))
                     line = "Generic";
 

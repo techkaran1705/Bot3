@@ -57,4 +57,8 @@
     <!-- SourceForgeSetup Command -->
     <unable_to_create>É impossível criar, pois já existe um arquivo de propriedades do SourceForge</unable_to_create>
     <created_sf_folder>Verifique sua pasta de configuração</created_sf_folder>
+
+    <!-- Shell Command -->
+    <cant_run_shell>Desculpe, o comando `shell` está bloqueado (provavelmente existe outro comando `shell` em execução).</cant_run_shell>
+    <return_code_shell>Código de retorno: `%1`, comando shell desbloqueado.</return_code_shell>
 </strings>
