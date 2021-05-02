@@ -154,14 +154,15 @@ public class TelegramBot extends TelegramLongPollingBot {
         return 0;
     }
 
-    public void sendMessageSync(SendMessage message, Update update) {
+    public int sendMessageSync(SendMessage message, Update update) {
         /*
          * Don't use Async because it repeats the same message for unknown reason
          */
         try {
-            execute(message);
+            return execute(message).getMessageId();
         } catch (TelegramApiException telegramApiException) {
             logger.error(telegramApiException.getMessage() + " (CID: " + update.getMessage().getChat().getId() + " | UID: " + update.getMessage().getFrom().getId() + ")");
+            return 0;
         }
     }
 

@@ -12,6 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 @SuppressWarnings({"SpellCheckingInspection", "unused"})
@@ -35,6 +36,9 @@ public class Request extends Command {
                 String msgSwitchPrefix = msgComparableRaw[0];
                 String msgBaseRaw = update.getMessage().getText();
 
+                // Request message id
+                int id = 0;
+
                 // Regex for valid link
                 String validLink = "(http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?";
 
@@ -56,8 +60,9 @@ public class Request extends Command {
                                     .replace("%2", String.valueOf(update.getMessage().getFrom().getId()))
                                     .replace("%3", String.valueOf(update.getMessage().getFrom().getId()))
                             );
+
                             message.setChatId(chatId); // Get to stock chat id
-                            bot.sendMessageSync(message, update);
+                            id = bot.sendMessageSync(message, update);
 
                             // Set dontHaveUsername
                             dontHaveUsername = prefs.getString("dont_have");
@@ -123,6 +128,16 @@ public class Request extends Command {
                      * Send the message
                      */
                     bot.sendMessageSync(message, update);
+
+                    /*
+                     * Delete thanks message
+                     */
+                    try {
+                        TimeUnit.MINUTES.sleep(1);
+                        if (id != 0) bot.deleteMessage(chatId, id, update);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     bot.deleteMessage(chatId, update.getMessage().getMessageId(), update);
                 }
