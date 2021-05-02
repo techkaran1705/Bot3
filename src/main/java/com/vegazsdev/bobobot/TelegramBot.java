@@ -168,6 +168,53 @@ public class TelegramBot extends TelegramLongPollingBot {
         return 0;
     }
 
+    public void sendReply2ID(String msg, int id, Update update) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText(msg);
+        sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
+        sendMessage.enableMarkdown(true);
+        sendMessage.setReplyToMessageId(id);
+        sendMessage.disableWebPagePreview();
+
+        try {
+            executeAsync(sendMessage).get().getMessageId();
+        } catch (TelegramApiException | ExecutionException | InterruptedException exception) {
+            logger.error(exception.getMessage() + " (CID: " + update.getMessage().getChat().getId() + " | UID: " + update.getMessage().getFrom().getId() + ")");
+        }
+    }
+
+    // START: Until the bot uses HTML instead of Markdown
+    public int sendReplyForShell(String msg, Update update) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText(msg);
+        sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
+        sendMessage.enableHtml(true);
+        sendMessage.setReplyToMessageId(update.getMessage().getMessageId());
+        sendMessage.disableWebPagePreview();
+
+        try {
+            return executeAsync(sendMessage).get().getMessageId();
+        } catch (TelegramApiException | ExecutionException | InterruptedException exception) {
+            logger.error(exception.getMessage() + " (CID: " + update.getMessage().getChat().getId() + " | UID: " + update.getMessage().getFrom().getId() + ")");
+        }
+        return 0;
+    }
+
+    public void editMessageForShell(String msg, Update update, int id) {
+        EditMessageText editMessageText = new EditMessageText();
+        editMessageText.setText(msg);
+        editMessageText.setChatId(String.valueOf(update.getMessage().getChatId()));
+        editMessageText.setMessageId(id);
+        editMessageText.enableHtml(true);
+
+        try {
+            executeAsync(editMessageText);
+        } catch (TelegramApiException telegramApiException) {
+            logger.error(telegramApiException.getMessage() + " (CID: " + update.getMessage().getChat().getId() + " | UID: " + update.getMessage().getFrom().getId() + ")");
+        }
+    }
+    // END: Until the bot uses HTML instead of Markdown
+
     public void editMessage(String msg, Update update, int id) {
         EditMessageText editMessageText = new EditMessageText();
         editMessageText.setText(msg);

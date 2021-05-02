@@ -4,6 +4,7 @@ import com.google.common.reflect.ClassPath;
 import com.vegazsdev.bobobot.commands.owner.Chat2Shell;
 import com.vegazsdev.bobobot.core.bot.Bot;
 import com.vegazsdev.bobobot.core.bot.BuildInfo;
+import com.vegazsdev.bobobot.core.shell.ShellStatus;
 import com.vegazsdev.bobobot.db.DbThings;
 import com.vegazsdev.bobobot.exception.BotTokenException;
 import com.vegazsdev.bobobot.utils.Config;
@@ -23,6 +24,8 @@ public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static String DEF_CORE_STRINGS_XML = "core-strings.xml";
+
+    public static ShellStatus shellStatus;
 
     @SuppressWarnings({"SpellCheckingInspection", "UnstableApiUsage", "rawtypes"})
     public static void main(String[] args) {
@@ -67,6 +70,8 @@ public class Main {
         }
 
         BuildInfo buildInfo = new BuildInfo(false);
+        shellStatus = new ShellStatus();
+        shellStatus.unlockStatus();
 
         Bot bot = null;
         try {

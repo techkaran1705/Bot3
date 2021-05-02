@@ -68,4 +68,8 @@
     <!-- SourceForgeSetup Command -->
     <unable_to_create>It is impossible to create, as a SourceForge properties file already exists</unable_to_create>
     <created_sf_folder>Check your config folder</created_sf_folder>
+
+    <!-- Shell Command -->
+    <cant_run_shell>Sorry, the `shell` command is locked (Probably exists other shell command running).</cant_run_shell>
+    <return_code_shell>Return code: `%1`, shell command unlocked.</return_code_shell>
 </strings>
