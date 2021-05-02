@@ -32,7 +32,7 @@ public class Main {
         if (!FileTools.checkFileExistsCurPath("configs/" + XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file"))) {
             logger.info(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_not_found"));
             new Config().createDefConfig();
-            logger.warn(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_info"));
+            logger.error(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_info"));
             if (!FileTools.checkFileExistsCurPath("configs/allowed2port.json"))
                 Chat2Shell.runBash("echo \"[]\" >> configs/allowed2port.json");
             System.exit(0);
@@ -60,9 +60,9 @@ public class Main {
             logger.error(e.getMessage());
         }
 
-        if ((Config.getDefConfig("bot-token") != null && Objects.requireNonNull(Config.getDefConfig("bot-token")).contains(" "))
-                || (Config.getDefConfig("bot-username") != null && Objects.requireNonNull(Config.getDefConfig("bot-username")).contains(" "))) {
-            logger.warn(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_info"));
+        if (((Config.getDefConfig("bot-token") != null && Objects.requireNonNull(Config.getDefConfig("bot-token")).contains(" "))
+                || (Config.getDefConfig("bot-username") != null && Objects.requireNonNull(Config.getDefConfig("bot-username")).contains(" "))) || Objects.requireNonNull(Config.getDefConfig("bot-master")).contains(" ")) {
+            logger.error(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_info"));
             System.exit(0);
         }
 
