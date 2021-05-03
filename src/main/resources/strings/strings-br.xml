@@ -2,53 +2,48 @@
 <strings>
 
     <!-- Generic Strings -->
-
     <something_went_wrong>Algo deu errado, Tente fazer o processo novamente</something_went_wrong>
     <only_master_can_run>Apenas o Mestre do Bot pode usar esse comando</only_master_can_run>
     <only_admin_can_run>Apenas Administradores podem usar esse comando</only_admin_can_run>
     <bad_usage>Mal uso.</bad_usage>
 
     <!-- About Command -->
-    <about_bot>***─ Sobre***&#xA;***Bo³+t*** é programado em java e originalmente desenvolvido por @VegaZS&#xA;&#xA;***─ Desenvolvedor/Mantenedor do Bo³+t*** (Oficial/Não oficial)&#xA;[VegaZS](https://github.com/VegaBobo) - Desenvolvedor original&#xA;[Velosh](https://github.com/Velosh) - Mantenedor não oficial do ***Bo³+t*** para Treble Experience&#xA;&#xA;***─ Info da Build***&#xA;`%1`</about_bot>
+    <about_bot>&lt;b&gt;─ Sobre&lt;/b&gt;&#xA;&lt;b&gt;Bo³+t&lt;/b&gt; é programado em java e originalmente desenvolvido por @VegaZS&#xA;&#xA;&lt;b&gt;─ Desenvolvedor/Mantenedor do Bo³+t&lt;/b&gt; (Oficial/Não oficial)&#xA;&lt;a href="https://github.com/VegaBobo"&gt;VegaZS&lt;/a&gt; - Desenvolvedor original&#xA;&lt;a href="https://github.com/Velosh"&gt;Velosh&lt;/a&gt; - Mantenedor não oficial do &lt;b&gt;Bo³+t&lt;/b&gt; para Treble Experience&#xA;&#xA;&lt;b&gt;─ Info da Build&lt;/b&gt;&#xA;&lt;code&gt;%1&lt;/code&gt;</about_bot>
     <about_sourcode>❕ Código-fonte</about_sourcode>
     <about_treble_channel>🌐 Canal do Treble</about_treble_channel>
 
     <!-- Hello Command -->
-
     <hello>Olá!&#xA;Sua mensagem foi: %1</hello>
 
     <!-- ChangeLang Command -->
-
     <available_lang>Linguagens Disponíveis:</available_lang>
     <lang_updated>Linguagem Atualizada!</lang_updated>
     <unknown_lang>Idioma não disponível, digite %1chlang para ver os idiomas disponíveis</unknown_lang>
 
     <!-- ErfanGSIs Command -->
-
-    <egsi_allowed>UserID: *%1* agora tem permissões para portar GSIs</egsi_allowed>
-    <egsi_allow_by_reply>Para adicionar permissões, responda o usuário desejado com: *%1%2 allowuser*</egsi_allow_by_reply>
-    <egsi_current_queue>*Ports na Fila:* _%1&#xA;%2_</egsi_current_queue>
+    <egsi_allowed>ID do usuário: &lt;b&gt;%1&lt;/b&gt; agora tem permissões para portar GSIs</egsi_allowed>
+    <egsi_allow_by_reply>Para adicionar permissões, responda o usuário desejado com: &lt;code&gt;%1%2 allowuser&lt;/code&gt;</egsi_allow_by_reply>
+    <egsi_current_queue>&lt;b&gt;Ports na Fila:&lt;/b&gt; %1&#xA;&lt;i&gt;%2&lt;/i&gt;</egsi_current_queue>
     <egsi_added_to_queue>Port adicionado na fila</egsi_added_to_queue>
     <egsi_no_ports_queue>Sem Ports na Fila</egsi_no_ports_queue>
-    <egsi_supported_types>*Tipo de GSI ou URL invalida!*&#xA;&#xA;Tipos de GSIs suportadas no Android 9: %1&#xA;&#xA;Tipos de GSIs suportadas no Android 10: %2&#xA;&#xA;Tipos de GSIs suportadas no Android 11: %3&#xA;&#xA;Tipos de GSIs suportadas no Android S: %4</egsi_supported_types>
+    <egsi_supported_types>&lt;b&gt;Tipo de GSI ou URL invalida!&lt;/b&gt;&#xA;&#xA;Tipos de GSIs suportadas no Android 9: %1&#xA;&#xA;Tipos de GSIs suportadas no Android 10: %2&#xA;&#xA;Tipos de GSIs suportadas no Android 11: %3&#xA;&#xA;Tipos de GSIs suportadas no Android S: %4</egsi_supported_types>
 
     <!-- ChangeHotkey Command -->
-
-    <chkey_help>Hotkey atual neste chat: *%1*&#xA;*Hotkeys Suportadas: %2*&#xA;Para trocar a hotkey deste chat, execute esse comando novamente, passando a Hotkey desejada&#xA;*ex: %1chkey /*</chkey_help>
-    <chkey_cur_hotkey>Hotkey atual deste chat: *%1*</chkey_cur_hotkey>
+    <chkey_help>Current bot hotkey on this chat: &lt;b&gt;%1&lt;/b&gt;&#xA;&lt;b&gt;Supported Hotkeys: %2&lt;/b&gt;</chkey_help>
+    <chkey_cur_hotkey>Hotkey atual deste chat: &lt;b&gt;%1&lt;/b&gt;</chkey_cur_hotkey>
     <chkey_error>Desculpe, não é possível trocar, provavelmente essa hotkey não é compatível</chkey_error>
 
     <!-- Request Command -->
-    <gsi_order>📩 ***Novo pedido de GSI recebido!***</gsi_order>
-    <addinfo>❕ ***Informação adicional***</addinfo>
-    <user_info>❔ ***Info do usuário***</user_info>
-    <request_done>Olá [%1](tg://user?id=%2) (`%3`), sua solicitação foi enviada! Espere agora.</request_done>
-    <first_and_last_name>***• Nome:*** `%1`</first_and_last_name>
-    <user_name>***• Nome de usuário:*** `%1`</user_name>
-    <user_id>***• ID do usuário:*** `%1`</user_id>
+    <gsi_order>📩 &lt;b&gt;Novo pedido de GSI recebido!&lt;/b&gt;</gsi_order>
+    <addinfo>❕ &lt;b&gt;Informação adicional&lt;/b&gt;</addinfo>
+    <user_info>❔ &lt;b&gt;Info do usuário&lt;/b&gt;</user_info>
+    <request_done>Olá &lt;a href="tg://user?id=%2"&gt;%1&lt;/a&gt; (&lt;code&gt;%3&lt;/code&gt;), sua solicitação foi enviada! Espere agora.</request_done>
+    <first_and_last_name>&lt;b&gt;• Nome:&lt;/b&gt; &lt;code&gt;%1&lt;/code&gt;</first_and_last_name>
+    <user_name>&lt;b&gt;• Nome de usuário:&lt;/b&gt; &lt;code&gt;%1&lt;/code&gt;</user_name>
+    <user_id>&lt;b&gt;• ID do usuário:&lt;/b&gt; &lt;code&gt;%1&lt;/code&gt;</user_id>
     <dont_have>Não tem</dont_have>
     <info_not_shared>Informação não compartilhada pelo usuário.</info_not_shared>
-    <invalid_link>Olá [%1](tg://user?id=%2) (`%3`), o link que você enviou parece ser inválido! Use com parâmetros http e tente novamente.</invalid_link>
+    <invalid_link>Olá &lt;a href="tg://user?id=%2"&gt;%1&lt;/a&gt; (&lt;code&gt;%3&lt;/code&gt;), o link que você enviou parece ser inválido! Use com parâmetros http e tente novamente.</invalid_link>
     <cant_be_used>Este bot não pode ser usado em outros locais!</cant_be_used>
     <issue_with_privatechat>Não é possível enviar o pedido, a variável de chat privado não existe ou não tem valor.</issue_with_privatechat>
     <issue_with_publicchat>Não é possível enviar o pedido, a variável de chat público não existe ou não tem valor.</issue_with_publicchat>
@@ -59,6 +54,6 @@
     <created_sf_folder>Verifique sua pasta de configuração</created_sf_folder>
 
     <!-- Shell Command -->
-    <cant_run_shell>Desculpe, o comando `shell` está bloqueado (provavelmente existe outro comando `shell` em execução).</cant_run_shell>
-    <return_code_shell>Código de retorno: `%1`, comando shell desbloqueado.</return_code_shell>
+    <cant_run_shell>Desculpe, o comando &lt;code&gt;shell&lt;/code&gt; está bloqueado (provavelmente existe outro comando &lt;code&gt;shell&lt;/code&gt; em execução).</cant_run_shell>
+    <return_code_shell>Código de retorno: &lt;code&gt;%1&lt;/code&gt;, comando shell desbloqueado.</return_code_shell>
 </strings>

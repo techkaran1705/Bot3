@@ -24,7 +24,7 @@ public class ChangeHotkey extends Command {
             if (bot.isPM(update.getMessage().getChatId().toString(), update.getMessage().getFrom().getId().toString())) {
                 if (bot.isAdmin(update.getMessage().getFrom().getId().toString(), update.getMessage().getChatId().toString())) {
                     if (update.getMessage().getText().trim().equals(prefs.getHotkey() + "chkey".trim())) {
-                        bot.sendMessage(prefs.getString("chkey_help")
+                        bot.sendReply(prefs.getString("chkey_help")
                                 .replace("%1", prefs.getHotkey())
                                 .replace("%2", Objects.requireNonNull(supportedHotkeys)), update);
                     } else {
@@ -33,21 +33,21 @@ public class ChangeHotkey extends Command {
                             if (Objects.requireNonNull(supportedHotkeys).contains(msg)) {
                                 DbThings.changeHotkey(prefs.getId(), msg);
                                 prefs = DbThings.selectIntoPrefsTable(prefs.getId());
-                                bot.sendMessage(prefs.getString("chkey_cur_hotkey")
+                                bot.sendReply(prefs.getString("chkey_cur_hotkey")
                                         .replace("%1", prefs.getHotkey()), update);
                             } else {
-                                bot.sendMessage(prefs.getString("chkey_error"), update);
+                                bot.sendReply(prefs.getString("chkey_error"), update);
                             }
                         } else {
-                            bot.sendMessage(prefs.getString("something_went_wrong"), update);
+                            bot.sendReply(prefs.getString("something_went_wrong"), update);
                         }
                     }
                 } else {
-                    bot.sendMessage(prefs.getString("only_admin_can_run"), update);
+                    bot.sendReply(prefs.getString("only_admin_can_run"), update);
                 }
             }
         } else {
-            bot.sendMessage(prefs.getString("bad_usage"), update);
+            bot.sendReply(prefs.getString("bad_usage"), update);
         }
     }
 }

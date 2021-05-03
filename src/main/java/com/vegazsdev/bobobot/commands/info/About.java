@@ -27,7 +27,7 @@ public class About extends Command {
         );
         sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
         sendMessage.setDisableWebPagePreview(true);
-        sendMessage.enableMarkdown(true);
+        sendMessage.enableHtml(true);
 
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
@@ -49,6 +49,6 @@ public class About extends Command {
         markupInline.setKeyboard(rowsInline);
         sendMessage.setReplyMarkup(markupInline);
 
-        bot.sendMessageSync(sendMessage, update);
+        bot.sendMessageAsyncBase(sendMessage, update);
     }
 }

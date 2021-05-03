@@ -12,6 +12,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.util.Objects;
 
+import static com.vegazsdev.bobobot.Main.shellStatus;
+
 @SuppressWarnings("unused")
 public class Eval extends Command {
 
@@ -43,6 +45,7 @@ public class Eval extends Command {
 
                 engine.put("args", msgComparableRaw);
                 engine.put("bot", bot);
+                engine.put("shell", shellStatus);
                 engine.put("engine", engine);
                 engine.put("update", update);
                 engine.put("prefs", prefs);
@@ -57,9 +60,9 @@ public class Eval extends Command {
                                 "})();"
                 );
 
-                bot.sendMessage(out == null ? "Executed without error." : out.toString(), update);
+                bot.sendMessageAsync(out == null ? "Executed without error." : out.toString(), update);
             } catch (Exception exception) {
-                bot.sendMessage("`" + exception.getMessage() + "`", update);
+                bot.sendMessageAsync("`" + exception.getMessage() + "`", update);
                 logger.error(exception.getMessage());
             }
         }

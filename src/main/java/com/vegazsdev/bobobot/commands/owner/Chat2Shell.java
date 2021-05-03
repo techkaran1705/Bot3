@@ -100,7 +100,7 @@ public class Chat2Shell extends Command {
                 StringBuilder fullLogs = new StringBuilder();
                 fullLogs.append("<code>").append(runBash("whoami")).append("</code>").append(" (<code>").append(runBash("uname -n")).append("</code>)").append(" ~ ").append(update.getMessage().getText().substring(7)).append("\n");
 
-                int id = bot.sendReplyForShell(fullLogs.toString(), update);
+                int id = bot.sendReply(fullLogs.toString(), update);
 
                 InputStream inputStream = null;
                 InputStreamReader inputStreamReader = null;
@@ -117,7 +117,7 @@ public class Chat2Shell extends Command {
 
                     while ((line = bufferedReader.readLine()) != null) {
                         fullLogs.append("<code>").append(line).append("</code>").append("\n");
-                        bot.editMessageForShell(fullLogs.toString(), update, id);
+                        bot.editMessage(fullLogs.toString(), update, id);
                     }
 
                     process.waitFor();
@@ -129,7 +129,7 @@ public class Chat2Shell extends Command {
                     if (!shellStatus.canRun())
                         shellStatus.unlockStatus();
 
-                    bot.sendMessage(prefs.getString("something_went_wrong"), update);
+                    bot.sendMessageAsync(prefs.getString("something_went_wrong"), update);
                     logger.error(e.getMessage());
                 } finally {
                     if (inputStream != null) {

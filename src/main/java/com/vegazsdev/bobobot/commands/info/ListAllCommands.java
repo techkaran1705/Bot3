@@ -17,9 +17,9 @@ public class ListAllCommands extends Command {
         String hotkey = prefs.getHotkey();
         StringBuilder allCommandsAsString = new StringBuilder();
         for (int i = 0; i < bot.getActiveCommandsAsCmdObject().size(); i++) {
-            allCommandsAsString.append("*").append(hotkey).append(bot.getActiveCommandsAsCmdObject().get(i).getAlias()).append("*\n")
-                    .append("_").append(bot.getActiveCommandsAsCmdObject().get(i).getCommandInfo()).append("_\n\n");
+            allCommandsAsString.append("<b>").append(hotkey).append(bot.getActiveCommandsAsCmdObject().get(i).getAlias()).append("</b>\n")
+                    .append("<i>").append(bot.getActiveCommandsAsCmdObject().get(i).getCommandInfo()).append("</i>\n\n");
         }
-        bot.sendMessage(allCommandsAsString.toString(), update);
+        bot.sendReply(allCommandsAsString.toString(), update);
     }
 }

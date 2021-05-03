@@ -26,6 +26,9 @@ public class Request extends Command {
 
     @Override
     public void botReply(Update update, TelegramBot bot, PrefObj prefs) {
+        /*
+         * Check if the privateChat/publicChat values is ok or nah
+         */
         if (Config.getDefConfig("privateChat") == null || Objects.equals(Config.getDefConfig("privateChat"), "")) {
             bot.sendReply(prefs.getString("issue_with_privatechat"), update);
         } else if (!(Config.getDefConfig("requestChat") == null) || !Objects.equals(Config.getDefConfig("requestChat"), "")) {
@@ -45,7 +48,7 @@ public class Request extends Command {
                 // General base: SendMessage() and switch() things
                 SendMessage message = new SendMessage();
                 message.setDisableWebPagePreview(true);
-                message.enableMarkdown(true);
+                message.enableHtml(true);
                 message.setChatId(chatId);
 
                 if (!(update.getMessage().getFrom().getId() == Float.parseFloat(String.valueOf(777000)))) {
@@ -62,7 +65,7 @@ public class Request extends Command {
                             );
 
                             message.setChatId(chatId); // Get to stock chat id
-                            id = bot.sendMessageSync(message, update);
+                            id = bot.sendMessageAsyncBase(message, update);
 
                             // Set dontHaveUsername
                             dontHaveUsername = prefs.getString("dont_have");
@@ -100,7 +103,7 @@ public class Request extends Command {
                             message.setText(
                                     prefs.getString("gsi_order") + "\n\n"
                                             + prefs.getString("addinfo") + "\n"
-                                            + "`" + addInfo + "`"
+                                            + "<code>" + addInfo + "</code>"
                                             + "\n\n"
                                             + prefs.getString("user_info") + "\n\n"
                                             + prefs.getString("first_and_last_name")
@@ -127,7 +130,7 @@ public class Request extends Command {
                     /*
                      * Send the message
                      */
-                    bot.sendMessageSync(message, update);
+                    bot.sendMessageAsyncBase(message, update);
 
                     /*
                      * Delete thanks message
@@ -149,6 +152,7 @@ public class Request extends Command {
         }
     }
 
+    // START: Workarounds for first/last name & user name
     private String validateUsername(String username) {
         if (username == null || username.equals("")) {
             return dontHaveUsername;
@@ -164,4 +168,5 @@ public class Request extends Command {
             return " " + lastName;
         }
     }
+    // END: Workarounds for first/last name & user name
 }

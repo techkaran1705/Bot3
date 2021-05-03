@@ -70,14 +70,10 @@ public class ErfanGSIs extends Command {
 
         if (msgComparableRaw[1].equals("allowuser") && Objects.equals(Config.getDefConfig("bot-master"), idAsString)) {
             if (update.getMessage().getReplyToMessage() != null) {
-                String userid = update.getMessage().getReplyToMessage().getFrom().getId().toString();
-                if (addPortPerm(userid)) {
-                    bot.sendReply(prefs.getString("egsi_allowed").replace("%1", userid), update);
-                }
-            } else if (msg.contains(" ")) {
-                String userid = msg.split(" ")[2];
-                if (userid != null && userid.trim().equals("") && addPortPerm(userid)) {
-                    bot.sendReply(prefs.getString("egsi_allowed").replace("%1", userid), update);
+                if (!userHasPortPermissions(update.getMessage().getReplyToMessage().getFrom().getId().toString())) {
+                    if (addPortPerm(update.getMessage().getReplyToMessage().getFrom().getId().toString())) {
+                        bot.sendReply(prefs.getString("egsi_allowed").replace("%1", update.getMessage().getReplyToMessage().getFrom().getId().toString()), update);
+                    }
                 }
             } else {
                 bot.sendReply(prefs.getString("egsi_allow_by_reply").replace("%1", prefs.getHotkey())
@@ -106,57 +102,50 @@ public class ErfanGSIs extends Command {
             pb = new ProcessBuilder("/bin/bash", "-c", "kill -TERM -- -$(ps ax | grep url2GSI.sh | grep -v grep | awk '{print $1;}')");
             try {
                 pb.start();
-            } catch (IOException ex) {
-                //Logger.getLogger(BotTelegram.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            } catch (IOException ignored) {}
         } else {
-
             boolean userHasPermissions = userHasPortPermissions(idAsString);
-
-            if (userHasPermissions) {
-                GSICmdObj gsiCommand = isCommandValid(update);
-                if (gsiCommand != null) {
-                    boolean isGSITypeValid = isGSIValid(gsiCommand.getGsi());
-                    if (isGSITypeValid) {
-                        if (!isPorting) {
-                            isPorting = true;
-                            createGSI(gsiCommand, bot);
-                            while (queue.size() != 0) {
-                                GSICmdObj portNow = queue.get(0);
-                                queue.remove(0);
-                                createGSI(portNow, bot);
+            if (FileTools.checkIfFolderExists("ErfanGSIs")) {
+                if (userHasPermissions) {
+                    GSICmdObj gsiCommand = isCommandValid(update);
+                    if (gsiCommand != null) {
+                        boolean isGSITypeValid = isGSIValid(gsiCommand.getGsi());
+                        if (isGSITypeValid) {
+                            if (!isPorting) {
+                                isPorting = true;
+                                createGSI(gsiCommand, bot);
+                                while (queue.size() != 0) {
+                                    GSICmdObj portNow = queue.get(0);
+                                    queue.remove(0);
+                                    createGSI(portNow, bot);
+                                }
+                                isPorting = false;
+                            } else {
+                                queue.add(gsiCommand);
+                                bot.sendReply(prefs.getString("egsi_added_to_queue"), update);
                             }
-                            isPorting = false;
                         } else {
-                            queue.add(gsiCommand);
-                            bot.sendReply(prefs.getString("egsi_added_to_queue"), update);
+                            bot.sendReply(prefs.getString("egsi_supported_types")
+                                    .replace("%1",
+                                            Arrays.toString(supportedGSIs9).replace(toolPath + "roms/9/", "")
+                                                    .replace("[", "")
+                                                    .replace("]", ""))
+                                    .replace("%2",
+                                            Arrays.toString(supportedGSIs10).replace(toolPath + "roms/10/", "")
+                                                    .replace("[", "")
+                                                    .replace("]", ""))
+                                    .replace("%3",
+                                            Arrays.toString(supportedGSIs11).replace(toolPath + "roms/11/", "")
+                                                    .replace("[", "")
+                                                    .replace("]", ""))
+                                    .replace("%4",
+                                            Arrays.toString(supportedGSIs12).replace(toolPath + "roms/S/", "")
+                                                    .replace("[", "")
+                                                    .replace("]", "")), update);
                         }
-                    } else {
-                        bot.sendReply(prefs.getString("egsi_supported_types")
-                                .replace("%1",
-                                        Arrays.toString(supportedGSIs9).replace(toolPath + "roms/9/", "")
-                                                .replace("[", "")
-                                                .replace("]", ""))
-                                .replace("%2",
-                                        Arrays.toString(supportedGSIs10).replace(toolPath + "roms/10/", "")
-                                                .replace("[", "")
-                                                .replace("]", ""))
-                                .replace("%3",
-                                        Arrays.toString(supportedGSIs11).replace(toolPath + "roms/11/", "")
-                                                .replace("[", "")
-                                                .replace("]", ""))
-                                .replace("%4",
-                                        Arrays.toString(supportedGSIs12).replace(toolPath + "roms/S/", "")
-                                                .replace("[", "")
-                                                .replace("]", "")), update);
                     }
                 }
-
-
-            } else {
-                bot.sendReply("No Permissions", update);
             }
-
         }
     }
 
@@ -367,7 +356,7 @@ public class ErfanGSIs extends Command {
         boolean success = false;
 
         StringBuilder fullLogs = new StringBuilder();
-        fullLogs.append("`-> Starting process...`");
+        fullLogs.append("<code>-> Starting process...</code>");
 
         InputStream inputStream = null;
         InputStreamReader inputStreamReader = null;
@@ -388,7 +377,7 @@ public class ErfanGSIs extends Command {
             boolean weDontNeedAria2Logs = true;
 
             while ((line = bufferedReader.readLine()) != null) {
-                line = "`" + line + "`";
+                line = "<code>" + line + "</code>";
                 if (line.contains("Downloading firmware to:")) {
                     weDontNeedAria2Logs = false;
                     fullLogs.append("\n").append(line);
@@ -409,7 +398,7 @@ public class ErfanGSIs extends Command {
             }
 
             if (success) {
-                fullLogs.append("\n").append("`Creating gzip...`");
+                fullLogs.append("\n").append("<code>Creating gzip...</code>");
                 bot.editMessage(fullLogs.toString(), update, id);
 
                 String[] gzipFiles = listFilesForFolder(new File("ErfanGSIs" + "/output"));
@@ -442,7 +431,7 @@ public class ErfanGSIs extends Command {
                     logger.error(e.getMessage());
                 }
 
-                fullLogs.append("\n").append("`Sending files to SF...`");
+                fullLogs.append("\n").append("<code>Sending files to SF...</code>");
                 bot.editMessage(fullLogs.toString(), update, id);
 
                 String re = new SourceForgeUpload().uploadGsi(arr, gsiCmdObj.getGsi());
@@ -513,7 +502,7 @@ public class ErfanGSIs extends Command {
                         + "<a href=\"https://t.me/TrebleExperience\">Channel</a> | <a href=\"https://t.me/TrebleExperience_chat\">Chat</a> | <a href=\"https://github.com/TrebleExperience\">GitHub</a>"
                 );
                 sendMessage.setChatId(Objects.requireNonNull(SourceForgeSetup.getSfConf("bot-announcement-id")));
-                bot.sendMessageSync(sendMessage, update);
+                bot.sendMessageAsyncBase(sendMessage, update);
 
                 fullLogs.append("\n").append("Finished!");
                 bot.editMessage(fullLogs.toString(), update, id);

@@ -13,6 +13,6 @@ public class Hello extends Command {
 
     @Override
     public void botReply(Update update, TelegramBot bot, PrefObj prefs) {
-        bot.sendMessage(prefs.getString("hello").replace("%1", update.getMessage().getText()), update);
+        bot.sendReply(prefs.getString("hello").replace("%1", update.getMessage().getText()), update);
     }
 }
