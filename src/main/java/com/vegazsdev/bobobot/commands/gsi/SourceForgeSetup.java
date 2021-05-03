@@ -50,10 +50,10 @@ public class SourceForgeSetup extends Command {
     public void botReply(Update update, TelegramBot bot, PrefObj prefs) {
         if (update.getMessage().getFrom().getId() == Float.parseFloat(Objects.requireNonNull(Config.getDefConfig("bot-master")))) {
             if (FileTools.checkFileExistsCurPath("configs/sf-creds.prop")) {
-                bot.sendMessage(prefs.getString("unable_to_create"), update);
+                bot.sendReply(prefs.getString("unable_to_create"), update);
             } else {
                 mkSfConf();
-                bot.sendMessage(prefs.getString("created_sf_folder"), update);
+                bot.sendReply(prefs.getString("created_sf_folder"), update);
             }
         }
     }
@@ -64,7 +64,6 @@ public class SourceForgeSetup extends Command {
 
         try {
             Properties saveProps = new Properties();
-
             if (!FileTools.checkFileExistsCurPath("configs/sf-creds.prop")) {
                 saveProps.setProperty("bot-sf-user", "put your sf username");
                 saveProps.setProperty("bot-sf-host", "frs.sourceforge.net");

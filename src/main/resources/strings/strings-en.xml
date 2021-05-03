@@ -8,19 +8,23 @@
         eg: <example>I'm the %1 on queue</example>
         <example>.replace("%1", queue.getList(me));
 
-        also: &#xA; = newline (aka \n)
+        &lt; = <
+        &gt; = >
+        &#xA; = \n
+
+        &lt;b&gt; = <b>
+        &lt;/b&gt; = </b>
 
     -->
 
     <!-- Generic Strings -->
-
     <something_went_wrong>Something went wrong, try to do the process again</something_went_wrong>
     <only_master_can_run>Only Bot Master can use this command</only_master_can_run>
     <only_admin_can_run>Only Administrators can use this command</only_admin_can_run>
     <bad_usage>Bad usage.</bad_usage>
 
     <!-- About Command -->
-    <about_bot>***─ About***&#xA;***Bo³+t*** is written in java and originally developed by @VegaZS&#xA;&#xA;***─ Developer/Maintainer of Bo³+t*** (Official/Unofficial)&#xA;[VegaZS](https://github.com/VegaBobo) - Original dev&#xA;[Velosh](https://github.com/Velosh) - Unofficial maintainer of ***Bo³+t*** for Treble Experience&#xA;&#xA;***─ Build Info***&#xA;`%1`</about_bot>
+    <about_bot>&lt;b&gt;─ About&lt;/b&gt;&#xA;&lt;b&gt;Bo³+t&lt;/b&gt; is written in java and originally developed by @VegaZS&#xA;&#xA;&lt;b&gt;─ Developer/Maintainer of Bo³+t&lt;/b&gt; (Official/Unofficial)&#xA;&lt;a href="https://github.com/VegaBobo"&gt;VegaZS&lt;/a&gt; - Original dev&#xA;&lt;a href="https://github.com/Velosh"&gt;Velosh&lt;/a&gt; - Unofficial maintainer of &lt;b&gt;Bo³+t&lt;/b&gt; for Treble Experience&#xA;&#xA;&lt;b&gt;─ Build Info&lt;/b&gt;&#xA;&lt;code&gt;%1&lt;/code&gt;</about_bot>
     <about_sourcode>❕ Source code</about_sourcode>
     <about_treble_channel>🌐 Treble Channel</about_treble_channel>
 
@@ -35,31 +39,29 @@
     <unknown_lang>Language not available, type %1chlang to see available languages</unknown_lang>
 
     <!-- ErfanGSIs Command -->
-
-    <egsi_allowed>UserID: *%1* now has port permissions</egsi_allowed>
-    <egsi_allow_by_reply>To add permissions, reply to user that you wanna add permissions, by using *%1%2 allowuser*</egsi_allow_by_reply>
-    <egsi_current_queue>*Ports on Queue:* %1&#xA;_%2_</egsi_current_queue>
+    <egsi_allowed>UserID: &lt;b&gt;%1&lt;/b&gt; now has port permissions</egsi_allowed>
+    <egsi_allow_by_reply>To add permissions, reply to user that you wanna add permissions, by using &lt;code&gt;%1%2 allowuser&lt;/code&gt;</egsi_allow_by_reply>
+    <egsi_current_queue>&lt;b&gt;Ports on Queue:&lt;/b&gt; %1&#xA;&lt;i&gt;%2&lt;/i&gt;</egsi_current_queue>
     <egsi_added_to_queue>Added to Queue</egsi_added_to_queue>
     <egsi_no_ports_queue>No ports on queue</egsi_no_ports_queue>
-    <egsi_supported_types>*GSI Type or URL is not valid!*&#xA;&#xA;Supported types on Android 9: %1&#xA;&#xA;Supported types on Android 10: %2&#xA;&#xA;Supported types on Android 11: %3&#xA;&#xA;Supported types on Android S: %4</egsi_supported_types>
+    <egsi_supported_types>&lt;b&gt;GSI Type or URL is not valid!&lt;/b&gt;&#xA;&#xA;Supported types on Android 9: %1&#xA;&#xA;Supported types on Android 10: %2&#xA;&#xA;Supported types on Android 11: %3&#xA;&#xA;Supported types on Android S: %4</egsi_supported_types>
 
     <!-- ChangeHotkey Command -->
-
-    <chkey_help>Current bot hotkey on this chat: *%1*&#xA;*Supported Hotkeys: %2*&#xA;To change hotkey on this group, run this command again, passing the desired hotkey&#xA;*eg: %1chkey /*</chkey_help>
-    <chkey_cur_hotkey>Current hotkey now is: *%1*</chkey_cur_hotkey>
+    <chkey_help>Current bot hotkey on this chat: &lt;code&gt;%1&lt;/code&gt;&#xA;&lt;b&gt;Supported Hotkeys: %2&lt;/b&gt;</chkey_help>
+    <chkey_cur_hotkey>Current hotkey now is: &lt;b&gt;%1&lt;/b&gt;</chkey_cur_hotkey>
     <chkey_error>Sorry, it is not possible to change, this hotkey is probably not compatible</chkey_error>
 
     <!-- Request Command -->
-    <gsi_order>📩 ***New GSI order received!***</gsi_order>
-    <addinfo>❕ ***Additional information***</addinfo>
-    <user_info>❔ ***User info***</user_info>
-    <request_done>Hello [%1](tg://user?id=%2) (`%3`), your request has been sent! Just wait now.</request_done>
-    <first_and_last_name>***• Name:*** `%1`</first_and_last_name>
-    <user_name>***• Username:*** `%1`</user_name>
-    <user_id>***• User ID:*** `%1`</user_id>
+    <gsi_order>📩 &lt;b&gt;New GSI order received!&lt;/b&gt;</gsi_order>
+    <addinfo>❕ &lt;b&gt;Additional information&lt;/b&gt;</addinfo>
+    <user_info>❔ &lt;b&gt;User info&lt;/b&gt;</user_info>
+    <request_done>Hello &lt;a href="tg://user?id=%2"&gt;%1&lt;/a&gt; (&lt;code&gt;%3&lt;/code&gt;) your request has been sent! Just wait now.</request_done>
+    <first_and_last_name>&lt;b&gt;• Name:&lt;/b&gt; &lt;code&gt;%1&lt;/code&gt;</first_and_last_name>
+    <user_name>&lt;b&gt;• Username:&lt;/b&gt; &lt;code&gt;%1&lt;/code&gt;</user_name>
+    <user_id>&lt;b&gt;• User ID:&lt;/b&gt; &lt;code&gt;%1&lt;/code&gt;</user_id>
     <dont_have>Don't have</dont_have>
     <info_not_shared>Information not shared by the user.</info_not_shared>
-    <invalid_link>Hello [%1](tg://user?id=%2) (`%3`), the link you sent appears to be invalid! Use with http parameters and try again.</invalid_link>
+    <invalid_link>Hello &lt;a href="tg://user?id=%2"&gt;%1&lt;/a&gt; (&lt;code&gt;%3&lt;/code&gt;), the link you sent appears to be invalid! Use with http parameters and try again.</invalid_link>
     <cant_be_used>This bot cannot be used in other locations!</cant_be_used>
     <issue_with_privatechat>Can't send request, the private chat variable does not exist or has no value.</issue_with_privatechat>
     <issue_with_publicchat>Can't send request, the public chat variable does not exist or has no value.</issue_with_publicchat>
@@ -70,6 +72,6 @@
     <created_sf_folder>Check your config folder</created_sf_folder>
 
     <!-- Shell Command -->
-    <cant_run_shell>Sorry, the `shell` command is locked (Probably exists other shell command running).</cant_run_shell>
-    <return_code_shell>Return code: `%1`, shell command unlocked.</return_code_shell>
+    <cant_run_shell>Sorry, the &lt;code&gt;shell&lt;/code&gt; command is locked (Probably exists other shell command running).</cant_run_shell>
+    <return_code_shell>Return code: &lt;code&gt;%1&lt;/code&gt;, shell command unlocked.</return_code_shell>
 </strings>

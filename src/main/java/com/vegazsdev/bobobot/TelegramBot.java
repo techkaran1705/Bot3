@@ -69,14 +69,23 @@ public class TelegramBot extends TelegramLongPollingBot {
             );
         }
 
+        /*
+         * Create thread to run commands (it can run without thread)
+         */
         new Thread(new Runnable() {
             private TelegramBot tBot;
 
+            /*
+             * Create TelegramBot object using init()
+             */
             Runnable init(TelegramBot tBot) {
                 this.tBot = tBot;
                 return this;
             }
 
+            /*
+             * Check conditional, command & other things
+             */
             @Override
             public void run() {
                 if (update.hasMessage() && update.getMessage().getText() != null
@@ -84,20 +93,29 @@ public class TelegramBot extends TelegramLongPollingBot {
                         && Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "possible_hotkeys"))
                         .indexOf(update.getMessage().getText().charAt(0)) >= 0) {
 
+                    /*
+                     * Boolean to pass if is possible to run or no
+                     */
                     boolean trueToRun;
 
                     String msg = update.getMessage().getText();
                     long usrId = update.getMessage().getFrom().getId();
                     PrefObj chatPrefs = getPrefs(update);
 
+                    /*
+                     * Check if exists that chat in our db
+                     */
                     if (chatPrefs == null) {
+                        trueToRun = false;
                         chatPrefs = new PrefObj(0, "strings-en.xml", "!");
                         sendReply(XMLs.getFromStringsXML("core-strings.xml", "run_command_again"), update);
-                        trueToRun = false;
                     } else {
                         trueToRun = true;
                     }
 
+                    /*
+                     * It is ok to run and send command
+                     */
                     if (trueToRun) {
                         if (chatPrefs.getHotkey() != null && msg.startsWith(Objects.requireNonNull(chatPrefs.getHotkey()))) {
                             for (CommandWithClass commandWithClass : getActiveCommandsAsCmdObject()) {
@@ -139,13 +157,30 @@ public class TelegramBot extends TelegramLongPollingBot {
         }.init(this)).start();
     }
 
-    public int sendMessage(String msg, Update update) {
+    public void sendMessageAsync(String msg, Update update) {
+        /*
+         * Prepare SendMessage base
+         */
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(msg);
         sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
         sendMessage.enableMarkdown(true);
         sendMessage.disableWebPagePreview();
 
+        /*
+         * Execute executeAsync() method
+         */
+        try {
+            executeAsync(sendMessage).get().getMessageId();
+        } catch (TelegramApiException | ExecutionException | InterruptedException exception) {
+            logger.error(exception.getMessage() + " (CID: " + update.getMessage().getChat().getId() + " | UID: " + update.getMessage().getFrom().getId() + ")");
+        }
+    }
+
+    public int sendMessageAsyncBase(SendMessage sendMessage, Update update) {
+        /*
+         * Execute executeAsync() method & use existent SendMessage object
+         */
         try {
             return executeAsync(sendMessage).get().getMessageId();
         } catch (TelegramApiException | ExecutionException | InterruptedException exception) {
@@ -154,23 +189,17 @@ public class TelegramBot extends TelegramLongPollingBot {
         return 0;
     }
 
-    public int sendMessageSync(SendMessage message, Update update) {
-        /*
-         * Don't use Async because it repeats the same message for unknown reason
-         */
-        try {
-            return execute(message).getMessageId();
-        } catch (TelegramApiException telegramApiException) {
-            logger.error(telegramApiException.getMessage() + " (CID: " + update.getMessage().getChat().getId() + " | UID: " + update.getMessage().getFrom().getId() + ")");
-            return 0;
-        }
-    }
-
     public void deleteMessage(String chatID, Integer messageID, Update update) {
+        /*
+         * Prepare DeleteMessage base
+         */
         DeleteMessage deleteMessage = new DeleteMessage();
         deleteMessage.setMessageId(messageID);
         deleteMessage.setChatId(chatID);
 
+        /*
+         * Execute executeAsync() method
+         */
         try {
             executeAsync(deleteMessage);
         } catch (TelegramApiException telegramApiException) {
@@ -178,15 +207,20 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-
     public int sendReply(String msg, Update update) {
+        /*
+         * Prepare SendMessage base
+         */
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(msg);
         sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
-        sendMessage.enableMarkdown(true);
+        sendMessage.enableHtml(true);
         sendMessage.setReplyToMessageId(update.getMessage().getMessageId());
         sendMessage.disableWebPagePreview();
 
+        /*
+         * Execute executeAsync() method
+         */
         try {
             return executeAsync(sendMessage).get().getMessageId();
         } catch (TelegramApiException | ExecutionException | InterruptedException exception) {
@@ -196,13 +230,19 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     public void sendReply2ID(String msg, int id, Update update) {
+        /*
+         * Prepare SendMessage base
+         */
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(msg);
         sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
-        sendMessage.enableMarkdown(true);
+        sendMessage.enableHtml(true);
         sendMessage.setReplyToMessageId(id);
         sendMessage.disableWebPagePreview();
 
+        /*
+         * Execute executeAsync() method
+         */
         try {
             executeAsync(sendMessage).get().getMessageId();
         } catch (TelegramApiException | ExecutionException | InterruptedException exception) {
@@ -210,45 +250,19 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    // START: Until the bot uses HTML instead of Markdown
-    public int sendReplyForShell(String msg, Update update) {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setText(msg);
-        sendMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
-        sendMessage.enableHtml(true);
-        sendMessage.setReplyToMessageId(update.getMessage().getMessageId());
-        sendMessage.disableWebPagePreview();
-
-        try {
-            return executeAsync(sendMessage).get().getMessageId();
-        } catch (TelegramApiException | ExecutionException | InterruptedException exception) {
-            logger.error(exception.getMessage() + " (CID: " + update.getMessage().getChat().getId() + " | UID: " + update.getMessage().getFrom().getId() + ")");
-        }
-        return 0;
-    }
-
-    public void editMessageForShell(String msg, Update update, int id) {
+    public void editMessage(String msg, Update update, int id) {
+        /*
+         * Prepare EditMessageText base
+         */
         EditMessageText editMessageText = new EditMessageText();
         editMessageText.setText(msg);
         editMessageText.setChatId(String.valueOf(update.getMessage().getChatId()));
         editMessageText.setMessageId(id);
         editMessageText.enableHtml(true);
 
-        try {
-            executeAsync(editMessageText);
-        } catch (TelegramApiException telegramApiException) {
-            logger.error(telegramApiException.getMessage() + " (CID: " + update.getMessage().getChat().getId() + " | UID: " + update.getMessage().getFrom().getId() + ")");
-        }
-    }
-    // END: Until the bot uses HTML instead of Markdown
-
-    public void editMessage(String msg, Update update, int id) {
-        EditMessageText editMessageText = new EditMessageText();
-        editMessageText.setText(msg);
-        editMessageText.setChatId(String.valueOf(update.getMessage().getChatId()));
-        editMessageText.setMessageId(id);
-        editMessageText.enableMarkdown(true);
-
+        /*
+         * Execute executeAsync() method
+         */
         try {
             executeAsync(editMessageText);
         } catch (TelegramApiException telegramApiException) {
@@ -262,15 +276,27 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     public boolean isAdmin(String userID, String chatID) {
         if (userID.equals(chatID)) {
+            /*
+             * https://github.com/TrebleExperience/Bot3/commit/0f31e973edecce5ea25a92a6b3b841aaae1b333c
+             */
             return false;
         } else {
             try {
+                /*
+                 * Create GetChatMember() object to get info of the user
+                 */
                 GetChatMember getChatMember = new GetChatMember();
                 getChatMember.setChatId(chatID);
                 getChatMember.setUserId(Long.valueOf(userID));
 
+                /*
+                 * Execute GetChatMember() (to get info) using ChatMember().execute()
+                 */
                 ChatMember chatMember = execute(getChatMember);
 
+                /*
+                 * If executed fine, we'll be able to check status
+                 */
                 switch (chatMember.getStatus()) {
                     case "administrator":
                     case "creator":

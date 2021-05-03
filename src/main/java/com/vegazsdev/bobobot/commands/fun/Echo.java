@@ -15,7 +15,7 @@ public class Echo extends Command {
     public void botReply(Update update, TelegramBot bot, PrefObj prefs) {
         String[] msgComparableRaw = update.getMessage().getText().split(" ");
         if (update.getMessage().getText().contains(" ")) {
-            bot.sendMessage(update.getMessage().getText().substring(msgComparableRaw[0].length()), update);
+            bot.sendReply(update.getMessage().getText().substring(msgComparableRaw[0].length()), update);
         }
     }
 }

@@ -21,7 +21,7 @@ public class ChangeLang extends Command {
             if (bot.isPM(update.getMessage().getChatId().toString(), update.getMessage().getFrom().getId().toString())) {
                 if (bot.isAdmin(update.getMessage().getFrom().getId().toString(), update.getMessage().getChatId().toString())) {
                     if (update.getMessage().getText().equals(prefs.getHotkey() + "chlang".trim())) {
-                        bot.sendMessage(prefs.getString("available_lang") + "\n" + XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "disp_lang"), update);
+                        bot.sendReply(prefs.getString("available_lang") + "\n" + XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "disp_lang"), update);
                     } else {
                         String msg = update.getMessage().getText().split(" ")[1].trim();
                         if (msg.contains(" ")) {
@@ -30,22 +30,22 @@ public class ChangeLang extends Command {
                         if (msg.length() < 3) {
                             String hello = XMLs.getFromStringsXML("strings-" + msg + ".xml", "hello");
                             if (hello == null) {
-                                bot.sendMessage(prefs.getString("unknown_lang").replace("%1", prefs.getHotkey()), update);
+                                bot.sendReply(prefs.getString("unknown_lang").replace("%1", prefs.getHotkey()), update);
                             } else {
                                 DbThings.changeLanguage(prefs.getId(), "strings-" + msg + ".xml");
                                 prefs = DbThings.selectIntoPrefsTable(prefs.getId());
-                                bot.sendMessage(prefs.getString("lang_updated"), update);
+                                bot.sendReply(prefs.getString("lang_updated"), update);
                             }
                         } else {
-                            bot.sendMessage(prefs.getString("unknown_lang").replace("%1", prefs.getHotkey()), update);
+                            bot.sendReply(prefs.getString("unknown_lang").replace("%1", prefs.getHotkey()), update);
                         }
                     }
                 } else {
-                    bot.sendMessage(prefs.getString("only_admin_can_run"), update);
+                    bot.sendReply(prefs.getString("only_admin_can_run"), update);
                 }
-            } else {
-                bot.sendMessage(prefs.getString("bad_usage"), update);
             }
+        } else {
+            bot.sendReply(prefs.getString("bad_usage"), update);
         }
     }
 }

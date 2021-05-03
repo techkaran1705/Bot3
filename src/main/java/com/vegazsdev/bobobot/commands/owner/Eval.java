@@ -60,9 +60,9 @@ public class Eval extends Command {
                                 "})();"
                 );
 
-                bot.sendMessage(out == null ? "Executed without error." : out.toString(), update);
+                bot.sendMessageAsync(out == null ? "Executed without error." : out.toString(), update);
             } catch (Exception exception) {
-                bot.sendMessage("`" + exception.getMessage() + "`", update);
+                bot.sendMessageAsync("`" + exception.getMessage() + "`", update);
                 logger.error(exception.getMessage());
             }
         }

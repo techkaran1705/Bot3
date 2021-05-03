@@ -29,9 +29,14 @@ public class Main {
 
     @SuppressWarnings({"SpellCheckingInspection", "UnstableApiUsage", "rawtypes"})
     public static void main(String[] args) {
-
+        /*
+         * Start-up of all
+         */
         logger.info(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "bot_init"));
 
+        /*
+         * Check if exists props file and other things
+         */
         if (!FileTools.checkFileExistsCurPath("configs/" + XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file"))) {
             logger.info(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_not_found"));
             new Config().createDefConfig();
@@ -41,10 +46,15 @@ public class Main {
             System.exit(0);
         }
 
+        /*
+         * Create ArrayList (Class) to save classes, we'll use it to botsApi.registerBot()
+         */
         ArrayList<Class> commandClasses = new ArrayList<>();
 
+        /*
+         * Create ClassLoader to get class name, method and other things
+         */
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
-
         try {
             for (final ClassPath.ClassInfo info : ClassPath.from(loader).getTopLevelClasses()) {
                 if (info.getName().startsWith("com.vegazsdev.bobobot.commands")) {
@@ -63,16 +73,29 @@ public class Main {
             logger.error(e.getMessage());
         }
 
+        /*
+         * Check if the props is ok or no
+         */
         if (((Config.getDefConfig("bot-token") != null && Objects.requireNonNull(Config.getDefConfig("bot-token")).contains(" "))
                 || (Config.getDefConfig("bot-username") != null && Objects.requireNonNull(Config.getDefConfig("bot-username")).contains(" "))) || Objects.requireNonNull(Config.getDefConfig("bot-master")).contains(" ")) {
             logger.error(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_info"));
             System.exit(0);
         }
 
+        /*
+         * Create BuildInfo object, it is used in TelegramBots class to About class, just for info (you can remove it fine)
+         */
         BuildInfo buildInfo = new BuildInfo(false);
+
+        /*
+         * Create ShellStatus object, is necesary to avoid multiples instances when using Shell command
+         */
         shellStatus = new ShellStatus();
         shellStatus.unlockStatus();
 
+        /*
+         * Create Bot object
+         */
         Bot bot = null;
         try {
             bot = new Bot(
@@ -84,6 +107,9 @@ public class Main {
             System.exit(1);
         }
 
+        /*
+         * Create database if don't exists
+         */
         if (!FileTools.checkFileExistsCurPath("databases/prefs.db")) {
             DbThings.createNewDatabase("prefs.db");
             DbThings.createTable("prefs.db",
@@ -95,6 +121,9 @@ public class Main {
             );
         }
 
+        /*
+         * Time to run bot
+         */
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             botsApi.registerBot(new TelegramBot(bot, commandClasses));
