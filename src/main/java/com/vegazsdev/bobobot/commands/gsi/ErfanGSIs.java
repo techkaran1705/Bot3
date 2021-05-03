@@ -70,10 +70,14 @@ public class ErfanGSIs extends Command {
 
         if (msgComparableRaw[1].equals("allowuser") && Objects.equals(Config.getDefConfig("bot-master"), idAsString)) {
             if (update.getMessage().getReplyToMessage() != null) {
-                if (!userHasPortPermissions(update.getMessage().getReplyToMessage().getFrom().getId().toString())) {
-                    if (addPortPerm(update.getMessage().getReplyToMessage().getFrom().getId().toString())) {
-                        bot.sendReply(prefs.getString("egsi_allowed").replace("%1", update.getMessage().getReplyToMessage().getFrom().getId().toString()), update);
-                    }
+                String userid = update.getMessage().getReplyToMessage().getFrom().getId().toString();
+                if (addPortPerm(userid)) {
+                    bot.sendReply(prefs.getString("egsi_allowed").replace("%1", userid), update);
+                }
+            } else if (msg.contains(" ")) {
+                String userid = msg.split(" ")[2];
+                if (userid != null && userid.trim().equals("") && addPortPerm(userid)) {
+                    bot.sendReply(prefs.getString("egsi_allowed").replace("%1", userid), update);
                 }
             } else {
                 bot.sendReply(prefs.getString("egsi_allow_by_reply").replace("%1", prefs.getHotkey())
@@ -105,44 +109,42 @@ public class ErfanGSIs extends Command {
             } catch (IOException ignored) {}
         } else {
             boolean userHasPermissions = userHasPortPermissions(idAsString);
-            if (FileTools.checkIfFolderExists("ErfanGSIs")) {
-                if (userHasPermissions) {
-                    GSICmdObj gsiCommand = isCommandValid(update);
-                    if (gsiCommand != null) {
-                        boolean isGSITypeValid = isGSIValid(gsiCommand.getGsi());
-                        if (isGSITypeValid) {
-                            if (!isPorting) {
-                                isPorting = true;
-                                createGSI(gsiCommand, bot);
-                                while (queue.size() != 0) {
-                                    GSICmdObj portNow = queue.get(0);
-                                    queue.remove(0);
-                                    createGSI(portNow, bot);
-                                }
-                                isPorting = false;
-                            } else {
-                                queue.add(gsiCommand);
-                                bot.sendReply(prefs.getString("egsi_added_to_queue"), update);
+            if (userHasPermissions) {
+                GSICmdObj gsiCommand = isCommandValid(update);
+                if (gsiCommand != null) {
+                    boolean isGSITypeValid = isGSIValid(gsiCommand.getGsi());
+                    if (isGSITypeValid) {
+                        if (!isPorting) {
+                            isPorting = true;
+                            createGSI(gsiCommand, bot);
+                            while (queue.size() != 0) {
+                                GSICmdObj portNow = queue.get(0);
+                                queue.remove(0);
+                                createGSI(portNow, bot);
                             }
+                            isPorting = false;
                         } else {
-                            bot.sendReply(prefs.getString("egsi_supported_types")
-                                    .replace("%1",
-                                            Arrays.toString(supportedGSIs9).replace(toolPath + "roms/9/", "")
-                                                    .replace("[", "")
-                                                    .replace("]", ""))
-                                    .replace("%2",
-                                            Arrays.toString(supportedGSIs10).replace(toolPath + "roms/10/", "")
-                                                    .replace("[", "")
-                                                    .replace("]", ""))
-                                    .replace("%3",
-                                            Arrays.toString(supportedGSIs11).replace(toolPath + "roms/11/", "")
-                                                    .replace("[", "")
-                                                    .replace("]", ""))
-                                    .replace("%4",
-                                            Arrays.toString(supportedGSIs12).replace(toolPath + "roms/S/", "")
-                                                    .replace("[", "")
-                                                    .replace("]", "")), update);
+                            queue.add(gsiCommand);
+                            bot.sendReply(prefs.getString("egsi_added_to_queue"), update);
                         }
+                    } else {
+                        bot.sendReply(prefs.getString("egsi_supported_types")
+                                .replace("%1",
+                                        Arrays.toString(supportedGSIs9).replace(toolPath + "roms/9/", "")
+                                                .replace("[", "")
+                                                .replace("]", ""))
+                                .replace("%2",
+                                        Arrays.toString(supportedGSIs10).replace(toolPath + "roms/10/", "")
+                                                .replace("[", "")
+                                                .replace("]", ""))
+                                .replace("%3",
+                                        Arrays.toString(supportedGSIs11).replace(toolPath + "roms/11/", "")
+                                                .replace("[", "")
+                                                .replace("]", ""))
+                                .replace("%4",
+                                        Arrays.toString(supportedGSIs12).replace(toolPath + "roms/S/", "")
+                                                .replace("[", "")
+                                                .replace("]", "")), update);
                     }
                 }
             }
