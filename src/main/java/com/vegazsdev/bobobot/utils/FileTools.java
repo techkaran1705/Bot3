@@ -11,7 +11,8 @@ public class FileTools {
     private static final Logger logger = LoggerFactory.getLogger(FileTools.class);
 
     public static boolean checkIfFolderExists(String folder) {
-        return !new File(folder).exists();
+        File file = new File(folder);
+        return !file.isFile() && file.isDirectory();
     }
 
     public static boolean createFolder(String folder) {

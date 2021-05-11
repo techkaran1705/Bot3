@@ -108,43 +108,46 @@ public class ErfanGSIs extends Command {
                 pb.start();
             } catch (IOException ignored) {}
         } else {
-            boolean userHasPermissions = userHasPortPermissions(idAsString);
-            if (userHasPermissions) {
-                GSICmdObj gsiCommand = isCommandValid(update);
-                if (gsiCommand != null) {
-                    boolean isGSITypeValid = isGSIValid(gsiCommand.getGsi());
-                    if (isGSITypeValid) {
-                        if (!isPorting) {
-                            isPorting = true;
-                            createGSI(gsiCommand, bot);
-                            while (queue.size() != 0) {
-                                GSICmdObj portNow = queue.get(0);
-                                queue.remove(0);
-                                createGSI(portNow, bot);
+            if (userHasPortPermissions(idAsString)) {
+                if (!FileTools.checkIfFolderExists("ErfanGSIs")) {
+                    bot.sendReply(prefs.getString("egsi_dont_exists_tool_folder"), update);
+                } else {
+                    GSICmdObj gsiCommand = isCommandValid(update);
+                    if (gsiCommand != null) {
+                        boolean isGSITypeValid = isGSIValid(gsiCommand.getGsi());
+                        if (isGSITypeValid) {
+                            if (!isPorting) {
+                                isPorting = true;
+                                createGSI(gsiCommand, bot);
+                                while (queue.size() != 0) {
+                                    GSICmdObj portNow = queue.get(0);
+                                    queue.remove(0);
+                                    createGSI(portNow, bot);
+                                }
+                                isPorting = false;
+                            } else {
+                                queue.add(gsiCommand);
+                                bot.sendReply(prefs.getString("egsi_added_to_queue"), update);
                             }
-                            isPorting = false;
                         } else {
-                            queue.add(gsiCommand);
-                            bot.sendReply(prefs.getString("egsi_added_to_queue"), update);
+                            bot.sendReply(prefs.getString("egsi_supported_types")
+                                    .replace("%1",
+                                            Arrays.toString(supportedGSIs9).replace(toolPath + "roms/9/", "")
+                                                    .replace("[", "")
+                                                    .replace("]", ""))
+                                    .replace("%2",
+                                            Arrays.toString(supportedGSIs10).replace(toolPath + "roms/10/", "")
+                                                    .replace("[", "")
+                                                    .replace("]", ""))
+                                    .replace("%3",
+                                            Arrays.toString(supportedGSIs11).replace(toolPath + "roms/11/", "")
+                                                    .replace("[", "")
+                                                    .replace("]", ""))
+                                    .replace("%4",
+                                            Arrays.toString(supportedGSIs12).replace(toolPath + "roms/S/", "")
+                                                    .replace("[", "")
+                                                    .replace("]", "")), update);
                         }
-                    } else {
-                        bot.sendReply(prefs.getString("egsi_supported_types")
-                                .replace("%1",
-                                        Arrays.toString(supportedGSIs9).replace(toolPath + "roms/9/", "")
-                                                .replace("[", "")
-                                                .replace("]", ""))
-                                .replace("%2",
-                                        Arrays.toString(supportedGSIs10).replace(toolPath + "roms/10/", "")
-                                                .replace("[", "")
-                                                .replace("]", ""))
-                                .replace("%3",
-                                        Arrays.toString(supportedGSIs11).replace(toolPath + "roms/11/", "")
-                                                .replace("[", "")
-                                                .replace("]", ""))
-                                .replace("%4",
-                                        Arrays.toString(supportedGSIs12).replace(toolPath + "roms/S/", "")
-                                                .replace("[", "")
-                                                .replace("]", "")), update);
                     }
                 }
             }
