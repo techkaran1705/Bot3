@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
+import org.telegram.telegrambots.meta.api.methods.groupadministration.LeaveChat;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -38,6 +39,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             "Have you washed the dishes yet?", "You're cringe.",
             "owo", "lmao...", "( ͡° ͜ʖ ͡°)"
     };
+
+    private PrefObj chatPrefs;
 
     private static final Logger logger = LoggerFactory.getLogger(TelegramBot.class);
 
@@ -70,6 +73,36 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
 
         /*
+         * Boolean to pass if is possible to run or no
+         */
+        boolean trueToRun;
+
+        /*
+         * PrefObj, chatPrefs
+         */
+        chatPrefs = getPrefs(Double.parseDouble(update.getMessage().getChatId().toString()));
+
+        /*
+         * Check if exists that chat in our db
+         */
+        if (chatPrefs == null) {
+            trueToRun = false;
+            try {
+                chatPrefs = new PrefObj(0, "strings-en.xml", "!");
+                trueToRun = true;
+            } catch (Exception exception) {
+                logger.error(exception.getMessage());
+            }
+        } else {
+            trueToRun = true;
+        }
+
+        /*
+         * Good to run? Well, time to check
+         */
+        boolean finalTrueToRun = trueToRun;
+
+        /*
          * Create thread to run commands (it can run without thread)
          */
         new Thread(new Runnable() {
@@ -93,30 +126,13 @@ public class TelegramBot extends TelegramLongPollingBot {
                         && Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "possible_hotkeys"))
                         .indexOf(update.getMessage().getText().charAt(0)) >= 0) {
 
-                    /*
-                     * Boolean to pass if is possible to run or no
-                     */
-                    boolean trueToRun;
-
                     String msg = update.getMessage().getText();
                     long usrId = update.getMessage().getFrom().getId();
-                    PrefObj chatPrefs = getPrefs(update);
-
-                    /*
-                     * Check if exists that chat in our db
-                     */
-                    if (chatPrefs == null) {
-                        trueToRun = false;
-                        chatPrefs = new PrefObj(0, "strings-en.xml", "!");
-                        sendReply(XMLs.getFromStringsXML("core-strings.xml", "run_command_again"), update);
-                    } else {
-                        trueToRun = true;
-                    }
 
                     /*
                      * It is ok to run and send command
                      */
-                    if (trueToRun) {
+                    if (finalTrueToRun) {
                         if (chatPrefs.getHotkey() != null && msg.startsWith(Objects.requireNonNull(chatPrefs.getHotkey()))) {
                             for (CommandWithClass commandWithClass : getActiveCommandsAsCmdObject()) {
                                 String adjustCommand = msg.replace(Objects.requireNonNull(chatPrefs.getHotkey()), "");
@@ -339,8 +355,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         return allCommandsArObj;
     }
 
-    private PrefObj getPrefs(Update update) {
-        long chatId = update.getMessage().getChatId();
+    public static PrefObj getPrefs(double chatId) {
         PrefObj prefObj = DbThings.selectIntoPrefsTable(chatId);
         if (prefObj == null) {
             DbThings.insertIntoPrefsTable(chatId);
