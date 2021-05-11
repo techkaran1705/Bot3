@@ -74,4 +74,7 @@
     <!-- Shell Command -->
     <cant_run_shell>Sorry, the &lt;code&gt;shell&lt;/code&gt; command is locked (Probably exists other shell command running).</cant_run_shell>
     <return_code_shell>Return code: &lt;code&gt;%1&lt;/code&gt;, shell command unlocked.</return_code_shell>
+
+    <!-- Leave Command -->
+    <done_i_left>Done.</done_i_left>
 </strings>

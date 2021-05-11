@@ -56,4 +56,7 @@
     <!-- Shell Command -->
     <cant_run_shell>Desculpe, o comando &lt;code&gt;shell&lt;/code&gt; está bloqueado (provavelmente existe outro comando &lt;code&gt;shell&lt;/code&gt; em execução).</cant_run_shell>
     <return_code_shell>Código de retorno: &lt;code&gt;%1&lt;/code&gt;, comando shell desbloqueado.</return_code_shell>
+
+    <!-- Leave Command -->
+    <done_i_left>Pronto.</done_i_left>
 </strings>

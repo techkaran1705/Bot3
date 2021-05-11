@@ -327,6 +327,25 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
+    public boolean leaveChat(String chatID) {
+        /*
+         * Prepare LeaveChat base
+         */
+        LeaveChat leaveChat = new LeaveChat();
+        leaveChat.setChatId(chatID);
+
+        /*
+         * Execute execute() method
+         */
+        try {
+            // Can't use async because I can't get a real return, or maybe I'm doing wrong.
+            return execute(leaveChat);
+        } catch (TelegramApiException telegramApiException) {
+            logger.error(telegramApiException.getMessage() + " (CID to leave: " + chatID + ")");
+            return false;
+        }
+    }
+
     private void runMethod(Class aClass, Update update, TelegramBot tBot, PrefObj prefs) {
         try {
             Object instance = ((Class<?>) aClass).getDeclaredConstructor().newInstance();
