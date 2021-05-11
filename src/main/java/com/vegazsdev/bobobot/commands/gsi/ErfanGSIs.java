@@ -74,11 +74,6 @@ public class ErfanGSIs extends Command {
                 if (addPortPerm(userid)) {
                     bot.sendReply(prefs.getString("egsi_allowed").replace("%1", userid), update);
                 }
-            } else if (msg.contains(" ")) {
-                String userid = msg.split(" ")[2];
-                if (userid != null && userid.trim().equals("") && addPortPerm(userid)) {
-                    bot.sendReply(prefs.getString("egsi_allowed").replace("%1", userid), update);
-                }
             } else {
                 bot.sendReply(prefs.getString("egsi_allow_by_reply").replace("%1", prefs.getHotkey())
                         .replace("%2", this.getAlias()), update);
