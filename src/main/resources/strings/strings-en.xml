@@ -38,6 +38,10 @@
     <lang_updated>Language Updated!</lang_updated>
     <unknown_lang>Language not available, type %1chlang to see available languages</unknown_lang>
 
+    <!-- DisableRandomMessage Command -->
+    <rm_done_0>Done! Random Messages disabled.</rm_done_0>
+    <rm_done_1>Done! Random Messages enabled.</rm_done_1>
+
     <!-- ErfanGSIs Command -->
     <egsi_allowed>UserID: &lt;b&gt;%1&lt;/b&gt; now has port permissions</egsi_allowed>
     <egsi_allow_by_reply>To add permissions, reply to user that you wanna add permissions, by using &lt;code&gt;%1%2 allowuser&lt;/code&gt;</egsi_allow_by_reply>
@@ -45,6 +49,8 @@
     <egsi_added_to_queue>Added to Queue</egsi_added_to_queue>
     <egsi_no_ports_queue>No ports on queue</egsi_no_ports_queue>
     <egsi_supported_types>&lt;b&gt;GSI Type or URL is not valid!&lt;/b&gt;&#xA;&#xA;Supported types on Android 9: %1&#xA;&#xA;Supported types on Android 10: %2&#xA;&#xA;Supported types on Android 11: %3&#xA;&#xA;Supported types on Android S: %4</egsi_supported_types>
+    <egsi_dont_exists_tool_folder>The ErfanGSIs tool folder does not exist.</egsi_dont_exists_tool_folder>
+    <egsi_something_is_wrong>Something is wrong, check if you are using the updated ErfanGSIs tool.</egsi_something_is_wrong>
 
     <!-- ChangeHotkey Command -->
     <chkey_help>Current bot hotkey on this chat: &lt;code&gt;%1&lt;/code&gt;&#xA;&lt;b&gt;Supported Hotkeys: %2&lt;/b&gt;</chkey_help>
@@ -74,4 +80,7 @@
     <!-- Shell Command -->
     <cant_run_shell>Sorry, the &lt;code&gt;shell&lt;/code&gt; command is locked (Probably exists other shell command running).</cant_run_shell>
     <return_code_shell>Return code: &lt;code&gt;%1&lt;/code&gt;, shell command unlocked.</return_code_shell>
+
+    <!-- Leave Command -->
+    <done_i_left>Done.</done_i_left>
 </strings>

@@ -74,11 +74,6 @@ public class ErfanGSIs extends Command {
                 if (addPortPerm(userid)) {
                     bot.sendReply(prefs.getString("egsi_allowed").replace("%1", userid), update);
                 }
-            } else if (msg.contains(" ")) {
-                String userid = msg.split(" ")[2];
-                if (userid != null && userid.trim().equals("") && addPortPerm(userid)) {
-                    bot.sendReply(prefs.getString("egsi_allowed").replace("%1", userid), update);
-                }
             } else {
                 bot.sendReply(prefs.getString("egsi_allow_by_reply").replace("%1", prefs.getHotkey())
                         .replace("%2", this.getAlias()), update);
@@ -108,43 +103,53 @@ public class ErfanGSIs extends Command {
                 pb.start();
             } catch (IOException ignored) {}
         } else {
-            boolean userHasPermissions = userHasPortPermissions(idAsString);
-            if (userHasPermissions) {
-                GSICmdObj gsiCommand = isCommandValid(update);
-                if (gsiCommand != null) {
-                    boolean isGSITypeValid = isGSIValid(gsiCommand.getGsi());
-                    if (isGSITypeValid) {
-                        if (!isPorting) {
-                            isPorting = true;
-                            createGSI(gsiCommand, bot);
-                            while (queue.size() != 0) {
-                                GSICmdObj portNow = queue.get(0);
-                                queue.remove(0);
-                                createGSI(portNow, bot);
+            if (userHasPortPermissions(idAsString)) {
+                if (!FileTools.checkIfFolderExists("ErfanGSIs")) {
+                    bot.sendReply(prefs.getString("egsi_dont_exists_tool_folder"), update);
+                } else {
+                    GSICmdObj gsiCommand = isCommandValid(update);
+                    if (gsiCommand != null) {
+                        boolean isGSITypeValid = isGSIValid(gsiCommand.getGsi());
+                        if (isGSITypeValid) {
+                            if (!isPorting) {
+                                isPorting = true;
+                                createGSI(gsiCommand, bot);
+                                while (queue.size() != 0) {
+                                    GSICmdObj portNow = queue.get(0);
+                                    queue.remove(0);
+                                    createGSI(portNow, bot);
+                                }
+                                isPorting = false;
+                            } else {
+                                queue.add(gsiCommand);
+                                bot.sendReply(prefs.getString("egsi_added_to_queue"), update);
                             }
-                            isPorting = false;
                         } else {
-                            queue.add(gsiCommand);
-                            bot.sendReply(prefs.getString("egsi_added_to_queue"), update);
+                            File[] supportedGSIsPandQ = ArrayUtils.addAll(supportedGSIs9, supportedGSIs10);
+                            File[] supportedGSIsRandS = ArrayUtils.addAll(supportedGSIs11, supportedGSIs12);
+
+                            if (supportedGSIsPandQ != null && supportedGSIsRandS != null) {
+                                bot.sendReply(prefs.getString("egsi_supported_types")
+                                        .replace("%1",
+                                                Arrays.toString(supportedGSIs9).replace(toolPath + "roms/9/", "")
+                                                        .replace("[", "")
+                                                        .replace("]", ""))
+                                        .replace("%2",
+                                                Arrays.toString(supportedGSIs10).replace(toolPath + "roms/10/", "")
+                                                        .replace("[", "")
+                                                        .replace("]", ""))
+                                        .replace("%3",
+                                                Arrays.toString(supportedGSIs11).replace(toolPath + "roms/11/", "")
+                                                        .replace("[", "")
+                                                        .replace("]", ""))
+                                        .replace("%4",
+                                                Arrays.toString(supportedGSIs12).replace(toolPath + "roms/S/", "")
+                                                        .replace("[", "")
+                                                        .replace("]", "")), update);
+                            } else {
+                                bot.sendReply(prefs.getString("egsi_something_is_wrong"), update);
+                            }
                         }
-                    } else {
-                        bot.sendReply(prefs.getString("egsi_supported_types")
-                                .replace("%1",
-                                        Arrays.toString(supportedGSIs9).replace(toolPath + "roms/9/", "")
-                                                .replace("[", "")
-                                                .replace("]", ""))
-                                .replace("%2",
-                                        Arrays.toString(supportedGSIs10).replace(toolPath + "roms/10/", "")
-                                                .replace("[", "")
-                                                .replace("]", ""))
-                                .replace("%3",
-                                        Arrays.toString(supportedGSIs11).replace(toolPath + "roms/11/", "")
-                                                .replace("[", "")
-                                                .replace("]", ""))
-                                .replace("%4",
-                                        Arrays.toString(supportedGSIs12).replace(toolPath + "roms/S/", "")
-                                                .replace("[", "")
-                                                .replace("]", "")), update);
                     }
                 }
             }
@@ -192,6 +197,8 @@ public class ErfanGSIs extends Command {
         File[] supportedGSIsPandQ = ArrayUtils.addAll(supportedGSIs9, supportedGSIs10);
         File[] supportedGSIsRandS = ArrayUtils.addAll(supportedGSIs11, supportedGSIs12);
 
+        if (supportedGSIsPandQ == null) return false;
+
         boolean canRunYet = true;
 
         try {
@@ -220,7 +227,7 @@ public class ErfanGSIs extends Command {
                 }
             }
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            logger.error(e.getMessage());
             return false;
         }
         return false;

@@ -7,11 +7,21 @@ public class PrefObj {
     private double id;
     private String lang;
     private String hotkey;
+    private double ableToSendRandomMessage;
 
-    public PrefObj(double id, String lang, String hotkey) {
+    public PrefObj(double id, String lang, String hotkey, double ableToSendRandomMessage) {
         this.id = id;
         this.lang = lang;
         this.hotkey = hotkey;
+        this.ableToSendRandomMessage = ableToSendRandomMessage;
+    }
+
+    public double getAbleToSendRandomMessage() {
+        return ableToSendRandomMessage;
+    }
+
+    public void setAbleToSendRandomMessage(double ableToSendRandomMessage) {
+        this.ableToSendRandomMessage = ableToSendRandomMessage;
     }
 
     public double getId() {

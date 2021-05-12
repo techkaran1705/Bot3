@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
+import org.telegram.telegrambots.meta.api.methods.groupadministration.LeaveChat;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -39,6 +40,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             "owo", "lmao...", "( ͡° ͜ʖ ͡°)"
     };
 
+    private PrefObj chatPrefs;
+
     private static final Logger logger = LoggerFactory.getLogger(TelegramBot.class);
 
     private final Bot bot;
@@ -63,10 +66,27 @@ public class TelegramBot extends TelegramLongPollingBot {
             DbThings.createTable("prefs.db",
                     "CREATE TABLE IF NOT EXISTS chat_prefs ("
                             + "group_id real UNIQUE PRIMARY KEY,"
+                            + "able_to_send_random_messages real DEFAULT 1,"
                             + "hotkey text DEFAULT '!',"
                             + "lang text DEFAULT 'strings-en.xml'"
                             + ");"
             );
+        }
+
+        /*
+         * PrefObj, chatPrefs
+         */
+        chatPrefs = getPrefs(Double.parseDouble(update.getMessage().getChatId().toString()));
+
+        /*
+         * Check if exists that chat in our db
+         */
+        if (chatPrefs == null) {
+            try {
+                chatPrefs = new PrefObj(0, "strings-en.xml", "!", 1);
+            } catch (Exception exception) {
+                logger.error(exception.getMessage());
+            }
         }
 
         /*
@@ -93,64 +113,47 @@ public class TelegramBot extends TelegramLongPollingBot {
                         && Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "possible_hotkeys"))
                         .indexOf(update.getMessage().getText().charAt(0)) >= 0) {
 
-                    /*
-                     * Boolean to pass if is possible to run or no
-                     */
-                    boolean trueToRun;
-
                     String msg = update.getMessage().getText();
                     long usrId = update.getMessage().getFrom().getId();
-                    PrefObj chatPrefs = getPrefs(update);
-
-                    /*
-                     * Check if exists that chat in our db
-                     */
-                    if (chatPrefs == null) {
-                        trueToRun = false;
-                        chatPrefs = new PrefObj(0, "strings-en.xml", "!");
-                        sendReply(XMLs.getFromStringsXML("core-strings.xml", "run_command_again"), update);
-                    } else {
-                        trueToRun = true;
-                    }
 
                     /*
                      * It is ok to run and send command
                      */
-                    if (trueToRun) {
-                        if (chatPrefs.getHotkey() != null && msg.startsWith(Objects.requireNonNull(chatPrefs.getHotkey()))) {
-                            for (CommandWithClass commandWithClass : getActiveCommandsAsCmdObject()) {
-                                String adjustCommand = msg.replace(Objects.requireNonNull(chatPrefs.getHotkey()), "");
+                    if (chatPrefs.getHotkey() != null && msg.startsWith(Objects.requireNonNull(chatPrefs.getHotkey()))) {
+                        for (CommandWithClass commandWithClass : getActiveCommandsAsCmdObject()) {
+                            String adjustCommand = msg.replace(Objects.requireNonNull(chatPrefs.getHotkey()), "");
 
-                                if (adjustCommand.contains(" ")) {
-                                    adjustCommand = adjustCommand.split(" ")[0];
-                                }
+                            if (adjustCommand.contains(" ")) {
+                                adjustCommand = adjustCommand.split(" ")[0];
+                            }
 
-                                if (commandWithClass.getAlias().equals(adjustCommand)) {
-                                    try {
-                                        runMethod(commandWithClass.getClazz(), update, tBot, chatPrefs);
-                                        logger.info(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_ok"))
-                                                .replace("%1", update.getMessage().getFrom().getFirstName() + " (" + usrId + ")")
-                                                .replace("%2", adjustCommand));
-                                    } catch (Exception e) {
-                                        logger.error(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_failure"))
-                                                .replace("%1", commandWithClass.getAlias())
-                                                .replace("%2", e.getMessage()), e);
-                                    }
+                            if (commandWithClass.getAlias().equals(adjustCommand)) {
+                                try {
+                                    runMethod(commandWithClass.getClazz(), update, tBot, chatPrefs);
+                                    logger.info(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_ok"))
+                                            .replace("%1", update.getMessage().getFrom().getFirstName() + " (" + usrId + ")")
+                                            .replace("%2", adjustCommand));
+                                } catch (Exception e) {
+                                    logger.error(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_failure"))
+                                            .replace("%1", commandWithClass.getAlias())
+                                            .replace("%2", e.getMessage()), e);
                                 }
                             }
                         }
                     }
                 } else {
-                    /*
-                     * Random number/XP (or lucky)
-                     */
-                    Random random = new Random();
-                    int low = 0, high = 15, lowLucky = 0, highLucky = 1000;
-                    int randomInt = random.nextInt(high - low) + low;
-                    int randomXP = random.nextInt(highLucky - lowLucky) + lowLucky;
+                    if (chatPrefs.getAbleToSendRandomMessage() == 1) {
+                        /*
+                         * Random number/XP (or lucky)
+                         */
+                        Random random = new Random();
+                        int low = 0, high = 15, lowLucky = 0, highLucky = 1000;
+                        int randomInt = random.nextInt(high - low) + low;
+                        int randomXP = random.nextInt(highLucky - lowLucky) + lowLucky;
 
-                    if (randomInt > randomXP) {
-                        sendReply(messages[randomInt], update);
+                        if (randomInt > randomXP) {
+                            sendReply(messages[randomInt], update);
+                        }
                     }
                 }
             }
@@ -311,6 +314,25 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
+    public boolean leaveChat(String chatID) {
+        /*
+         * Prepare LeaveChat base
+         */
+        LeaveChat leaveChat = new LeaveChat();
+        leaveChat.setChatId(chatID);
+
+        /*
+         * Execute execute() method
+         */
+        try {
+            // Can't use async because I can't get a real return, or maybe I'm doing wrong.
+            return execute(leaveChat);
+        } catch (TelegramApiException telegramApiException) {
+            logger.error(telegramApiException.getMessage() + " (CID to leave: " + chatID + ")");
+            return false;
+        }
+    }
+
     private void runMethod(Class aClass, Update update, TelegramBot tBot, PrefObj prefs) {
         try {
             Object instance = ((Class<?>) aClass).getDeclaredConstructor().newInstance();
@@ -339,8 +361,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         return allCommandsArObj;
     }
 
-    private PrefObj getPrefs(Update update) {
-        long chatId = update.getMessage().getChatId();
+    public static PrefObj getPrefs(double chatId) {
         PrefObj prefObj = DbThings.selectIntoPrefsTable(chatId);
         if (prefObj == null) {
             DbThings.insertIntoPrefsTable(chatId);

@@ -6,6 +6,7 @@ import com.vegazsdev.bobobot.core.bot.Bot;
 import com.vegazsdev.bobobot.core.bot.BuildInfo;
 import com.vegazsdev.bobobot.core.shell.ShellStatus;
 import com.vegazsdev.bobobot.db.DbThings;
+import com.vegazsdev.bobobot.db.PrefObj;
 import com.vegazsdev.bobobot.exception.BotTokenException;
 import com.vegazsdev.bobobot.utils.Config;
 import com.vegazsdev.bobobot.utils.FileTools;
@@ -115,10 +116,44 @@ public class Main {
             DbThings.createTable("prefs.db",
                     "CREATE TABLE IF NOT EXISTS chat_prefs ("
                             + "group_id real UNIQUE PRIMARY KEY,"
+                            + "able_to_send_random_messages real DEFAULT 1,"
                             + "hotkey text DEFAULT '!',"
                             + "lang text DEFAULT 'strings-en.xml'"
                             + ");"
             );
+        }
+
+        /*
+         * Create some checks
+         * Check if the private/public chats has own its prefs in database
+         */
+        if ((Config.getDefConfig("privateChat") == null || Objects.equals(Config.getDefConfig("privateChat"), "")) || (Config.getDefConfig("requestChat") == null) || !Objects.requireNonNull(Config.getDefConfig("requestChat")).startsWith("-") && !Objects.requireNonNull(Config.getDefConfig("privateChat")).startsWith("-")) {
+            logger.info(XMLs.getFromStringsXML("strings-en.xml", "issue_with_index_chat"));
+        } else {
+            /*
+             * Get public & private chats and set into temp String[] var
+             */
+            String[] chatIDs = {
+                    Config.getDefConfig("privateChat"), Config.getDefConfig("requestChat")
+            };
+
+            /*
+             * Check with for{}
+             */
+            for (String chatID : chatIDs) {
+                /*
+                 * PrefObj, chatPrefs
+                 */
+                PrefObj chatPrefs = TelegramBot.getPrefs(Double.parseDouble(Objects.requireNonNull(chatID)));
+
+                /*
+                 * Check if the database exists for public/request chats (request command)
+                 */
+                if (chatPrefs == null) {
+                    logger.info("There is no database for: " + chatID + ", creating one...");
+                    new PrefObj(0, "strings-en.xml", "!", 1);
+                }
+            }
         }
 
         /*
