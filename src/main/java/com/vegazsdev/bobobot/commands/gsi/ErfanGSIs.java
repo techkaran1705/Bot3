@@ -227,7 +227,7 @@ public class ErfanGSIs extends Command {
                 }
             }
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            logger.error(e.getMessage());
             return false;
         }
         return false;
