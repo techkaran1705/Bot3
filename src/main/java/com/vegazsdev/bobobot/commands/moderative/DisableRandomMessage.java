@@ -22,22 +22,22 @@ public class DisableRandomMessage extends Command {
         if (bot.isPM(update.getMessage().getChatId().toString(), update.getMessage().getFrom().getId().toString())) {
             if (bot.isAdmin(update.getMessage().getFrom().getId().toString(), update.getMessage().getChatId().toString())) {
                 if (update.getMessage().getText().contains(" ")) {
-                    if (!Pattern.matches("[a-zA-Z]+", msgComparableRaw[1])) {
-                        if (Double.parseDouble(msgComparableRaw[1]) >= 0 || !(Double.parseDouble(msgComparableRaw[1]) > 1)) {
-                            DbThings.changeAbleToSendRandomMessage(prefs.getId(), Double.parseDouble(msgComparableRaw[1]));
-                            DbThings.selectIntoPrefsTable(prefs.getId());
-
-                            switch (Integer.parseInt(msgComparableRaw[1])) {
-                                case 0:
-                                    bot.sendReply(prefs.getString("rm_done_0"), update);
+                    if (!Pattern.matches("[a-zA-Z|-]+", msgComparableRaw[1])) {
+                        switch (Integer.parseInt(msgComparableRaw[1])) {
+                            case 0:
+                                DbThings.changeAbleToSendRandomMessage(prefs.getId(), Double.parseDouble(msgComparableRaw[1]));
+                                DbThings.selectIntoPrefsTable(prefs.getId());
+                                bot.sendReply(prefs.getString("rm_done_0"), update);
                                 break;
 
-                                case 1:
-                                    bot.sendReply(prefs.getString("rm_done_1"), update);
+                            case 1:
+                                DbThings.changeAbleToSendRandomMessage(prefs.getId(), Double.parseDouble(msgComparableRaw[1]));
+                                DbThings.selectIntoPrefsTable(prefs.getId());
+                                bot.sendReply(prefs.getString("rm_done_1"), update);
                                 break;
-                            }
-                        } else {
-                            bot.sendReply(prefs.getString("bad_usage"), update);
+
+                            default:
+                                bot.sendReply(prefs.getString("bad_usage"), update);
                         }
                     } else {
                         bot.sendReply(prefs.getString("bad_usage"), update);
