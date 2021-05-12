@@ -76,7 +76,7 @@ public class Main {
                          * Else, add the class into commandClasses
                          */
                         if (clazz.isAnnotationPresent(DisableCommand.class)) {
-                            logger.info(Objects.requireNonNull(
+                            logger.warn(Objects.requireNonNull(
                                     XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "cc_failed_to_init"))
                                     .replace("%1", clazz.getSimpleName()));
                         } else {
