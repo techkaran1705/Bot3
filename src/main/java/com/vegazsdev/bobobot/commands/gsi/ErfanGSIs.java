@@ -104,7 +104,7 @@ public class ErfanGSIs extends Command {
             } catch (IOException ignored) {}
         } else {
             if (userHasPortPermissions(idAsString)) {
-                if (FileTools.checkIfFolderDontExists("ErfanGSIs")) {
+                if (!FileTools.checkIfFolderExists("ErfanGSIs")) {
                     bot.sendReply(prefs.getString("egsi_dont_exists_tool_folder"), update);
                 } else {
                     GSICmdObj gsiCommand = isCommandValid(update);

@@ -16,7 +16,7 @@ public class DbThings {
     // Generic Methods
 
     public static void createNewDatabase(String database) {
-        if (!FileTools.checkIfFolderDontExists("databases")) {
+        if (!FileTools.checkIfFolderExists("databases")) {
             FileTools.createFolder("databases");
         }
         try (Connection conn = connect(database)) {

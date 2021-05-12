@@ -10,13 +10,13 @@ public class FileTools {
 
     private static final Logger logger = LoggerFactory.getLogger(FileTools.class);
 
-    public static boolean checkIfFolderDontExists(String folder) {
+    public static boolean checkIfFolderExists(String folder) {
         File file = new File(folder);
         return file.exists() && file.isDirectory();
     }
 
     public static void createFolder(String folder) {
-        if (!checkIfFolderDontExists(folder)) {
+        if (!checkIfFolderExists(folder)) {
             File dir = new File(folder);
             dir.mkdir();
         }
