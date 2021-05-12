@@ -66,6 +66,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             DbThings.createTable("prefs.db",
                     "CREATE TABLE IF NOT EXISTS chat_prefs ("
                             + "group_id real UNIQUE PRIMARY KEY,"
+                            + "able_to_send_random_messages real DEFAULT 1,"
                             + "hotkey text DEFAULT '!',"
                             + "lang text DEFAULT 'strings-en.xml'"
                             + ");"
@@ -88,8 +89,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         if (chatPrefs == null) {
             trueToRun = false;
             try {
-                chatPrefs = new PrefObj(0, "strings-en.xml", "!");
-                trueToRun = true;
+                chatPrefs = new PrefObj(0, "strings-en.xml", "!", 1);
             } catch (Exception exception) {
                 logger.error(exception.getMessage());
             }
@@ -157,16 +157,18 @@ public class TelegramBot extends TelegramLongPollingBot {
                         }
                     }
                 } else {
-                    /*
-                     * Random number/XP (or lucky)
-                     */
-                    Random random = new Random();
-                    int low = 0, high = 15, lowLucky = 0, highLucky = 1000;
-                    int randomInt = random.nextInt(high - low) + low;
-                    int randomXP = random.nextInt(highLucky - lowLucky) + lowLucky;
+                    if (chatPrefs.getAbleToSendRandomMessage() == 1) {
+                        /*
+                         * Random number/XP (or lucky)
+                         */
+                        Random random = new Random();
+                        int low = 0, high = 15, lowLucky = 0, highLucky = 1000;
+                        int randomInt = random.nextInt(high - low) + low;
+                        int randomXP = random.nextInt(highLucky - lowLucky) + lowLucky;
 
-                    if (randomInt > randomXP) {
-                        sendReply(messages[randomInt], update);
+                        if (randomInt > randomXP) {
+                            sendReply(messages[randomInt], update);
+                        }
                     }
                 }
             }

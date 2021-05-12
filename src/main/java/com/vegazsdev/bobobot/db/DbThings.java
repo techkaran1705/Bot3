@@ -68,13 +68,13 @@ public class DbThings {
     }
 
     public static PrefObj selectIntoPrefsTable(double id) {
-        String sql = "SELECT group_id, lang, hotkey FROM chat_prefs WHERE group_id = " + id;
+        String sql = "SELECT group_id, lang, hotkey, able_to_send_random_messages FROM chat_prefs WHERE group_id = " + id;
         PrefObj prefObj = null;
         try (Connection conn = connect("prefs.db");
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                prefObj = new PrefObj(rs.getDouble("group_id"), rs.getString("lang"), rs.getString("hotkey"));
+                prefObj = new PrefObj(rs.getDouble("group_id"), rs.getString("lang"), rs.getString("hotkey"), rs.getDouble("able_to_send_random_messages"));
             }
         } catch (SQLException e) {
             logger.error(e.getMessage());
@@ -84,6 +84,16 @@ public class DbThings {
 
     public static void changeLanguage(double groupId, String newLang) {
         String sql = "UPDATE chat_prefs SET lang = '" + newLang + "' WHERE group_id = " + groupId;
+        try (Connection conn = connect("prefs.db");
+             PreparedStatement prepareStatement = conn.prepareStatement(sql)) {
+            prepareStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    public static void changeAbleToSendRandomMessage(double groupId, double opToEnableOrDisable) {
+        String sql = "UPDATE chat_prefs SET able_to_send_random_messages = " + opToEnableOrDisable + " WHERE group_id = " + groupId;
         try (Connection conn = connect("prefs.db");
              PreparedStatement prepareStatement = conn.prepareStatement(sql)) {
             prepareStatement.executeUpdate();

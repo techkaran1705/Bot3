@@ -116,6 +116,7 @@ public class Main {
             DbThings.createTable("prefs.db",
                     "CREATE TABLE IF NOT EXISTS chat_prefs ("
                             + "group_id real UNIQUE PRIMARY KEY,"
+                            + "able_to_send_random_messages real DEFAULT 1,"
                             + "hotkey text DEFAULT '!',"
                             + "lang text DEFAULT 'strings-en.xml'"
                             + ");"
@@ -150,7 +151,7 @@ public class Main {
                  */
                 if (chatPrefs == null) {
                     logger.info("There is no database for: " + chatID + ", creating one...");
-                    new PrefObj(0, "strings-en.xml", "!");
+                    new PrefObj(0, "strings-en.xml", "!", 1);
                 }
             }
         }
