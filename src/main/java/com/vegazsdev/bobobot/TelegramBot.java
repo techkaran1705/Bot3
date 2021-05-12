@@ -74,11 +74,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
 
         /*
-         * Boolean to pass if is possible to run or no
-         */
-        boolean trueToRun;
-
-        /*
          * PrefObj, chatPrefs
          */
         chatPrefs = getPrefs(Double.parseDouble(update.getMessage().getChatId().toString()));
@@ -87,20 +82,12 @@ public class TelegramBot extends TelegramLongPollingBot {
          * Check if exists that chat in our db
          */
         if (chatPrefs == null) {
-            trueToRun = false;
             try {
                 chatPrefs = new PrefObj(0, "strings-en.xml", "!", 1);
             } catch (Exception exception) {
                 logger.error(exception.getMessage());
             }
-        } else {
-            trueToRun = true;
         }
-
-        /*
-         * Good to run? Well, time to check
-         */
-        boolean finalTrueToRun = trueToRun;
 
         /*
          * Create thread to run commands (it can run without thread)
@@ -132,26 +119,24 @@ public class TelegramBot extends TelegramLongPollingBot {
                     /*
                      * It is ok to run and send command
                      */
-                    if (finalTrueToRun) {
-                        if (chatPrefs.getHotkey() != null && msg.startsWith(Objects.requireNonNull(chatPrefs.getHotkey()))) {
-                            for (CommandWithClass commandWithClass : getActiveCommandsAsCmdObject()) {
-                                String adjustCommand = msg.replace(Objects.requireNonNull(chatPrefs.getHotkey()), "");
+                    if (chatPrefs.getHotkey() != null && msg.startsWith(Objects.requireNonNull(chatPrefs.getHotkey()))) {
+                        for (CommandWithClass commandWithClass : getActiveCommandsAsCmdObject()) {
+                            String adjustCommand = msg.replace(Objects.requireNonNull(chatPrefs.getHotkey()), "");
 
-                                if (adjustCommand.contains(" ")) {
-                                    adjustCommand = adjustCommand.split(" ")[0];
-                                }
+                            if (adjustCommand.contains(" ")) {
+                                adjustCommand = adjustCommand.split(" ")[0];
+                            }
 
-                                if (commandWithClass.getAlias().equals(adjustCommand)) {
-                                    try {
-                                        runMethod(commandWithClass.getClazz(), update, tBot, chatPrefs);
-                                        logger.info(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_ok"))
-                                                .replace("%1", update.getMessage().getFrom().getFirstName() + " (" + usrId + ")")
-                                                .replace("%2", adjustCommand));
-                                    } catch (Exception e) {
-                                        logger.error(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_failure"))
-                                                .replace("%1", commandWithClass.getAlias())
-                                                .replace("%2", e.getMessage()), e);
-                                    }
+                            if (commandWithClass.getAlias().equals(adjustCommand)) {
+                                try {
+                                    runMethod(commandWithClass.getClazz(), update, tBot, chatPrefs);
+                                    logger.info(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_ok"))
+                                            .replace("%1", update.getMessage().getFrom().getFirstName() + " (" + usrId + ")")
+                                            .replace("%2", adjustCommand));
+                                } catch (Exception e) {
+                                    logger.error(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_failure"))
+                                            .replace("%1", commandWithClass.getAlias())
+                                            .replace("%2", e.getMessage()), e);
                                 }
                             }
                         }
