@@ -125,23 +125,30 @@ public class ErfanGSIs extends Command {
                                 bot.sendReply(prefs.getString("egsi_added_to_queue"), update);
                             }
                         } else {
-                            bot.sendReply(prefs.getString("egsi_supported_types")
-                                    .replace("%1",
-                                            Arrays.toString(supportedGSIs9).replace(toolPath + "roms/9/", "")
-                                                    .replace("[", "")
-                                                    .replace("]", ""))
-                                    .replace("%2",
-                                            Arrays.toString(supportedGSIs10).replace(toolPath + "roms/10/", "")
-                                                    .replace("[", "")
-                                                    .replace("]", ""))
-                                    .replace("%3",
-                                            Arrays.toString(supportedGSIs11).replace(toolPath + "roms/11/", "")
-                                                    .replace("[", "")
-                                                    .replace("]", ""))
-                                    .replace("%4",
-                                            Arrays.toString(supportedGSIs12).replace(toolPath + "roms/S/", "")
-                                                    .replace("[", "")
-                                                    .replace("]", "")), update);
+                            File[] supportedGSIsPandQ = ArrayUtils.addAll(supportedGSIs9, supportedGSIs10);
+                            File[] supportedGSIsRandS = ArrayUtils.addAll(supportedGSIs11, supportedGSIs12);
+
+                            if (supportedGSIsPandQ != null && supportedGSIsRandS != null) {
+                                bot.sendReply(prefs.getString("egsi_supported_types")
+                                        .replace("%1",
+                                                Arrays.toString(supportedGSIs9).replace(toolPath + "roms/9/", "")
+                                                        .replace("[", "")
+                                                        .replace("]", ""))
+                                        .replace("%2",
+                                                Arrays.toString(supportedGSIs10).replace(toolPath + "roms/10/", "")
+                                                        .replace("[", "")
+                                                        .replace("]", ""))
+                                        .replace("%3",
+                                                Arrays.toString(supportedGSIs11).replace(toolPath + "roms/11/", "")
+                                                        .replace("[", "")
+                                                        .replace("]", ""))
+                                        .replace("%4",
+                                                Arrays.toString(supportedGSIs12).replace(toolPath + "roms/S/", "")
+                                                        .replace("[", "")
+                                                        .replace("]", "")), update);
+                            } else {
+                                bot.sendReply(prefs.getString("egsi_something_is_wrong"), update);
+                            }
                         }
                     }
                 }
@@ -189,6 +196,8 @@ public class ErfanGSIs extends Command {
     private boolean isGSIValid(String gsi) {
         File[] supportedGSIsPandQ = ArrayUtils.addAll(supportedGSIs9, supportedGSIs10);
         File[] supportedGSIsRandS = ArrayUtils.addAll(supportedGSIs11, supportedGSIs12);
+
+        if (supportedGSIsPandQ == null) return false;
 
         boolean canRunYet = true;
 
