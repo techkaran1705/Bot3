@@ -4,6 +4,7 @@ import com.google.common.reflect.ClassPath;
 import com.vegazsdev.bobobot.commands.owner.Chat2Shell;
 import com.vegazsdev.bobobot.core.bot.Bot;
 import com.vegazsdev.bobobot.core.bot.BuildInfo;
+import com.vegazsdev.bobobot.core.command.annotations.DisableCommand;
 import com.vegazsdev.bobobot.core.shell.ShellStatus;
 import com.vegazsdev.bobobot.db.DbThings;
 import com.vegazsdev.bobobot.db.PrefObj;
@@ -60,13 +61,19 @@ public class Main {
             for (final ClassPath.ClassInfo info : ClassPath.from(loader).getTopLevelClasses()) {
                 if (info.getName().startsWith("com.vegazsdev.bobobot.commands")) {
                     final Class<?> clazz = info.load();
-                    try {
-                        commandClasses.add(clazz);
+                    if (clazz.isAnnotationPresent(DisableCommand.class)) {
                         logger.info(Objects.requireNonNull(
-                                XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "cc_init_cmd"))
+                                XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "cc_failed_to_init"))
                                 .replace("%1", clazz.getSimpleName()));
-                    } catch (Exception e) {
-                        logger.error(e.getMessage());
+                    } else {
+                        try {
+                            commandClasses.add(clazz);
+                            logger.info(Objects.requireNonNull(
+                                    XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "cc_init_cmd"))
+                                    .replace("%1", clazz.getSimpleName()));
+                        } catch (Exception e) {
+                            logger.error(e.getMessage());
+                        }
                     }
                 }
             }
