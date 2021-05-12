@@ -2,12 +2,12 @@ package com.vegazsdev.bobobot.db;
 
 import com.vegazsdev.bobobot.utils.XMLs;
 
-@SuppressWarnings("unused") /* Don't need to warn about unused methods, it's useless for now */
 public class PrefObj {
-    private double id;
-    private String lang;
-    private String hotkey;
-    private double ableToSendRandomMessage;
+
+    private final double id;
+    private final String lang;
+    private final String hotkey;
+    private final double ableToSendRandomMessage;
 
     public PrefObj(double id, String lang, String hotkey, double ableToSendRandomMessage) {
         this.id = id;
@@ -20,24 +20,12 @@ public class PrefObj {
         return ableToSendRandomMessage;
     }
 
-    public void setAbleToSendRandomMessage(double ableToSendRandomMessage) {
-        this.ableToSendRandomMessage = ableToSendRandomMessage;
-    }
-
     public double getId() {
         return id;
     }
 
-    public void setId(double id) {
-        this.id = id;
-    }
-
     public String getLang() {
         return lang;
-    }
-
-    public void setLang(String lang) {
-        this.lang = lang;
     }
 
     public String getString(String value) {
@@ -50,9 +38,5 @@ public class PrefObj {
 
     public String getHotkey() {
         return hotkey;
-    }
-
-    public void setHotkey(String hotkey) {
-        this.hotkey = hotkey;
     }
 }
