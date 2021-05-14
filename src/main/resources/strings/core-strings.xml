@@ -17,6 +17,8 @@
     <bot_started>Bo³+t is Ready, waiting for Telegram messages!</bot_started>
     <bot_init>Initializing Bo³+t...</bot_init>
     <cc_init_cmd>[Command Classes] Initialized: %1</cc_init_cmd>
+    <cc_failed_to_init>[Command Classes] Failed to initialize: %1</cc_failed_to_init>
+    <cc_not_valid_command>[Command Classes] The %1 class is not a valid command, ignoring that class from loading</cc_not_valid_command>
     <config_file_info>The properties file exists, but it does not have the correct values, fix this problem.</config_file_info>
     <config_file_not_found>Config file not found, creating a new one...</config_file_not_found>
     <exception_thrown_retnull>Exception thrown, returning null</exception_thrown_retnull>

@@ -27,6 +27,7 @@ import java.util.concurrent.ExecutionException;
 @SuppressWarnings("rawtypes")
 public class TelegramBot extends TelegramLongPollingBot {
 
+    private static final Logger logger = LoggerFactory.getLogger(TelegramBot.class);
     /*
      * Don't be angry guys, just a joke
      */
@@ -39,12 +40,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             "Have you washed the dishes yet?", "You're cringe.",
             "owo", "lmao...", "( ͡° ͜ʖ ͡°)"
     };
-
-    private PrefObj chatPrefs;
-
-    private static final Logger logger = LoggerFactory.getLogger(TelegramBot.class);
-
     private final Bot bot;
+    private PrefObj chatPrefs;
     private ArrayList<Class> commandClasses;
 
     TelegramBot(Bot bot, ArrayList<Class> commandClasses) {
@@ -54,6 +51,14 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     public TelegramBot(Bot bot) {
         this.bot = bot;
+    }
+
+    public static PrefObj getPrefs(double chatId) {
+        PrefObj prefObj = DbThings.selectIntoPrefsTable(chatId);
+        if (prefObj == null) {
+            DbThings.insertIntoPrefsTable(chatId);
+        }
+        return prefObj;
     }
 
     @Override
@@ -359,14 +364,6 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
         }
         return allCommandsArObj;
-    }
-
-    public static PrefObj getPrefs(double chatId) {
-        PrefObj prefObj = DbThings.selectIntoPrefsTable(chatId);
-        if (prefObj == null) {
-            DbThings.insertIntoPrefsTable(chatId);
-        }
-        return prefObj;
     }
 
     @Override

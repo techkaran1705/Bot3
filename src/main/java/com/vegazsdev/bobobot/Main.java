@@ -4,6 +4,8 @@ import com.google.common.reflect.ClassPath;
 import com.vegazsdev.bobobot.commands.owner.Chat2Shell;
 import com.vegazsdev.bobobot.core.bot.Bot;
 import com.vegazsdev.bobobot.core.bot.BuildInfo;
+import com.vegazsdev.bobobot.core.command.Command;
+import com.vegazsdev.bobobot.core.command.annotations.DisableCommand;
 import com.vegazsdev.bobobot.core.shell.ShellStatus;
 import com.vegazsdev.bobobot.db.DbThings;
 import com.vegazsdev.bobobot.db.PrefObj;
@@ -18,6 +20,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Main {
@@ -59,14 +62,43 @@ public class Main {
         try {
             for (final ClassPath.ClassInfo info : ClassPath.from(loader).getTopLevelClasses()) {
                 if (info.getName().startsWith("com.vegazsdev.bobobot.commands")) {
+                    /*
+                     * Prepare clazz var (To get class (info var of for{}) info)
+                     */
                     final Class<?> clazz = info.load();
-                    try {
-                        commandClasses.add(clazz);
-                        logger.info(Objects.requireNonNull(
-                                XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "cc_init_cmd"))
+
+                    /*
+                     * Check if it is a valid command
+                     */
+                    if (clazz.getGenericSuperclass().toString().equals(String.valueOf(Command.class))) {
+                        /*
+                         * If valid: Check if has DisableCommand annotation, if has, say: failed to initialize
+                         * Else, add the class into commandClasses
+                         */
+                        if (clazz.isAnnotationPresent(DisableCommand.class)) {
+                            logger.warn(Objects.requireNonNull(
+                                    XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "cc_failed_to_init"))
+                                    .replace("%1", clazz.getSimpleName()));
+                        } else {
+                            /*
+                             * If valid, add the validated class to commandClasses
+                             */
+                            try {
+                                commandClasses.add(clazz);
+                                logger.info(Objects.requireNonNull(
+                                        XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "cc_init_cmd"))
+                                        .replace("%1", clazz.getSimpleName()));
+                            } catch (Exception e) {
+                                logger.error(e.getMessage());
+                            }
+                        }
+                    } else {
+                        /*
+                         * If the command does not have a superclass of the command (core) class, give a warning and ignore
+                         */
+                        logger.warn(Objects.requireNonNull(
+                                XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "cc_not_valid_command"))
                                 .replace("%1", clazz.getSimpleName()));
-                    } catch (Exception e) {
-                        logger.error(e.getMessage());
                     }
                 }
             }
