@@ -134,10 +134,10 @@ public class TelegramBot extends TelegramLongPollingBot {
 
                             if (commandWithClass.getAlias().equals(adjustCommand)) {
                                 try {
-                                    runMethod(commandWithClass.getClazz(), update, tBot, chatPrefs);
                                     logger.info(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_ok"))
                                             .replace("%1", update.getMessage().getFrom().getFirstName() + " (" + usrId + ")")
                                             .replace("%2", adjustCommand));
+                                    runMethod(commandWithClass.getClazz(), update, tBot, chatPrefs);
                                 } catch (Exception e) {
                                     logger.error(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_failure"))
                                             .replace("%1", commandWithClass.getAlias())
