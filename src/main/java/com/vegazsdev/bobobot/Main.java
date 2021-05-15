@@ -110,7 +110,8 @@ public class Main {
          * Check if the props is ok or no
          */
         if (((Config.getDefConfig("bot-token") != null && Objects.requireNonNull(Config.getDefConfig("bot-token")).contains(" "))
-                || (Config.getDefConfig("bot-username") != null && Objects.requireNonNull(Config.getDefConfig("bot-username")).contains(" "))) || Objects.requireNonNull(Config.getDefConfig("bot-master")).contains(" ")) {
+                || (Config.getDefConfig("bot-username") != null && Objects.requireNonNull(Config.getDefConfig("bot-username")).contains(" ")))
+                || Objects.requireNonNull(Config.getDefConfig("bot-master")).contains(" ") || (Objects.requireNonNull(Config.getDefConfig("publicChannel")).contains(" "))) {
             logger.error(XMLs.getFromStringsXML(DEF_CORE_STRINGS_XML, "config_file_info"));
             System.exit(0);
         }

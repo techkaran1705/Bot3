@@ -500,9 +500,9 @@ public class ErfanGSIs extends Command {
                 String descGSI = "" + new FileTools().readFile(infoGSI).trim();
 
                 /*
-                 * Reply the sucess of the build
+                 * Prepare message id
                  */
-                bot.sendReply("Done!", update);
+                int idGSI;
 
                 /*
                  * Send GSI message
@@ -517,10 +517,15 @@ public class ErfanGSIs extends Command {
                         + "<a href=\"https://t.me/TrebleExperience\">Channel</a> | <a href=\"https://t.me/TrebleExperience_chat\">Chat</a> | <a href=\"https://github.com/TrebleExperience\">GitHub</a>"
                 );
                 sendMessage.setChatId(Objects.requireNonNull(SourceForgeSetup.getSfConf("bot-announcement-id")));
-                bot.sendMessageAsyncBase(sendMessage, update);
+                idGSI = bot.sendMessageAsyncBase(sendMessage, update);
 
                 fullLogs.append("\n").append("Finished!");
                 bot.editMessage(fullLogs.toString(), update, id);
+
+                /*
+                 * Reply kthx
+                 */
+                if (idGSI != 0) bot.sendReply("Done! Here the <a href=\"" + "https://t.me/" + Config.getDefConfig("publicChannel")  + "/" + idGSI + "\">link</a> post", update);
 
                 /*
                  * Delete output folder with two codes (The first seems not worked so to make sure, use other code for it)
