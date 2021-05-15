@@ -531,6 +531,15 @@ public class ErfanGSIs extends Command {
                         logger.info("Output folder deleted");
                     }
                 }
+
+                /*
+                 * Cleanup variables
+                 */
+                ab.set(null);
+                aonly.set(null);
+                infoGSI = null;
+                arr.clear();
+                gsiCmdObj.clean();
             } else {
                 throw new Exception("Task finished without generating a valid GSI");
             }

@@ -43,4 +43,11 @@ public class GSICmdObj {
     public void setUpdate(Update update) {
         this.update = update;
     }
+
+    public void clean() {
+        url = null;
+        gsi = null;
+        param = null;
+        update = null;
+    }
 }
