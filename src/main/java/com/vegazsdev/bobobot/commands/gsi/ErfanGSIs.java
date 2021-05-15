@@ -102,6 +102,12 @@ public class ErfanGSIs extends Command {
             try {
                 pb.start();
             } catch (IOException ignored) {}
+
+            if (FileTools.checkIfFolderExists(toolPath + "output")) {
+                if (FileTools.deleteFolder(toolPath + "output")) {
+                    logger.info("Output folder deleted");
+                }
+            }
         } else {
             if (userHasPortPermissions(idAsString)) {
                 if (!FileTools.checkIfFolderExists("ErfanGSIs")) {
