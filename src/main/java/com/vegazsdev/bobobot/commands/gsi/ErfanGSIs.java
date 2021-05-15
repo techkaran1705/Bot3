@@ -413,6 +413,9 @@ public class ErfanGSIs extends Command {
             }
 
             if (success) {
+                String builder = update.getMessage().getFrom().getFirstName();
+                Long builderID = update.getMessage().getFrom().getId();
+
                 fullLogs.append("\n").append("<code>Creating gzip...</code>");
                 bot.editMessage(fullLogs.toString(), update, id);
 
@@ -509,6 +512,7 @@ public class ErfanGSIs extends Command {
                  */
                 sendMessage.setText("<b>Requested " + gsiCmdObj.getGsi() + " GSI</b>"
                         + "\n<b>From</b> " + getModelOfOutput()
+                        + "\n<b>Built by</b> <a href=\"" + "tg://user?id=" + builderID + "\">" + builder + "</a>"
                         + "\n\n<b>Information</b>\n<code>" + descGSI
                         + "</code>\n\n<b>Credits</b>" + "\n"
                         + "<a href=\"https://github.com/Erfanoabdi\">Erfan Abdi</a>" + " | "
