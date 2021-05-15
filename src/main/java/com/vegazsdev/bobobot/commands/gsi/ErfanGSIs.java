@@ -521,7 +521,16 @@ public class ErfanGSIs extends Command {
 
                 fullLogs.append("\n").append("Finished!");
                 bot.editMessage(fullLogs.toString(), update, id);
+
+                /*
+                 * Delete output folder with two codes (The first seems not worked so to make sure, use other code for it)
+                 */
                 FileUtils.deleteDirectory(new File(toolPath + "output"));
+                if (FileTools.checkIfFolderExists(toolPath + "output")) {
+                    if (FileTools.deleteFolder(toolPath + "output")) {
+                        logger.info("Output folder deleted");
+                    }
+                }
             } else {
                 throw new Exception("Task finished without generating a valid GSI");
             }
