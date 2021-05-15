@@ -22,6 +22,11 @@ public class FileTools {
         }
     }
 
+    public static boolean deleteFolder(String folder) {
+        File file = new File(folder);
+        return file.delete();
+    }
+
     public static boolean checkFileExistsCurPath(String file) {
         File f = new File(file);
         return f.exists() && !f.isDirectory();

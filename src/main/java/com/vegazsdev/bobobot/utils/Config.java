@@ -39,6 +39,7 @@ public class Config {
             saveProps.setProperty("bot-username", "put your bot user name");
             saveProps.setProperty("bot-master", "put your telegram user id here");
             saveProps.setProperty("requestChat", "put your main chat id for request here");
+            saveProps.setProperty("publicChannel", "put id or username of channel which will be used to send GSI, ex: trebleexperience");
             saveProps.setProperty("privateChat", "put your private (adm) chat id for request here");
             fileOutputStream = new FileOutputStream("configs/configs.prop");
             saveProps.store(fileOutputStream, null);
