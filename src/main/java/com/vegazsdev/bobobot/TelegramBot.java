@@ -305,13 +305,10 @@ public class TelegramBot extends TelegramLongPollingBot {
                 /*
                  * If executed fine, we'll be able to check status
                  */
-                switch (chatMember.getStatus()) {
-                    case "administrator":
-                    case "creator":
-                        return true;
-                    default:
-                        return false;
-                }
+                return switch (chatMember.getStatus()) {
+                    case "administrator", "creator" -> true;
+                    default -> false;
+                };
             } catch (Exception exception) {
                 logger.error(exception.getMessage() + " (CID: " + chatID + " | UID: " + userID + ")");
                 return false;
