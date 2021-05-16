@@ -216,20 +216,12 @@ public class ErfanGSIs extends Command {
 
             for (File supportedGSI : Objects.requireNonNull(supportedGSIsPandQ)) {
                 canRunYet = false;
-                if (gsi2 != null) {
-                    if (gsi2.equals(supportedGSI.getName())) return true;
-                } else {
-                    if (gsi.equals(supportedGSI.getName())) return true;
-                }
+                if (Objects.requireNonNullElse(gsi2, gsi).equals(supportedGSI.getName())) return true;
             }
 
             if (canRunYet) {
                 for (File supportedGSI : Objects.requireNonNull(supportedGSIsRandS)) {
-                    if (gsi2 != null) {
-                        if (gsi2.equals(supportedGSI.getName())) return true;
-                    } else {
-                        if (gsi.equals(supportedGSI.getName())) return true;
-                    }
+                    if (Objects.requireNonNullElse(gsi2, gsi).equals(supportedGSI.getName())) return true;
                 }
             }
         } catch (Exception e) {
