@@ -24,20 +24,17 @@ public class DisableRandomMessage extends Command {
                 if (update.getMessage().getText().contains(" ")) {
                     if (!Pattern.matches("[a-zA-Z|-]+", msgComparableRaw[1])) {
                         switch (Integer.parseInt(msgComparableRaw[1])) {
-                            case 0:
+                            case 0 -> {
                                 DbThings.changeAbleToSendRandomMessage(prefs.getId(), Double.parseDouble(msgComparableRaw[1]));
                                 DbThings.selectIntoPrefsTable(prefs.getId());
                                 bot.sendReply(prefs.getString("rm_done_0"), update);
-                                break;
-
-                            case 1:
+                            }
+                            case 1 -> {
                                 DbThings.changeAbleToSendRandomMessage(prefs.getId(), Double.parseDouble(msgComparableRaw[1]));
                                 DbThings.selectIntoPrefsTable(prefs.getId());
                                 bot.sendReply(prefs.getString("rm_done_1"), update);
-                                break;
-
-                            default:
-                                bot.sendReply(prefs.getString("bad_usage"), update);
+                            }
+                            default -> bot.sendReply(prefs.getString("bad_usage"), update);
                         }
                     } else {
                         bot.sendReply(prefs.getString("bad_usage"), update);
