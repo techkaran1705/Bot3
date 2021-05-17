@@ -1,7 +1,10 @@
 package com.vegazsdev.bobobot.utils;
 
+import com.google.common.annotations.Beta;
 import com.google.gson.Gson;
 import com.vegazsdev.bobobot.Main;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,4 +88,50 @@ public class JSONs {
             }
         }
     }
+
+    // START: LAZY METHODS
+    public static String getValueFromJSONObject(String json, String value) {
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            return jsonObject.getString(value);
+        } catch (Exception exception) {
+            logger.error(exception.getMessage(), exception);
+        }
+        return null;
+    }
+
+    @Beta
+    public static String getValueOfArrayFromJSONObject(String json, String array, String value) {
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray jsonArray = jsonObject.getJSONArray(array);
+            return jsonArray.getJSONObject(0).getString(value);
+        } catch (Exception exception) {
+            logger.error(exception.getMessage(), exception);
+        }
+        return null;
+    }
+
+    @Beta
+    public static long getLongOfArrayFromJSONObject(String json, String array, String value) {
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray jsonArray = jsonObject.getJSONArray(array);
+            return jsonArray.getJSONObject(0).getLong(value);
+        } catch (Exception exception) {
+            logger.error(exception.getMessage(), exception);
+        }
+        return 0;
+    }
+
+    public static long getLongFromJSONObject(String json, String value) {
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            return jsonObject.getLong(value);
+        } catch (Exception exception) {
+            logger.error(exception.getMessage(), exception);
+        }
+        return 0;
+    }
+    // END: LAZY METHODS
 }
