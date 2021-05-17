@@ -90,16 +90,6 @@ public class JSONs {
     }
 
     // START: LAZY METHODS
-    public static String getValueFromJSONObject(String json, String value) {
-        try {
-            JSONObject jsonObject = new JSONObject(json);
-            return jsonObject.getString(value);
-        } catch (Exception exception) {
-            logger.error(exception.getMessage(), exception);
-        }
-        return null;
-    }
-
     @Beta
     public static String getValueOfArrayFromJSONObject(String json, String array, String value) {
         try {
@@ -118,16 +108,6 @@ public class JSONs {
             JSONObject jsonObject = new JSONObject(json);
             JSONArray jsonArray = jsonObject.getJSONArray(array);
             return jsonArray.getJSONObject(0).getLong(value);
-        } catch (Exception exception) {
-            logger.error(exception.getMessage(), exception);
-        }
-        return 0;
-    }
-
-    public static long getLongFromJSONObject(String json, String value) {
-        try {
-            JSONObject jsonObject = new JSONObject(json);
-            return jsonObject.getLong(value);
         } catch (Exception exception) {
             logger.error(exception.getMessage(), exception);
         }
