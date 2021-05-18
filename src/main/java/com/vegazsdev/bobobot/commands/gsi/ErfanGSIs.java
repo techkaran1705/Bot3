@@ -207,7 +207,7 @@ public class ErfanGSIs extends Command {
         File[] supportedGSIsPandQ = ArrayUtils.addAll(supportedGSIs9, supportedGSIs10);
         File[] supportedGSIsRandS = ArrayUtils.addAll(supportedGSIs11, supportedGSIs12);
 
-        if (supportedGSIsPandQ == null) return false;
+        if (supportedGSIsPandQ == null || supportedGSIsRandS == null) return false;
 
         boolean canRunYet = true;
 
