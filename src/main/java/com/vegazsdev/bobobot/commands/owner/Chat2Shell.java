@@ -117,7 +117,7 @@ public class Chat2Shell extends Command {
 
                     while ((line = bufferedReader.readLine()) != null) {
                         fullLogs.append("<code>").append(line).append("</code>").append("\n");
-                        bot.editMessage(fullLogs.toString(), update, id);
+                        if (!(line.length() > 4096)) bot.editMessage(fullLogs.toString(), update, id);
                     }
 
                     process.waitFor();
