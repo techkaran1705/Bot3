@@ -92,16 +92,20 @@ public class ErfanGSIs extends Command {
                     }
                 }
                 case "cancel" -> {
-                    ProcessBuilder pb;
-                    pb = new ProcessBuilder("/bin/bash", "-c", "kill -TERM -- -$(ps ax | grep url2GSI.sh | grep -v grep | awk '{print $1;}')");
-                    try {
-                        pb.start();
-                    } catch (IOException ignored) {}
+                    if (isPorting) {
+                        ProcessBuilder pb;
+                        pb = new ProcessBuilder("/bin/bash", "-c", "kill -TERM -- -$(ps ax | grep url2GSI.sh | grep -v grep | awk '{print $1;}')");
+                        try {
+                            pb.start();
+                        } catch (IOException ignored) {}
 
-                    if (FileTools.checkIfFolderExists(toolPath + "output")) {
-                        if (FileTools.deleteFolder(toolPath + "output")) {
-                            logger.info("Output folder deleted");
+                        if (FileTools.checkIfFolderExists(toolPath + "output")) {
+                            if (FileTools.deleteFolder(toolPath + "output")) {
+                                logger.info("Output folder deleted");
+                            }
                         }
+                    } else {
+                        bot.sendReply(prefs.getString("egsi_no_ports_queue"), update);
                     }
                 }
                 default -> {
