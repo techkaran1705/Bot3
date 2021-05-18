@@ -324,12 +324,11 @@ public class TelegramBot extends TelegramLongPollingBot {
         leaveChat.setChatId(chatID);
 
         /*
-         * Execute execute() method
+         * Execute executeAsync() method
          */
         try {
-            // Can't use async because I can't get a real return, or maybe I'm doing wrong.
-            return execute(leaveChat);
-        } catch (TelegramApiException telegramApiException) {
+            return executeAsync(leaveChat).thenApply(response -> /* Just a workaround */ response.toString().equals("true")).get();
+        } catch (TelegramApiException | ExecutionException | InterruptedException telegramApiException) {
             logger.error(telegramApiException.getMessage() + " (CID to leave: " + chatID + ")");
             return false;
         }
