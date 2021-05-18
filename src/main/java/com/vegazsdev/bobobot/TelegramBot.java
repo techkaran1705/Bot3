@@ -78,91 +78,93 @@ public class TelegramBot extends TelegramLongPollingBot {
             );
         }
 
-        /*
-         * PrefObj, chatPrefs
-         */
-        chatPrefs = getPrefs(Double.parseDouble(update.getMessage().getChatId().toString()));
-
-        /*
-         * Check if exists that chat in our db
-         */
-        if (chatPrefs == null) {
-            try {
-                chatPrefs = new PrefObj(0, "strings-en.xml", "!", 1);
-            } catch (Exception exception) {
-                logger.error(exception.getMessage());
-            }
-        }
-
-        /*
-         * Create thread to run commands (it can run without thread)
-         */
-        new Thread(new Runnable() {
-            private TelegramBot tBot;
+        if (update.getMessage() != null) {
+            /*
+             * PrefObj, chatPrefs
+             */
+            chatPrefs = getPrefs(Double.parseDouble(Objects.requireNonNull(update.getMessage().getChatId().toString())));
 
             /*
-             * Create TelegramBot object using init()
+             * Check if exists that chat in our db
              */
-            Runnable init(TelegramBot tBot) {
-                this.tBot = tBot;
-                return this;
+            if (chatPrefs == null) {
+                try {
+                    chatPrefs = new PrefObj(0, "strings-en.xml", "!", 1);
+                } catch (Exception exception) {
+                    logger.error(exception.getMessage());
+                }
             }
 
             /*
-             * Check conditional, command & other things
+             * Create thread to run commands (it can run without thread)
              */
-            @Override
-            public void run() {
-                if (update.hasMessage() && update.getMessage().getText() != null
-                        && !update.getMessage().getText().equals("")
-                        && Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "possible_hotkeys"))
-                        .indexOf(update.getMessage().getText().charAt(0)) >= 0) {
+            new Thread(new Runnable() {
+                private TelegramBot tBot;
 
-                    String msg = update.getMessage().getText();
-                    long usrId = update.getMessage().getFrom().getId();
+                /*
+                 * Create TelegramBot object using init()
+                 */
+                Runnable init(TelegramBot tBot) {
+                    this.tBot = tBot;
+                    return this;
+                }
 
-                    /*
-                     * It is ok to run and send command
-                     */
-                    if (chatPrefs.getHotkey() != null && msg.startsWith(Objects.requireNonNull(chatPrefs.getHotkey()))) {
-                        for (CommandWithClass commandWithClass : getActiveCommandsAsCmdObject()) {
-                            String adjustCommand = msg.replace(Objects.requireNonNull(chatPrefs.getHotkey()), "");
+                /*
+                 * Check conditional, command & other things
+                 */
+                @Override
+                public void run() {
+                    if (update.hasMessage() && update.getMessage().getText() != null
+                            && !update.getMessage().getText().equals("")
+                            && Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "possible_hotkeys"))
+                            .indexOf(update.getMessage().getText().charAt(0)) >= 0) {
 
-                            if (adjustCommand.contains(" ")) {
-                                adjustCommand = adjustCommand.split(" ")[0];
-                            }
+                        String msg = update.getMessage().getText();
+                        long usrId = update.getMessage().getFrom().getId();
 
-                            if (commandWithClass.getAlias().equals(adjustCommand)) {
-                                try {
-                                    logger.info(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_ok"))
-                                            .replace("%1", update.getMessage().getFrom().getFirstName() + " (" + usrId + ")")
-                                            .replace("%2", adjustCommand));
-                                    runMethod(commandWithClass.getClazz(), update, tBot, chatPrefs);
-                                } catch (Exception e) {
-                                    logger.error(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_failure"))
-                                            .replace("%1", commandWithClass.getAlias())
-                                            .replace("%2", e.getMessage()), e);
+                        /*
+                         * It is ok to run and send command
+                         */
+                        if (chatPrefs.getHotkey() != null && msg.startsWith(Objects.requireNonNull(chatPrefs.getHotkey()))) {
+                            for (CommandWithClass commandWithClass : getActiveCommandsAsCmdObject()) {
+                                String adjustCommand = msg.replace(Objects.requireNonNull(chatPrefs.getHotkey()), "");
+
+                                if (adjustCommand.contains(" ")) {
+                                    adjustCommand = adjustCommand.split(" ")[0];
+                                }
+
+                                if (commandWithClass.getAlias().equals(adjustCommand)) {
+                                    try {
+                                        logger.info(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_ok"))
+                                                .replace("%1", update.getMessage().getFrom().getFirstName() + " (" + usrId + ")")
+                                                .replace("%2", adjustCommand));
+                                        runMethod(commandWithClass.getClazz(), update, tBot, chatPrefs);
+                                    } catch (Exception e) {
+                                        logger.error(Objects.requireNonNull(XMLs.getFromStringsXML(Main.DEF_CORE_STRINGS_XML, "command_failure"))
+                                                .replace("%1", commandWithClass.getAlias())
+                                                .replace("%2", e.getMessage()), e);
+                                    }
                                 }
                             }
                         }
-                    }
-                } else {
-                    if (chatPrefs.getAbleToSendRandomMessage() == 1) {
-                        /*
-                         * Random number/XP (or lucky)
-                         */
-                        Random random = new Random();
-                        int low = 0, high = 15, lowLucky = 0, highLucky = 1000;
-                        int randomInt = random.nextInt(high - low) + low;
-                        int randomXP = random.nextInt(highLucky - lowLucky) + lowLucky;
+                    } else {
+                        if (chatPrefs.getAbleToSendRandomMessage() == 1) {
+                            /*
+                             * Random number/XP (or lucky)
+                             */
+                            Random random = new Random();
+                            int low = 0, high = 15, lowLucky = 0, highLucky = 1000;
+                            int randomInt = random.nextInt(high - low) + low;
+                            int randomXP = random.nextInt(highLucky - lowLucky) + lowLucky;
 
-                        if (randomInt > randomXP) {
-                            sendReply(messages[randomInt], update);
+                            if (randomInt > randomXP) {
+                                sendReply(messages[randomInt], update);
+                            }
                         }
                     }
                 }
-            }
-        }.init(this)).start();
+            }.init(this)).start();
+        }
     }
 
     public void sendMessageAsync(String msg, Update update) {
