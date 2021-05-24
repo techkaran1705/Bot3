@@ -424,17 +424,20 @@ public class ErfanGSIs extends Command {
 
                 AtomicReference<String> aonly = new AtomicReference<>("");
                 AtomicReference<String> ab = new AtomicReference<>("");
+                AtomicReference<String> vendorOverlays = new AtomicReference<>("");
 
                 try (Stream<Path> paths = Files.walk(Paths.get("ErfanGSIs/output/"))) {
                     paths
                             .filter(Files::isRegularFile)
                             .forEach(fileName -> {
-                                if (fileName.toString().endsWith(".img.gz")) {
+                                if (fileName.toString().endsWith(".gz") || fileName.toString().endsWith(".zip")) {
                                     arr.add(fileName.toString());
                                     if (fileName.toString().contains("Aonly")) {
                                         aonly.set(FilenameUtils.getBaseName(fileName.toString()) + "." + FilenameUtils.getExtension(fileName.toString()));
-                                    } else {
+                                    } else if (fileName.toString().contains("AB")) {
                                         ab.set(FilenameUtils.getBaseName(fileName.toString()) + "." + FilenameUtils.getExtension(fileName.toString()));
+                                    } else if (fileName.toString().contains("Overlays")) {
+                                        vendorOverlays.set(FilenameUtils.getBaseName(fileName.toString()) + "." + FilenameUtils.getExtension(fileName.toString()));
                                     }
                                 }
                                 if (fileName.toString().contains(".txt")) {
@@ -484,6 +487,15 @@ public class ErfanGSIs extends Command {
                     inlineKeyboardButtonAB.setText("A/B Download");
                     inlineKeyboardButtonAB.setUrl("https://sourceforge.net/projects/" + SourceForgeSetup.getSfConf("bot-sf-proj") + "/files/" + re + ab);
                     rowInline.add(inlineKeyboardButtonAB);
+                    rowsInline.add(rowInline);
+                }
+
+                if (!vendorOverlays.toString().trim().equals("")) {
+                    List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                    InlineKeyboardButton inlineKeyboardButtonOverlay = new InlineKeyboardButton();
+                    inlineKeyboardButtonOverlay.setText("Overlay Download");
+                    inlineKeyboardButtonOverlay.setUrl("https://sourceforge.net/projects/" + SourceForgeSetup.getSfConf("bot-sf-proj") + "/files/" + re + vendorOverlays);
+                    rowInline.add(inlineKeyboardButtonOverlay);
                     rowsInline.add(rowInline);
                 }
 
@@ -542,6 +554,7 @@ public class ErfanGSIs extends Command {
                  */
                 ab.set(null);
                 aonly.set(null);
+                vendorOverlays.set(null);
                 infoGSI = null;
                 arr.clear();
                 gsiCmdObj.clean();
