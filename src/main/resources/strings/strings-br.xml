@@ -29,6 +29,7 @@
     <egsi_supported_types>&lt;b&gt;Tipo de GSI ou URL invalida!&lt;/b&gt;&#xA;&#xA;Tipos de GSIs suportadas no Android 9: %1&#xA;&#xA;Tipos de GSIs suportadas no Android 10: %2&#xA;&#xA;Tipos de GSIs suportadas no Android 11: %3&#xA;&#xA;Tipos de GSIs suportadas no Android S: %4</egsi_supported_types>
     <egsi_dont_exists_tool_folder>A pasta de ferramenta do Erfan GSIs não existe.</egsi_dont_exists_tool_folder>
     <egsi_something_is_wrong>Algo está errado, cheque se você está usando a tool do ErfanGSIs atualizada.</egsi_something_is_wrong>
+    <egsi_fail_to_build_gsi>Bip bop... Algo de errado não está certo, o processo de fazer GSI falhou, cheque se tem algo errado.</egsi_fail_to_build_gsi>
 
     <!-- ChangeHotkey Command -->
     <chkey_help>Current bot hotkey on this chat: &lt;b&gt;%1&lt;/b&gt;&#xA;&lt;b&gt;Supported Hotkeys: %2&lt;/b&gt;</chkey_help>

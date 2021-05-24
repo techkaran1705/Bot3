@@ -51,6 +51,7 @@
     <egsi_supported_types>&lt;b&gt;GSI Type or URL is not valid!&lt;/b&gt;&#xA;&#xA;Supported types on Android 9: %1&#xA;&#xA;Supported types on Android 10: %2&#xA;&#xA;Supported types on Android 11: %3&#xA;&#xA;Supported types on Android S: %4</egsi_supported_types>
     <egsi_dont_exists_tool_folder>The ErfanGSIs tool folder does not exist.</egsi_dont_exists_tool_folder>
     <egsi_something_is_wrong>Something is wrong, check if you are using the updated ErfanGSIs tool.</egsi_something_is_wrong>
+    <egsi_fail_to_build_gsi>Bip bop... Something wrong isn't correct, the GSI process failed, check if something is wrong.</egsi_fail_to_build_gsi>
 
     <!-- ChangeHotkey Command -->
     <chkey_help>Current bot hotkey on this chat: &lt;code&gt;%1&lt;/code&gt;&#xA;&lt;b&gt;Supported Hotkeys: %2&lt;/b&gt;</chkey_help>
