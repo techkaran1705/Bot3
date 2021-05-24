@@ -474,28 +474,28 @@ public class ErfanGSIs extends Command {
 
                 if (!aonly.toString().trim().equals("")) {
                     List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
-                    InlineKeyboardButton inlineKeyboardButtonAonly = new InlineKeyboardButton();
-                    inlineKeyboardButtonAonly.setText("Aonly Download");
-                    inlineKeyboardButtonAonly.setUrl("https://sourceforge.net/projects/" + SourceForgeSetup.getSfConf("bot-sf-proj") + "/files/" + re + aonly);
-                    rowInline2.add(inlineKeyboardButtonAonly);
+                    InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+                    inlineKeyboardButton.setText("Aonly Download");
+                    inlineKeyboardButton.setUrl("https://sourceforge.net/projects/" + SourceForgeSetup.getSfConf("bot-sf-proj") + "/files/" + re + aonly);
+                    rowInline2.add(inlineKeyboardButton);
                     rowsInline.add(rowInline2);
                 }
 
                 if (!ab.toString().trim().equals("")) {
                     List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                    InlineKeyboardButton inlineKeyboardButtonAB = new InlineKeyboardButton();
-                    inlineKeyboardButtonAB.setText("A/B Download");
-                    inlineKeyboardButtonAB.setUrl("https://sourceforge.net/projects/" + SourceForgeSetup.getSfConf("bot-sf-proj") + "/files/" + re + ab);
-                    rowInline.add(inlineKeyboardButtonAB);
+                    InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+                    inlineKeyboardButton.setText("A/B Download");
+                    inlineKeyboardButton.setUrl("https://sourceforge.net/projects/" + SourceForgeSetup.getSfConf("bot-sf-proj") + "/files/" + re + ab);
+                    rowInline.add(inlineKeyboardButton);
                     rowsInline.add(rowInline);
                 }
 
                 if (!vendorOverlays.toString().trim().equals("")) {
                     List<InlineKeyboardButton> rowInline = new ArrayList<>();
-                    InlineKeyboardButton inlineKeyboardButtonOverlay = new InlineKeyboardButton();
-                    inlineKeyboardButtonOverlay.setText("Overlay Download");
-                    inlineKeyboardButtonOverlay.setUrl("https://sourceforge.net/projects/" + SourceForgeSetup.getSfConf("bot-sf-proj") + "/files/" + re + vendorOverlays);
-                    rowInline.add(inlineKeyboardButtonOverlay);
+                    InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+                    inlineKeyboardButton.setText("Overlay Download");
+                    inlineKeyboardButton.setUrl("https://sourceforge.net/projects/" + SourceForgeSetup.getSfConf("bot-sf-proj") + "/files/" + re + vendorOverlays);
+                    rowInline.add(inlineKeyboardButton);
                     rowsInline.add(rowInline);
                 }
 
