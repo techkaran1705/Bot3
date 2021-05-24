@@ -2,6 +2,7 @@ package com.vegazsdev.bobobot.commands.owner;
 
 import com.vegazsdev.bobobot.TelegramBot;
 import com.vegazsdev.bobobot.core.command.Command;
+import com.vegazsdev.bobobot.core.command.annotations.DisableCommand;
 import com.vegazsdev.bobobot.db.PrefObj;
 import com.vegazsdev.bobobot.utils.Config;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import java.util.Objects;
 
 import static com.vegazsdev.bobobot.Main.shellStatus;
 
+@DisableCommand
 @SuppressWarnings("unused")
 public class Eval extends Command {
 
