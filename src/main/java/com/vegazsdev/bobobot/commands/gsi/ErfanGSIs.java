@@ -42,6 +42,7 @@ public class ErfanGSIs extends Command {
     private final File[] supportedGSIs11 = new File(toolPath + "roms/11").listFiles(File::isDirectory);
     private final File[] supportedGSIs12 = new File(toolPath + "roms/S").listFiles(File::isDirectory);
 
+    private String messageError = "";
     private String infoGSI = "";
 
     public ErfanGSIs() {
@@ -109,6 +110,7 @@ public class ErfanGSIs extends Command {
                     }
                 }
                 default -> {
+                    messageError = prefs.getString("egsi_fail_to_build_gsi");
                     if (userHasPortPermissions(update.getMessage().getFrom().getId().toString())) {
                         if (!FileTools.checkIfFolderExists("ErfanGSIs")) {
                             bot.sendReply(prefs.getString("egsi_dont_exists_tool_folder"), update);
@@ -559,10 +561,10 @@ public class ErfanGSIs extends Command {
                 arr.clear();
                 gsiCmdObj.clean();
             } else {
-                throw new Exception("Task finished without generating a valid GSI");
+                bot.sendReply(messageError, update);
             }
         } catch (Exception ex) {
-            logger.error(String.valueOf(fullLogs));
+            bot.sendReply(messageError, update);
         } finally {
             if (inputStream != null) {
                 try {
