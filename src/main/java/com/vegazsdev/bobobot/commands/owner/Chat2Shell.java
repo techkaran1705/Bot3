@@ -16,15 +16,24 @@ import java.util.Objects;
 
 import static com.vegazsdev.bobobot.Main.shellStatus;
 
+/**
+ * This class is for shell command, don't need to say anything.
+ */
 @SuppressWarnings("unused")
 public class Chat2Shell extends Command {
 
+    /**
+     * Logger: To send warning, info & errors to terminal.
+     */
     private static final Logger logger = LoggerFactory.getLogger(Chat2Shell.class);
 
     public Chat2Shell() {
-        super("shell", "Run shell (bash) commands via chat");
+        super("shell");
     }
 
+    /**
+     * Run bash command with this method.
+     */
     public static String runBash(String command) {
         StringBuilder baseCommand = new StringBuilder();
         InputStream inputStream = null;

@@ -8,11 +8,14 @@ import com.vegazsdev.bobobot.db.PrefObj;
 import com.vegazsdev.bobobot.utils.XMLs;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+/**
+ * That class change language of chat.
+ */
 @SuppressWarnings({"SpellCheckingInspection", "unused"})
 public class ChangeLang extends Command {
 
     public ChangeLang() {
-        super("chlang", "Change current language on this chat");
+        super("chlang");
     }
 
     @Override

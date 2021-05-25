@@ -9,13 +9,16 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.Objects;
 
+/**
+ * That class change hotkey of chat.
+ */
 @SuppressWarnings({"SpellCheckingInspection", "unused"})
 public class ChangeHotkey extends Command {
 
     private final String supportedHotkeys = XMLs.getFromStringsXML("core-strings.xml", "possible_hotkeys");
 
     public ChangeHotkey() {
-        super("chkey", "Change current hotkey on this chat");
+        super("chkey");
     }
 
     @Override

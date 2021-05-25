@@ -9,6 +9,9 @@ import java.util.Properties;
 
 public class Config {
 
+    /**
+     * Logger: To send warning, info & errors to terminal.
+     */
     private static final Logger logger = LoggerFactory.getLogger(Config.class);
 
     public static String getDefConfig(String prop) {
@@ -39,7 +42,7 @@ public class Config {
             saveProps.setProperty("bot-username", "put your bot user name");
             saveProps.setProperty("bot-master", "put your telegram user id here");
             saveProps.setProperty("requestChat", "put your main chat id for request here");
-            saveProps.setProperty("publicChannel", "put id or username of channel which will be used to send GSI, ex: trebleexperience");
+            saveProps.setProperty("publicChannel", "put id or username of channel which will be used to send GSI, ex: TrebleExperience");
             saveProps.setProperty("privateChat", "put your private (adm) chat id for request here");
             fileOutputStream = new FileOutputStream("configs/configs.prop");
             saveProps.store(fileOutputStream, null);

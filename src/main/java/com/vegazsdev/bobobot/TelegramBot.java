@@ -148,17 +148,19 @@ public class TelegramBot extends TelegramLongPollingBot {
                             }
                         }
                     } else {
-                        if (chatPrefs.getAbleToSendRandomMessage() == 1) {
-                            /*
-                             * Random number/XP (or lucky)
-                             */
-                            Random random = new Random();
-                            int low = 0, high = 15, lowLucky = 0, highLucky = 1000;
-                            int randomInt = random.nextInt(high - low) + low;
-                            int randomXP = random.nextInt(highLucky - lowLucky) + lowLucky;
+                        if (!(update.getMessage().getFrom().getId() == Float.parseFloat(String.valueOf(777000)))) {
+                            if (chatPrefs.getAbleToSendRandomMessage() == 1) {
+                                /*
+                                 * Random number/XP (or lucky)
+                                 */
+                                Random random = new Random();
+                                int low = 0, high = 15, lowLucky = 0, highLucky = 1000;
+                                int randomInt = random.nextInt(high - low) + low;
+                                int randomXP = random.nextInt(highLucky - lowLucky) + lowLucky;
 
-                            if (randomInt > randomXP) {
-                                sendReply(messages[randomInt], update);
+                                if (randomInt > randomXP) {
+                                    sendReply(messages[randomInt], update);
+                                }
                             }
                         }
                     }
@@ -352,10 +354,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             try {
                 Object instance = ((Class<?>) clazz).getDeclaredConstructor().newInstance();
                 Method methodAli = ((Class<?>) clazz).getSuperclass().getDeclaredMethod("getAlias");
-                Method methodInf = ((Class<?>) clazz).getSuperclass().getDeclaredMethod("getCommandInfo");
                 String alias = (String) methodAli.invoke(instance);
-                String desc = (String) methodInf.invoke(instance);
-                CommandWithClass c = new CommandWithClass(clazz, alias, desc);
+                CommandWithClass c = new CommandWithClass(clazz, alias);
                 allCommandsArObj.add(c);
             } catch (Exception e) {
                 logger.error(e.getMessage());

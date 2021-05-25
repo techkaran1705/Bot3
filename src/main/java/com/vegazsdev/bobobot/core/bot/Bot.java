@@ -2,8 +2,10 @@ package com.vegazsdev.bobobot.core.bot;
 
 import com.vegazsdev.bobobot.exception.BotTokenException;
 
+/**
+ * That class create main variables to TelegramLongPollingBot class.
+ */
 public class Bot {
-
     public String token;
     public String username;
     public String versionID;

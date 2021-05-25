@@ -11,9 +11,10 @@ import java.util.Objects;
 
 public class DbThings {
 
+    /**
+     * Logger: To send warning, info & errors to terminal.
+     */
     private static final Logger logger = LoggerFactory.getLogger(DbThings.class);
-
-    // Generic Methods
 
     public static void createNewDatabase(String database) {
         if (!FileTools.checkIfFolderExists("databases")) {

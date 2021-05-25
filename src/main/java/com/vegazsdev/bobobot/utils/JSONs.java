@@ -13,6 +13,9 @@ import java.util.ArrayList;
 
 public class JSONs {
 
+    /**
+     * Logger: To send warning, info & errors to terminal.
+     */
     private static final Logger logger = LoggerFactory.getLogger(JSONs.class);
 
     public static void writeArrayToJSON(ArrayList<String> values, String file) {

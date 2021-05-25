@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @SuppressWarnings("unused")
 public class Echo extends Command {
     public Echo() {
-        super("echo", "Say anything");
+        super("echo");
     }
 
     @Override

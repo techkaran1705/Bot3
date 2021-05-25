@@ -8,11 +8,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.Objects;
 
+/**
+ * Make the bot leave any chat you want with one command.
+ */
 @SuppressWarnings("unused")
 public class LeaveChat extends Command {
 
     public LeaveChat() {
-        super("leave", "Leave chat/channel with this command");
+        super("leave");
     }
 
     @Override

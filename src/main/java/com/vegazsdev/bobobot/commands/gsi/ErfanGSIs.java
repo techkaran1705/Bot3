@@ -29,24 +29,54 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
+/**
+ * Main command of the bot specialized in making GSI (Erfan tool).
+ * <p>
+ * This class consists of doing GSI using the Erfan Abdi tool, named ErfanGSIs.
+ * <p>
+ * Some methods:
+ * <ul>
+ *     <li>{@link #isCommandValid(Update)}</li>
+ *     <li>{@link #try2AvoidCodeInjection(String)}</li>
+ *     <li>{@link #isGSIValid(String)}</li>
+ *     <li>{@link #createGSI(GSICmdObj, TelegramBot)}</li>
+ *     <li>{@link #userHasPortPermissions(String)}</li>
+ *     <li>{@link #getModelOfOutput()}</li>
+ *     <li>{@link #addPortPerm(String)}</li>
+ *
+ * </ul>
+ */
 @SuppressWarnings({"SpellCheckingInspection", "unused"})
 public class ErfanGSIs extends Command {
 
+    /**
+     * Logger: To send warning, info & errors to terminal.
+     */
     private static final Logger logger = LoggerFactory.getLogger(ErfanGSIs.class);
+
+    /**
+     * Main variables to GSI process.
+     */
     private static final ArrayList<GSICmdObj> queue = new ArrayList<>();
     private static boolean isPorting = false;
     private final String toolPath = "ErfanGSIs/";
 
+    /**
+     * Get supported versions from ErfanGSIs tool.
+     */
     private final File[] supportedGSIs9 = new File(toolPath + "roms/9").listFiles(File::isDirectory);
     private final File[] supportedGSIs10 = new File(toolPath + "roms/10").listFiles(File::isDirectory);
     private final File[] supportedGSIs11 = new File(toolPath + "roms/11").listFiles(File::isDirectory);
     private final File[] supportedGSIs12 = new File(toolPath + "roms/S").listFiles(File::isDirectory);
 
+    /**
+     * Some workarounds.
+     */
     private String messageError = "";
     private String infoGSI = "";
 
     public ErfanGSIs() {
-        super("jurl2gsi", "Can port gsi");
+        super("jurl2gsi");
     }
 
     private static String[] listFilesForFolder(final File folder) {
@@ -168,6 +198,9 @@ public class ErfanGSIs extends Command {
         }
     }
 
+    /**
+     * Avoid shell usage on jurl2gsi command.
+     */
     private String try2AvoidCodeInjection(String parameters) {
         try {
             parameters = parameters.replace("&", "")
@@ -179,6 +212,9 @@ public class ErfanGSIs extends Command {
         return parameters;
     }
 
+    /**
+     * Check if the args passed to jurl2gsi command is valid.
+     */
     private GSICmdObj isCommandValid(Update update) {
         GSICmdObj gsiCmdObj = new GSICmdObj();
         String[] msgComparableRaw = update.getMessage().getText().split(" ");
@@ -205,6 +241,10 @@ public class ErfanGSIs extends Command {
         }
     }
 
+    /**
+     * Check if the GSI is valid.
+     * It checks if the tool is updated (if has R/S support), check if the ROM exists too.
+     */
     private boolean isGSIValid(String gsi) {
         File[] supportedGSIsPandQ = ArrayUtils.addAll(supportedGSIs9, supportedGSIs10);
         File[] supportedGSIsRandS = ArrayUtils.addAll(supportedGSIs11, supportedGSIs12);
@@ -237,6 +277,9 @@ public class ErfanGSIs extends Command {
         return false;
     }
 
+    /**
+     * Avoid users abuse, only users with port permission can use jurl2gsi command.
+     */
     private boolean userHasPortPermissions(String idAsString) {
         if (Objects.equals(Config.getDefConfig("bot-master"), idAsString)) {
             return true;
@@ -245,6 +288,9 @@ public class ErfanGSIs extends Command {
         return Arrays.asList(Objects.requireNonNull(JSONs.getArrayFromJSON(portConfigFile)).toArray()).contains(idAsString);
     }
 
+    /**
+     * Get model/codename of the device.
+     */
     private String getModelOfOutput() {
         StringBuilder fullLogs = new StringBuilder();
 
@@ -358,35 +404,65 @@ public class ErfanGSIs extends Command {
         return "Generic";
     }
 
+    /**
+     * Create a GSI with one method.
+     */
     private void createGSI(GSICmdObj gsiCmdObj, TelegramBot bot) {
-        Update update = gsiCmdObj.getUpdate();
+        /*
+         * Variables to bash
+         */
         ProcessBuilder pb;
-
-        pb = new ProcessBuilder("/bin/bash", "-c",
-                "cd " + toolPath + " ; ./url2GSI.sh '" + gsiCmdObj.getUrl() + "' " + gsiCmdObj.getGsi() + " " + gsiCmdObj.getParam()
-        );
-
-        boolean success = false;
-
-        StringBuilder fullLogs = new StringBuilder();
-        fullLogs.append("<code>-> Starting process...</code>");
-
         InputStream inputStream = null;
         InputStreamReader inputStreamReader = null;
         BufferedReader bufferedReader = null;
 
+        /*
+         * Pre-final GSI process variables
+         */
+        boolean success = false;
+        Update update = gsiCmdObj.getUpdate();
+        StringBuilder fullLogs = new StringBuilder();
+        String builder = update.getMessage().getFrom().getFirstName();
+        Long builderID = update.getMessage().getFrom().getId();
+
+        /*
+         * Start the GSI process
+         */
+        pb = new ProcessBuilder("/bin/bash", "-c",
+                "cd " + toolPath + " ; ./url2GSI.sh '" + gsiCmdObj.getUrl() + "' " + gsiCmdObj.getGsi() + " " + gsiCmdObj.getParam()
+        );
+        fullLogs.append("<code>-> Starting process...</code>");
+
+        /*
+         * Send the message, it's GSI time!
+         */
         int id = bot.sendReply(fullLogs.toString(), update);
 
+        /*
+         * GSI build process
+         */
         try {
+            /*
+             * Start process
+             */
             pb.redirectErrorStream(true);
             Process process = pb.start();
 
+            /*
+             * Prepare in/output log
+             */
             inputStream = process.getInputStream();
             inputStreamReader = new InputStreamReader(inputStream);
             bufferedReader = new BufferedReader(inputStreamReader);
 
+            /*
+             * Some variables (to get buffer output using readLine())
+             */
             String line;
 
+            /*
+             * Avoid aria2 logs
+             */
             boolean weDontNeedAria2Logs = true;
 
             while ((line = bufferedReader.readLine()) != null) {
@@ -410,24 +486,40 @@ public class ErfanGSIs extends Command {
                 }
             }
 
+            /*
+             * If the GSI got true boolean, it will create gzip, upload, prepare message and send it to channel/group
+             */
             if (success) {
-                String builder = update.getMessage().getFrom().getFirstName();
-                Long builderID = update.getMessage().getFrom().getId();
-
                 fullLogs.append("\n").append("<code>Creating gzip...</code>");
                 bot.editMessage(fullLogs.toString(), update, id);
 
+                /*
+                 * Get files inside ErfanGSIs/output
+                 */
                 String[] gzipFiles = listFilesForFolder(new File("ErfanGSIs" + "/output"));
+
+                /*
+                 * Gzip the files
+                 */
                 for (String gzipFile : gzipFiles) {
                     new FileTools().gzipFile(gzipFile, gzipFile + ".gz");
                 }
 
+                /*
+                 * Create ArrayList to save A/B, Aonly & vendorOverlays files
+                 */
                 ArrayList<String> arr = new ArrayList<>();
 
+                /*
+                 * A/B, Aonly & vendorOverlay Atomic variables
+                 */
                 AtomicReference<String> aonly = new AtomicReference<>("");
                 AtomicReference<String> ab = new AtomicReference<>("");
                 AtomicReference<String> vendorOverlays = new AtomicReference<>("");
 
+                /*
+                 * Try to get files inside ErfanGSIs/output and set into correct variable (ex: A/B image to A/B variable)
+                 */
                 try (Stream<Path> paths = Files.walk(Paths.get("ErfanGSIs/output/"))) {
                     paths
                             .filter(Files::isRegularFile)
@@ -450,12 +542,23 @@ public class ErfanGSIs extends Command {
                     logger.error(e.getMessage());
                 }
 
+                /*
+                 * Now say the bot will upload files to SourceForge
+                 */
                 fullLogs.append("\n").append("<code>Sending files to SF...</code>");
                 bot.editMessage(fullLogs.toString(), update, id);
 
+                /*
+                 * SourceForge upload time
+                 */
                 String re = new SourceForgeUpload().uploadGsi(arr, gsiCmdObj.getGsi());
                 re = re + "/";
 
+                /*
+                 * Check the GSI name has special name, like this:
+                 * !jurl2gsi <url link> Generic:StatiXOS-Nuclear
+                 * The name of this ROM is 'StatiXOS Nuclear' (without quotes), the '-' (char) will be the replacement char, to be used as a space
+                 */
                 if (gsiCmdObj.getGsi().contains(":")) {
                     gsiCmdObj.setGsi(gsiCmdObj.getGsi().split(":")[1]);
                     gsiCmdObj.setGsi(gsiCmdObj.getGsi().replace("-", " "));
@@ -592,6 +695,9 @@ public class ErfanGSIs extends Command {
         }
     }
 
+    /**
+     * Add port permission using user id.
+     */
     @SuppressWarnings({"rawtypes", "unchecked"})
     private boolean addPortPerm(String id) {
         try {

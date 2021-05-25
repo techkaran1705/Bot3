@@ -12,6 +12,9 @@ import java.util.Objects;
 
 public class XMLs {
 
+    /**
+     * Logger: To send warning, info & errors to terminal.
+     */
     private static final Logger logger = LoggerFactory.getLogger(JSONs.class);
 
     private static Element getElementFromStrings(String xmlFile) {
