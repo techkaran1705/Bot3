@@ -8,7 +8,7 @@
     <bad_usage>Mal uso.</bad_usage>
 
     <!-- About Command -->
-    <about_bot>&lt;b&gt;─ Sobre&lt;/b&gt;&#xA;&lt;b&gt;Bo³+t&lt;/b&gt; é programado em java e originalmente desenvolvido por @VegaZS&#xA;&#xA;&lt;b&gt;─ Desenvolvedor/Mantenedor do Bo³+t&lt;/b&gt; (Oficial/Não oficial)&#xA;&lt;a href="https://github.com/VegaBobo"&gt;VegaZS&lt;/a&gt; - Desenvolvedor original&#xA;&lt;a href="https://github.com/Velosh"&gt;Velosh&lt;/a&gt; - Mantenedor não oficial do &lt;b&gt;Bo³+t&lt;/b&gt; para Treble Experience&#xA;&#xA;&lt;b&gt;─ Info da Build&lt;/b&gt;&#xA;&lt;code&gt;%1&lt;/code&gt;</about_bot>
+    <about_bot>❔&lt;b&gt; Sobre&lt;/b&gt;&#xA;&lt;b&gt;Bo³+t&lt;/b&gt; é programado em java e originalmente desenvolvido por @VegaZS&#xA;&#xA;⌨&lt;b&gt; Desenvolvedor/Mantenedor do Bo³+t&lt;/b&gt;&#xA;&lt;a href="https://github.com/VegaBobo"&gt;VegaZS&lt;/a&gt; - Desenvolvedor original&#xA;&lt;a href="https://github.com/Velosh"&gt;Velosh&lt;/a&gt; - Mantenedor não oficial do &lt;b&gt;Bo³+t&lt;/b&gt; para Treble Experience&#xA;&#xA;❕&lt;b&gt; Info da Build&lt;/b&gt;&#xA;&lt;code&gt;%1&lt;/code&gt;</about_bot>
     <about_source_code>❕ Código-fonte</about_source_code>
     <about_treble_channel>🌐 Canal do Treble</about_treble_channel>
 
