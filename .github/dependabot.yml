@@ -12,9 +12,18 @@ updates:
   - dependency-name: org.telegram:telegrambots
     versions:
     - 5.2.0
-  - dependency-name: com.google.api-client:google-api-client
+  - dependency-name: org.apache.commons:commons-lang3
     versions:
-    - 1.31.4
-  - dependency-name: com.google.apis:google-api-services-drive
+    - 3.12.0
+  - dependency-name: org.xerial:sqlite-jdbc
     versions:
-    - v3-rev20210419-1.31.0
+    - 3.34.0
+  - dependency-name: com.google.code.gson:gson
+    versions:
+    - 2.8.7
+  - dependency-name: com.jcraft:jsch
+    versions:
+    - 0.1.55
+  - dependency-name: ch.qos.logback:logback-classic
+    versions:
+    - 1.2.3
