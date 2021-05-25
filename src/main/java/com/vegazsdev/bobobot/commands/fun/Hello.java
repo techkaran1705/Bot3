@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @SuppressWarnings("unused")
 public class Hello extends Command {
     public Hello() {
-        super("hello", "Says hello!");
+        super("hello");
     }
 
     @Override

@@ -11,11 +11,14 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * That class show some info about bot.
+ */
 @SuppressWarnings("unused")
 public class About extends Command {
 
     public About() {
-        super("about", "About bot");
+        super("about");
     }
 
     @Override

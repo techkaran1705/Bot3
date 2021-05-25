@@ -15,13 +15,16 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
+/**
+ * That class send GSI order to private group, the order is obtained from the public group.
+ */
 @SuppressWarnings({"SpellCheckingInspection", "unused"})
 public class Request extends Command {
 
     private String dontHaveUsername;
 
     public Request() {
-        super("request", "Request a GSI with this command");
+        super("request");
     }
 
     @Override

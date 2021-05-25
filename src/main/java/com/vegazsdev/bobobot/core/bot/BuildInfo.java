@@ -1,13 +1,9 @@
 package com.vegazsdev.bobobot.core.bot;
 
-public class BuildInfo {
-
-    private final boolean doStable;
-
-    public BuildInfo(boolean doStable) {
-        this.doStable = doStable;
-    }
-
+/**
+ * That class show version info about build.
+ */
+public record BuildInfo(boolean doStable) {
     public String getVersion() {
         Variables variables = new Variables();
 

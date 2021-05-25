@@ -8,6 +8,9 @@ import java.util.zip.GZIPOutputStream;
 
 public class FileTools {
 
+    /**
+     * Logger: To send warning, info & errors to terminal.
+     */
     private static final Logger logger = LoggerFactory.getLogger(FileTools.class);
 
     public static boolean checkIfFolderExists(String folder) {

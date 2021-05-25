@@ -6,12 +6,15 @@ import com.vegazsdev.bobobot.core.command.annotations.DisableCommand;
 import com.vegazsdev.bobobot.db.PrefObj;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+/**
+ * That class is just for tests, ignore it, feel free to delete it in your source.
+ */
 @DisableCommand
 @SuppressWarnings("unused")
 public class TestCommand extends Command {
 
     public TestCommand() {
-        super("test", "Just a command for testing");
+        super("test");
     }
 
     @Override

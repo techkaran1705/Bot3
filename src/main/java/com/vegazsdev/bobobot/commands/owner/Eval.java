@@ -15,14 +15,21 @@ import java.util.Objects;
 
 import static com.vegazsdev.bobobot.Main.shellStatus;
 
+/**
+ * Execute some commands using one command, this is Eval.
+ * That command has been disabled.
+ */
 @DisableCommand
 @SuppressWarnings("unused")
 public class Eval extends Command {
 
+    /**
+     * Logger: To send warning, info & errors to terminal.
+     */
     private static final Logger logger = LoggerFactory.getLogger(Eval.class);
 
     public Eval() {
-        super("eval", "Run java commands with one command");
+        super("eval");
     }
 
     @SuppressWarnings("SpellCheckingInspection")

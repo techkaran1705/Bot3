@@ -8,11 +8,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.regex.Pattern;
 
+/**
+ * That class disable random messages.
+ */
 @SuppressWarnings("unused")
 public class DisableRandomMessage extends Command {
 
     public DisableRandomMessage() {
-        super("rm", "Disable 'Random Messages' with this command");
+        super("rm");
     }
 
     @Override

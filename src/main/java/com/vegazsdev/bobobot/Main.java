@@ -24,10 +24,19 @@ import java.util.Objects;
 
 public class Main {
 
+    /**
+     * Logger: To send warning, info & errors to terminal.
+     */
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
+    /**
+     * That variable is used to get core strings.
+     */
     public static String DEF_CORE_STRINGS_XML = "core-strings.xml";
 
+    /**
+     * That variable is for shell command.
+     */
     public static ShellStatus shellStatus;
 
     @SuppressWarnings({"SpellCheckingInspection", "UnstableApiUsage", "rawtypes"})

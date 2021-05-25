@@ -19,13 +19,16 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * That class is for StatiXOS.
+ */
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 public class StatiXOS extends Command {
 
     private static final Logger logger = LoggerFactory.getLogger(StatiXOS.class);
 
     public StatiXOS() {
-        super("sxos", "A command");
+        super("sxos");
     }
 
     @Override

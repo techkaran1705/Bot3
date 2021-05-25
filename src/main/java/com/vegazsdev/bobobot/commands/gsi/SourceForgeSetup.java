@@ -15,14 +15,25 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Properties;
 
+/**
+ * This class is important for the ErfanGSI command.
+ * <p>
+ * That class setup sourceforge prop file for GSI upload.
+ */
 public class SourceForgeSetup extends Command {
 
+    /**
+     * Logger: To send warning, info & errors to terminal.
+     */
     private static final Logger logger = LoggerFactory.getLogger(SourceForgeSetup.class);
 
     public SourceForgeSetup() {
-        super("sfs", "Setup sourceforge props");
+        super("sfs");
     }
 
+    /**
+     * Get prop from sourceforge config file.
+     */
     @SuppressWarnings("SpellCheckingInspection")
     public static String getSfConf(String prop) {
         FileInputStream fileInputStream = null;
@@ -58,6 +69,9 @@ public class SourceForgeSetup extends Command {
         }
     }
 
+    /**
+     * Method to setup sourceforge config file.
+     */
     @SuppressWarnings("SpellCheckingInspection")
     public void mkSfConf() {
         FileOutputStream fileOutputStream = null;
