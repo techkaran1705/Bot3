@@ -326,6 +326,12 @@ public class ErfanGSIs extends Command {
                     line = "MiAtoll";
                 else if (line.toLowerCase().contains("surya"))
                     line = "Poco X3";
+                else if (line.toLowerCase().contains("lavender"))
+                    line = "Redmi Note 7";
+                else if (line.toLowerCase().contains("ginkgo"))
+                    line = "Redmi Note 8";
+                else if (line.toLowerCase().contains("raphael"))
+                    line = "Mi 9T Pro";
                 else if (line.toLowerCase().contains("mainline"))
                     line = "AOSP/Pixel (Mainline) Device";
                 else if (line.toLowerCase().contains("sm6250"))
@@ -516,6 +522,7 @@ public class ErfanGSIs extends Command {
                 AtomicReference<String> aonly = new AtomicReference<>("");
                 AtomicReference<String> ab = new AtomicReference<>("");
                 AtomicReference<String> vendorOverlays = new AtomicReference<>("");
+                AtomicReference<String> odmOverlays = new AtomicReference<>("");
 
                 /*
                  * Try to get files inside ErfanGSIs/output and set into correct variable (ex: A/B image to A/B variable)
@@ -524,14 +531,16 @@ public class ErfanGSIs extends Command {
                     paths
                             .filter(Files::isRegularFile)
                             .forEach(fileName -> {
-                                if (fileName.toString().endsWith(".gz") || fileName.toString().endsWith(".zip")) {
+                                if (fileName.toString().endsWith(".gz")) {
                                     arr.add(fileName.toString());
                                     if (fileName.toString().contains("Aonly")) {
                                         aonly.set(FilenameUtils.getBaseName(fileName.toString()) + "." + FilenameUtils.getExtension(fileName.toString()));
                                     } else if (fileName.toString().contains("AB")) {
                                         ab.set(FilenameUtils.getBaseName(fileName.toString()) + "." + FilenameUtils.getExtension(fileName.toString()));
-                                    } else if (fileName.toString().contains("Overlays")) {
+                                    } else if (fileName.toString().contains("VendorOverlays")) {
                                         vendorOverlays.set(FilenameUtils.getBaseName(fileName.toString()) + "." + FilenameUtils.getExtension(fileName.toString()));
+                                    } else if (fileName.toString().contains("ODMOverlays")) {
+                                        odmOverlays.set(FilenameUtils.getBaseName(fileName.toString()) + "." + FilenameUtils.getExtension(fileName.toString()));
                                     }
                                 }
                                 if (fileName.toString().contains(".txt")) {
@@ -598,8 +607,17 @@ public class ErfanGSIs extends Command {
                 if (!vendorOverlays.toString().trim().equals("")) {
                     List<InlineKeyboardButton> rowInline = new ArrayList<>();
                     InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
-                    inlineKeyboardButton.setText("Overlay Download");
+                    inlineKeyboardButton.setText("Vendor Overlays Download");
                     inlineKeyboardButton.setUrl("https://sourceforge.net/projects/" + SourceForgeSetup.getSfConf("bot-sf-proj") + "/files/" + re + vendorOverlays);
+                    rowInline.add(inlineKeyboardButton);
+                    rowsInline.add(rowInline);
+                }
+
+                if (!odmOverlays.toString().trim().equals("")) {
+                    List<InlineKeyboardButton> rowInline = new ArrayList<>();
+                    InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+                    inlineKeyboardButton.setText("ODM Overlays Download");
+                    inlineKeyboardButton.setUrl("https://sourceforge.net/projects/" + SourceForgeSetup.getSfConf("bot-sf-proj") + "/files/" + re + odmOverlays);
                     rowInline.add(inlineKeyboardButton);
                     rowsInline.add(rowInline);
                 }
@@ -645,12 +663,19 @@ public class ErfanGSIs extends Command {
                 if (idGSI != 0) bot.sendReply("Done! Here the <a href=\"" + "https://t.me/" + Config.getDefConfig("publicChannel")  + "/" + idGSI + "\">link</a> post", update);
 
                 /*
-                 * Delete output folder with two codes (The first seems not worked so to make sure, use other code for it)
+                 * Delete output/input folder with two codes (The first seems not worked so to make sure, use other code for it)
                  */
                 FileUtils.deleteDirectory(new File(toolPath + "output"));
                 if (FileTools.checkIfFolderExists(toolPath + "output")) {
                     if (FileTools.deleteFolder(toolPath + "output")) {
                         logger.info("Output folder deleted");
+                    }
+                }
+
+                FileUtils.deleteDirectory(new File(toolPath + "input"));
+                if (FileTools.checkIfFolderExists(toolPath + "input")) {
+                    if (FileTools.deleteFolder(toolPath + "input")) {
+                        logger.info("Input folder deleted");
                     }
                 }
 
@@ -660,6 +685,7 @@ public class ErfanGSIs extends Command {
                 ab.set(null);
                 aonly.set(null);
                 vendorOverlays.set(null);
+                odmOverlays.set(null);
                 infoGSI = null;
                 arr.clear();
                 gsiCmdObj.clean();
