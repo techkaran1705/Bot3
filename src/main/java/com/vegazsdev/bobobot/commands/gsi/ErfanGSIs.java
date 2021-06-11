@@ -663,12 +663,19 @@ public class ErfanGSIs extends Command {
                 if (idGSI != 0) bot.sendReply("Done! Here the <a href=\"" + "https://t.me/" + Config.getDefConfig("publicChannel")  + "/" + idGSI + "\">link</a> post", update);
 
                 /*
-                 * Delete output folder with two codes (The first seems not worked so to make sure, use other code for it)
+                 * Delete output/input folder with two codes (The first seems not worked so to make sure, use other code for it)
                  */
                 FileUtils.deleteDirectory(new File(toolPath + "output"));
                 if (FileTools.checkIfFolderExists(toolPath + "output")) {
                     if (FileTools.deleteFolder(toolPath + "output")) {
                         logger.info("Output folder deleted");
+                    }
+                }
+
+                FileUtils.deleteDirectory(new File(toolPath + "input"));
+                if (FileTools.checkIfFolderExists(toolPath + "input")) {
+                    if (FileTools.deleteFolder(toolPath + "input")) {
+                        logger.info("Input folder deleted");
                     }
                 }
 
