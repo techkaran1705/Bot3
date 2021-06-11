@@ -326,6 +326,12 @@ public class ErfanGSIs extends Command {
                     line = "MiAtoll";
                 else if (line.toLowerCase().contains("surya"))
                     line = "Poco X3";
+                else if (line.toLowerCase().contains("lavender"))
+                    line = "Redmi Note 7";
+                else if (line.toLowerCase().contains("ginkgo"))
+                    line = "Redmi Note 8";
+                else if (line.toLowerCase().contains("raphael"))
+                    line = "Mi 9T Pro";
                 else if (line.toLowerCase().contains("mainline"))
                     line = "AOSP/Pixel (Mainline) Device";
                 else if (line.toLowerCase().contains("sm6250"))
