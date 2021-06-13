@@ -531,7 +531,7 @@ public class ErfanGSIs extends Command {
                     paths
                             .filter(Files::isRegularFile)
                             .forEach(fileName -> {
-                                if (fileName.toString().endsWith(".gz")) {
+                                if (fileName.toString().endsWith(".gz") || fileName.toString().endsWith("System-Tree.txt")) {
                                     arr.add(fileName.toString());
                                     if (fileName.toString().contains("Aonly")) {
                                         aonly.set(FilenameUtils.getBaseName(fileName.toString()) + "." + FilenameUtils.getExtension(fileName.toString()));
@@ -543,7 +543,7 @@ public class ErfanGSIs extends Command {
                                         odmOverlays.set(FilenameUtils.getBaseName(fileName.toString()) + "." + FilenameUtils.getExtension(fileName.toString()));
                                     }
                                 }
-                                if (fileName.toString().contains(".txt")) {
+                                if (fileName.toString().contains(".txt") && !fileName.toString().contains("System-Tree")) {
                                     infoGSI = fileName.toString();
                                 }
                             });
