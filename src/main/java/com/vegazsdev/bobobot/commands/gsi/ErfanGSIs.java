@@ -74,6 +74,7 @@ public class ErfanGSIs extends Command {
      */
     private String messageError = "";
     private String infoGSI = "";
+    private String noticeGSI = "";
 
     public ErfanGSIs() {
         super("jurl2gsi");
@@ -229,6 +230,11 @@ public class ErfanGSIs extends Command {
                 gsiCmdObj.setGsi(gsi);
                 param = msg.replace(url + " ", "").replace(gsi, "").trim();
                 param = try2AvoidCodeInjection(param);
+
+                if (param.contains("-nv")) {
+                    noticeGSI = "<b>Notice</b>\nThis GSI requires the vendor to have the same version of the system, check <a href=\"https://t.me/TrebleExperience_chat/10308\">this</a>\n\n";
+                }
+
                 gsiCmdObj.setParam(param);
                 gsiCmdObj.setUpdate(update);
                 return gsiCmdObj;
@@ -645,7 +651,9 @@ public class ErfanGSIs extends Command {
                         + "\n<b>From</b> " + getModelOfOutput()
                         + "\n<b>Built by</b> <a href=\"" + "tg://user?id=" + builderID + "\">" + builder + "</a>"
                         + "\n\n<b>Information</b>\n<code>" + descGSI
-                        + "</code>\n\n<b>Credits</b>" + "\n"
+                        + "</code>\n\n"
+                        + noticeGSI
+                        + "<b>Credits</b>" + "\n"
                         + "<a href=\"https://github.com/Erfanoabdi\">Erfan Abdi</a>" + " | "
                         + "<a href=\"https://github.com/TrebleExperience/Bot3\">Bo³+t</a>" + "\n\n"
                         + "<b>Treble Experience</b>" + "\n"
