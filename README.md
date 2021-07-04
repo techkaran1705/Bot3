@@ -2,7 +2,7 @@
 
 ![Android Background](https://i.imgur.com/gDeUsDm_d.webp?maxwidth=760&fidelity=grand)
 
-[![CodeFactor](https://www.codefactor.io/repository/github/trebleexperience/bot3/badge/stable)](https://www.codefactor.io/repository/github/trebleexperience/bot3/overview/stable)
+[![CodeFactor](https://www.codefactor.io/repository/github/trebleexperience/bot3/badge)](https://www.codefactor.io/repository/github/trebleexperience/bot3)
 
 Any bugs, problems or the like must be reported. If you are going to fork or clone this bot, no support will be given.
 
