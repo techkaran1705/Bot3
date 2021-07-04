@@ -2,7 +2,7 @@
 
 ![Android Background](https://i.imgur.com/gDeUsDm_d.webp?maxwidth=760&fidelity=grand)
 
-[![CodeFactor](https://www.codefactor.io/repository/github/trebleexperience/bot3/badge)](https://www.codefactor.io/repository/github/trebleexperience/bot3)
+[![CodeFactor](https://www.codefactor.io/repository/github/trebleexperience/bot3/badge)](https://www.codefactor.io/repository/github/trebleexperience/bot3) [![Hits-of-Code](https://hitsofcode.com/github/trebleexperience/bot3?branch=velan/stable)](https://hitsofcode.com/github/trebleexperience/bot3/view)
 
 Any bugs, problems or the like must be reported. If you are going to fork or clone this bot, no support will be given.
 
