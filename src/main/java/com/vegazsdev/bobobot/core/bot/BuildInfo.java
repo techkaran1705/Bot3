@@ -8,15 +8,16 @@ public record BuildInfo(boolean doStable) {
         Variables variables = new Variables();
 
         if (doStable) {
-            return variables.VERSION + variables.STABLE;
+            return "v" + variables.VERSION + "-" + variables.STABLE + "-" + "[" + variables.CODENAME + "]";
         } else {
             return variables.VERSION + variables.STAGING;
         }
     }
 
     private static class Variables {
-        public final String VERSION = "v1.5.1-";
+        public final String VERSION = "1.6.0";
         public final String STABLE = "STABLE";
         public final String STAGING = "BETA";
+        public final String CODENAME = "Rika";
     }
 }
