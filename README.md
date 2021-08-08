@@ -1,4 +1,4 @@
-# Bo³+t ── Treble Experience
+# Bo³+t - Treble Experience
 
 ![Android Background](https://i.imgur.com/gDeUsDm_d.webp?maxwidth=760&fidelity=grand)
 
