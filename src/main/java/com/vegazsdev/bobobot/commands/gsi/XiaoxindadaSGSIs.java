@@ -450,30 +450,15 @@ public class XiaoxindadaSGSIs extends Command {
              */
             String line;
 
-            /*
-             * Avoid aria2 logs
-             */
-            boolean weDontNeedAria2Logs = true;
-
             while ((line = bufferedReader.readLine()) != null) {
                 line = "<code>" + line + "</code>";
-                if (line.contains("Downloading firmware to:")) {
-                    weDontNeedAria2Logs = false;
-                    fullLogs.append("\n").append(line);
-                    bot.editMessage(fullLogs.toString(), update, id);
-                }
+                fullLogs.append("\n").append(line);
+                bot.editMessage(fullLogs.toString(), update, id);
+            }
 
-                if (line.contains("Create Temp and out dir")) {
-                    weDontNeedAria2Logs = true;
-                }
-
-                if (weDontNeedAria2Logs) {
-                    fullLogs.append("\n").append(line);
-                    bot.editMessage(fullLogs.toString(), update, id);
-                    if (line.contains("Semi-GSI done on:")) {
-                        success = true;
-                    }
-                }
+            process.waitFor();
+            if (process.exitValue() == 0) {
+                success = true;
             }
 
             /*
