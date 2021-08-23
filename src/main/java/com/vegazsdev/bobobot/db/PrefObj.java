@@ -2,7 +2,7 @@ package com.vegazsdev.bobobot.db;
 
 import com.vegazsdev.bobobot.utils.XMLs;
 
-public record PrefObj(double id, String lang, String hotkey, double ableToSendRandomMessage) {
+public record PrefObj(double id, String lang, String hotkey) {
     public double getId() {
         return id;
     }

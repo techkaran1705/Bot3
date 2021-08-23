@@ -191,7 +191,7 @@ public class Main {
                  */
                 if (chatPrefs == null) {
                     logger.info("There is no database for: " + chatID + ", creating one...");
-                    new PrefObj(0, "strings-en.xml", "!", 1);
+                    new PrefObj(0, "strings-en.xml", "!");
                 }
             }
         }

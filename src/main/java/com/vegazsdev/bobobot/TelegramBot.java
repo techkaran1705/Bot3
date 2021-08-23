@@ -76,7 +76,7 @@ public class TelegramBot extends TelegramLongPollingBot {
              */
             if (chatPrefs == null) {
                 try {
-                    chatPrefs = new PrefObj(0, "strings-en.xml", "!", 1);
+                    chatPrefs = new PrefObj(0, "strings-en.xml", "/");
                 } catch (Exception exception) {
                     logger.error(exception.getMessage());
                 }
