@@ -21,25 +21,13 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 @SuppressWarnings("rawtypes")
 public class TelegramBot extends TelegramLongPollingBot {
 
     private static final Logger logger = LoggerFactory.getLogger(TelegramBot.class);
-    /*
-     * Don't be angry guys, just a joke
-     */
-    private final String[] messages = {
-            "Go back to the kitchen", "Uninstall the telegram, no one will care",
-            "Have you ever wondered why you were born? There is no reason", "Go sleep",
-            "Why do you use this command? Well, nobody cares", "Life is random chaos, ordered by time",
-            "They got lost again, bunch of idiots!", "Breaking the rules is worse than trash, but abandoning your friends is worse than that.",
-            "A chance in a million is better than no chance!", "When you love, there is a risk of hating.",
-            "Have you washed the dishes yet?", "You're cringe.",
-            "owo", "lmao...", "( ͡° ͜ʖ ͡°)"
-    };
+
     private final Bot bot;
     private PrefObj chatPrefs;
     private ArrayList<Class> commandClasses;
@@ -71,7 +59,6 @@ public class TelegramBot extends TelegramLongPollingBot {
             DbThings.createTable("prefs.db",
                     "CREATE TABLE IF NOT EXISTS chat_prefs ("
                             + "group_id real UNIQUE PRIMARY KEY,"
-                            + "able_to_send_random_messages real DEFAULT 1,"
                             + "hotkey text DEFAULT '!',"
                             + "lang text DEFAULT 'strings-en.xml'"
                             + ");"
@@ -144,22 +131,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                                                 .replace("%1", commandWithClass.getAlias())
                                                 .replace("%2", e.getMessage()), e);
                                     }
-                                }
-                            }
-                        }
-                    } else {
-                        if (!(update.getMessage().getFrom().getId() == Float.parseFloat(String.valueOf(777000)))) {
-                            if (chatPrefs.getAbleToSendRandomMessage() == 1) {
-                                /*
-                                 * Random number/XP (or lucky)
-                                 */
-                                Random random = new Random();
-                                int low = 0, high = 15, lowLucky = 0, highLucky = 1000;
-                                int randomInt = random.nextInt(high - low) + low;
-                                int randomXP = random.nextInt(highLucky - lowLucky) + lowLucky;
-
-                                if (randomInt > randomXP) {
-                                    sendReply(messages[randomInt], update);
                                 }
                             }
                         }

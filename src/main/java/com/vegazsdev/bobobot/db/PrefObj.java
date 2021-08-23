@@ -3,10 +3,6 @@ package com.vegazsdev.bobobot.db;
 import com.vegazsdev.bobobot.utils.XMLs;
 
 public record PrefObj(double id, String lang, String hotkey, double ableToSendRandomMessage) {
-    public double getAbleToSendRandomMessage() {
-        return ableToSendRandomMessage;
-    }
-
     public double getId() {
         return id;
     }
