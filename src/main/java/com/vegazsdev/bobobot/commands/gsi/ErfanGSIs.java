@@ -77,7 +77,7 @@ public class ErfanGSIs extends Command {
     private String noticeGSI = "";
 
     public ErfanGSIs() {
-        super("jurl2gsi");
+        super("url2gsi");
     }
 
     private static String[] listFilesForFolder(final File folder) {
