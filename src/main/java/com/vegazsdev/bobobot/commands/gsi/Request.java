@@ -60,7 +60,7 @@ public class Request extends Command {
                             // Delete the message who user sent
                             bot.deleteMessage(chatId, update.getMessage().getMessageId(), update);
 
-                            // Set to thanks message
+                            // Set to thank message
                             message.setText(prefs.getString("request_done")
                                     .replace("%1", update.getMessage().getFrom().getFirstName())
                                     .replace("%2", String.valueOf(update.getMessage().getFrom().getId()))
@@ -155,7 +155,7 @@ public class Request extends Command {
         }
     }
 
-    // START: Workarounds for first/last name & user name
+    // START: Workarounds for first/last name & username
     private String validateUsername(String username) {
         if (username == null || username.equals("")) {
             return dontHaveUsername;
@@ -171,5 +171,5 @@ public class Request extends Command {
             return " " + lastName;
         }
     }
-    // END: Workarounds for first/last name & user name
+    // END: Workarounds for first/last name & username
 }

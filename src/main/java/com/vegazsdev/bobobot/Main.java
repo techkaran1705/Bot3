@@ -80,7 +80,7 @@ public class Main {
                      */
                     if (clazz.getGenericSuperclass().toString().equals(String.valueOf(Command.class))) {
                         /*
-                         * If valid: Check if has DisableCommand annotation, if has, say: failed to initialize
+                         * If valid: Check if it has DisableCommand annotation, if it has, say: failed to initialize
                          * Else, add the class into commandClasses
                          */
                         if (clazz.isAnnotationPresent(DisableCommand.class)) {
@@ -150,7 +150,7 @@ public class Main {
         }
 
         /*
-         * Create database if don't exists
+         * Create database if it doesn't exist
          */
         if (!FileTools.checkFileExistsCurPath("databases/prefs.db")) {
             DbThings.createNewDatabase("prefs.db");
