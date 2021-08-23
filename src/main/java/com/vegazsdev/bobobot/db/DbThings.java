@@ -93,16 +93,6 @@ public class DbThings {
         }
     }
 
-    public static void changeAbleToSendRandomMessage(double groupId, double opToEnableOrDisable) {
-        String sql = "UPDATE chat_prefs SET able_to_send_random_messages = " + opToEnableOrDisable + " WHERE group_id = " + groupId;
-        try (Connection conn = connect("prefs.db");
-             PreparedStatement prepareStatement = conn.prepareStatement(sql)) {
-            prepareStatement.executeUpdate();
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-        }
-    }
-
     public static void changeHotkey(double groupId, String newHotkey) {
         String sql = "UPDATE chat_prefs SET hotkey = '" + newHotkey + "' WHERE group_id = " + groupId;
         try (Connection conn = connect("prefs.db");
