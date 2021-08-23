@@ -12,9 +12,6 @@
     <about_source_code>❕ Código-fonte</about_source_code>
     <about_treble_channel>🌐 Canal do Treble</about_treble_channel>
 
-    <!-- Hello Command -->
-    <hello>Olá!&#xA;Sua mensagem foi: %1</hello>
-
     <!-- ChangeLang Command -->
     <available_lang>Linguagens Disponíveis:</available_lang>
     <lang_updated>Linguagem Atualizada!</lang_updated>

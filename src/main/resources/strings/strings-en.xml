@@ -28,19 +28,10 @@
     <about_source_code>❕ Source code</about_source_code>
     <about_treble_channel>🌐 Treble Channel</about_treble_channel>
 
-    <!-- Hello Command -->
-
-    <hello>Hello!&#xA;Your message was: %1</hello>
-
     <!-- ChangeLang Command -->
-
     <available_lang>Available Languages:</available_lang>
     <lang_updated>Language Updated!</lang_updated>
     <unknown_lang>Language not available, type %1chlang to see available languages</unknown_lang>
-
-    <!-- DisableRandomMessage Command -->
-    <rm_done_0>Done! Random Messages disabled.</rm_done_0>
-    <rm_done_1>Done! Random Messages enabled.</rm_done_1>
 
     <!-- ErfanGSIs Command -->
     <egsi_allowed>UserID: &lt;b&gt;%1&lt;/b&gt; now has port permissions</egsi_allowed>
