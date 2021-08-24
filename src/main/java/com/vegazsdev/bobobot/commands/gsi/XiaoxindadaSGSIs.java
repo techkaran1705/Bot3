@@ -379,9 +379,8 @@ public class XiaoxindadaSGSIs extends Command {
             if (!testPass) return "Generic";
             return modelName;
         } catch (IOException e) {
-            logger.error(String.valueOf(e));
+            return "Generic";
         }
-        return "Generic";
     }
 
     /**
