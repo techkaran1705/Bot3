@@ -8,6 +8,9 @@ import com.vegazsdev.bobobot.db.PrefObj;
 import com.vegazsdev.bobobot.utils.Config;
 import com.vegazsdev.bobobot.utils.FileTools;
 import com.vegazsdev.bobobot.utils.JSONs;
+import okio.BufferedSource;
+import okio.Okio;
+import okio.Source;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -41,7 +44,7 @@ import java.util.stream.Stream;
  *     <li>{@link #isGSIValid(String)}</li>
  *     <li>{@link #createGSI(GSICmdObj, TelegramBot)}</li>
  *     <li>{@link #userHasPortPermissions(String)}</li>
- *     <li>{@link #getModelOfOutput()}</li>
+ *     <li>{@link #getModelOfOutput(String)}</li>
  *     <li>{@link #addPortPerm(String)}</li>
  *
  * </ul>
@@ -275,82 +278,92 @@ public class ErfanGSIs extends Command {
     /**
      * Get model/codename of the device.
      */
-    private String getModelOfOutput() {
-        StringBuilder fullLogs = new StringBuilder();
+    public String getModelOfOutput(String folder) {
+        /*
+         * Initialize core variables
+         */
+        File outputFolder = new File(folder);
+        File file = null;
+        String modelName = null;
 
-        InputStream inputStream = null;
-        InputStreamReader inputStreamReader = null;
-        BufferedReader bufferedReader = null;
+        /*
+         * List the files
+         */
+        for (final File fileEntry : Objects.requireNonNull(outputFolder.listFiles())) {
+            if (fileEntry.getName().endsWith(".txt") && !fileEntry.getName().contains("System-Tree")) {
+                file = new File(String.valueOf(fileEntry));
+            }
+        }
 
-        try {
-            ProcessBuilder processBuilder;
-            processBuilder = new ProcessBuilder("/bin/bash", "-c",
-                    "grep -oP \"(?<=^Model: ).*\" -hs \"$(pwd)\"/ErfanGSIs/output/*txt | head -1"
-            );
-            processBuilder.redirectErrorStream(true);
-            Process process = processBuilder.start();
-
-            inputStream = process.getInputStream();
-            inputStreamReader = new InputStreamReader(inputStream);
-            bufferedReader = new BufferedReader(inputStreamReader);
-
-            String line;
+        /*
+         * Try to get codename
+         */
+        try (Source fileSource = Okio.source(Objects.requireNonNull(file));
+             BufferedSource bufferedSource = Okio.buffer(fileSource)) {
 
             /*
              * Get codename
              */
-            while ((line = bufferedReader.readLine()) != null) {
-                if (line.length() < 1)
-                    line = "Generic";
-                else if (line.toLowerCase().contains("x00qd"))
-                    line = "Asus Zenfone 5";
-                else if (line.toLowerCase().contains("qssi"))
-                    line = "Qualcomm Single System Image";
-                else if (line.toLowerCase().contains("miatoll"))
-                    line = "MiAtoll";
-                else if (line.toLowerCase().contains("surya"))
-                    line = "Poco X3";
-                else if (line.toLowerCase().contains("lavender"))
-                    line = "Redmi Note 7";
-                else if (line.toLowerCase().contains("ginkgo"))
-                    line = "Redmi Note 8";
-                else if (line.toLowerCase().contains("raphael"))
-                    line = "Mi 9T Pro";
-                else if (line.toLowerCase().contains("mainline"))
-                    line = "AOSP/Pixel (Mainline) Device";
-                else if (line.toLowerCase().contains("sm6250"))
-                    line = "Atoll device";
-                else if (line.toLowerCase().contains("msi"))
-                    line = "Motorola System Image";
-                else if (line.toLowerCase().contains("mssi"))
-                    line = "MIUI Single System Image";
-                else if (line.toLowerCase().contains("a30"))
-                    line = "Samsung Galaxy A30";
-                else if (line.toLowerCase().contains("a20"))
-                    line = "Samsung Galaxy A20";
-                else if (line.toLowerCase().contains("a10"))
-                    line = "Samsung Galaxy A10";
-                else if (line.equals(" "))
-                    line = "Generic";
-
-                fullLogs.append(line);
+            while (true) {
+                String line = bufferedSource.readUtf8Line();
+                if (line == null) break;
+                if (line.startsWith("Model")) {
+                    modelName = line.substring(6);
+                    break;
+                }
             }
+
+            /*
+             * Check if the model have special codename
+             */
+            if (Objects.requireNonNull(modelName).length() < 1)
+                modelName = "Generic";
+            else if (modelName.toLowerCase().contains("x00qd"))
+                modelName = "Asus Zenfone 5";
+            else if (modelName.toLowerCase().contains("qssi"))
+                modelName = "Qualcomm Single System Image";
+            else if (modelName.toLowerCase().contains("miatoll"))
+                modelName = "MiAtoll";
+            else if (modelName.toLowerCase().contains("surya"))
+                modelName = "Poco X3";
+            else if (modelName.toLowerCase().contains("lavender"))
+                modelName = "Redmi Note 7";
+            else if (modelName.toLowerCase().contains("ginkgo"))
+                modelName = "Redmi Note 8";
+            else if (modelName.toLowerCase().contains("raphael"))
+                modelName = "Mi 9T Pro";
+            else if (modelName.toLowerCase().contains("mainline"))
+                modelName = "AOSP/Pixel (Mainline) Device";
+            else if (modelName.toLowerCase().contains("sm6250"))
+                modelName = "Atoll device";
+            else if (modelName.toLowerCase().contains("msi"))
+                modelName = "Motorola System Image";
+            else if (modelName.toLowerCase().contains("mssi"))
+                modelName = "MIUI Single System Image";
+            else if (modelName.toLowerCase().contains("a30"))
+                modelName = "Samsung Galaxy A30";
+            else if (modelName.toLowerCase().contains("a20"))
+                modelName = "Samsung Galaxy A20";
+            else if (modelName.toLowerCase().contains("a10"))
+                modelName = "Samsung Galaxy A10";
+            else if (modelName.equals(" "))
+                modelName = "Generic";
 
             /*
              * First check
              */
-            String stringToBeCheked = fullLogs.toString().toLowerCase();
+            String stringToCheck = modelName;
             boolean testPass = false;
 
             char[] characterSearch = {
                     'q', 'w', 'e', 'r', 't', 'y', 'u',
                     'i', 'o', 'p', 'a', 's', 'd', 'f',
                     'g', 'h', 'j', 'k', 'l', 'z', 'x',
-                    'c', 'v', 'b', 'n', 'm',
+                    'c', 'v', 'b', 'n', 'm'
             };
 
-            for (int i = 0; i < stringToBeCheked.length(); i++) {
-                char character = stringToBeCheked.charAt(i);
+            for (int i = 0; i < stringToCheck.length(); i++) {
+                char character = stringToCheck.charAt(i);
                 for (char search : characterSearch) {
                     if (search == character) {
                         testPass = true;
@@ -359,37 +372,10 @@ public class ErfanGSIs extends Command {
                 }
             }
 
-            /*
-             * Second check
-             */
             if (!testPass) return "Generic";
-            return String.valueOf(fullLogs);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException ioException) {
-                    logger.error(ioException.getMessage(), ioException);
-                }
-            }
-
-            if (inputStreamReader != null) {
-                try {
-                    inputStreamReader.close();
-                } catch (IOException ioException) {
-                    logger.error(ioException.getMessage(), ioException);
-                }
-            }
-
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException ioException) {
-                    logger.error(ioException.getMessage(), ioException);
-                }
-            }
+            return modelName;
+        } catch (IOException e) {
+            logger.error(String.valueOf(e));
         }
         return "Generic";
     }
@@ -611,7 +597,7 @@ public class ErfanGSIs extends Command {
                  * Send GSI message
                  */
                 sendMessage.setText("<b>Requested " + gsiCmdObj.getGsi() + " GSI</b>"
-                        + "\n<b>From</b> " + getModelOfOutput()
+                        + "\n<b>From</b> " + getModelOfOutput(toolPath + "output")
                         + "\n<b>Built by</b> <a href=\"" + "tg://user?id=" + builderID + "\">" + builder + "</a>"
                         + "\n\n<b>Information</b>\n<code>" + descGSI
                         + "</code>\n\n"
