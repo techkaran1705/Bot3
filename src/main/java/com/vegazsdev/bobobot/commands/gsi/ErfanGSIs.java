@@ -285,6 +285,8 @@ public class ErfanGSIs extends Command {
         File outputFolder = new File(folder);
         File file = null;
         String modelName = null;
+        String buildType = null;
+        String brand = null;
 
         /*
          * List the files
@@ -307,10 +309,9 @@ public class ErfanGSIs extends Command {
             while (true) {
                 String line = bufferedSource.readUtf8Line();
                 if (line == null) break;
-                if (line.startsWith("Model")) {
-                    modelName = line.substring(7);
-                    break;
-                }
+                if (line.startsWith("Brand")) brand = line.substring(7);
+                if (line.startsWith("Model")) modelName = line.substring(7);
+                if (line.startsWith("Build Type")) buildType = line.substring(12);
             }
 
             /*
@@ -352,6 +353,24 @@ public class ErfanGSIs extends Command {
                 modelName = "Mi 10T Lite/Mi 10i 5G/Redmi Note 9 5G";
             else if (modelName.equals(" "))
                 modelName = "Generic";
+
+            if (Objects.requireNonNull(brand).equals("google")) {
+                if (modelName.equals("AOSP/Pixel (Mainline) Device")) {
+                    switch (Objects.requireNonNull(buildType)) {
+                        // only Pixel which have QP, RP & SP (Q, R & S)
+                        case "redfin-user" -> modelName = "Google Pixel 5";
+                        case "bramble-user" -> modelName = "Google Pixel 4a 5G";
+                        case "sunfish-user" -> modelName = "Google Pixel 4a";
+                        case "coral-user" -> modelName = "Google Pixel 4 XL";
+                        case "flame-user" -> modelName = "Google Pixel 4";
+                        case "bonito-user" -> modelName = "Google Pixel 3a";
+                        case "crosshatch-user" -> modelName = "Google Pixel 3 XL";
+                        case "blueline-user" -> modelName = "Google Pixel 3";
+                        case "taimen-user" -> modelName = "Google Pixel 2 XL";
+                        case "walleye-user" -> modelName = "Google Pixel 2";
+                    }
+                }
+            }
 
             /*
              * First check
