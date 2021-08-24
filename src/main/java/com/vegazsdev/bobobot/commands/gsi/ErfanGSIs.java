@@ -308,7 +308,7 @@ public class ErfanGSIs extends Command {
                 String line = bufferedSource.readUtf8Line();
                 if (line == null) break;
                 if (line.startsWith("Model")) {
-                    modelName = line.substring(6);
+                    modelName = line.substring(7);
                     break;
                 }
             }
