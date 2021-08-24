@@ -181,7 +181,7 @@ public class XiaoxindadaSGSIs extends Command {
     }
 
     /**
-     * Avoid shell usage on jurl2gsi command.
+     * Avoid shell usage on jurl2sgsi command.
      */
     private String try2AvoidCodeInjection(String parameters) {
         try {
@@ -265,7 +265,7 @@ public class XiaoxindadaSGSIs extends Command {
     }
 
     /**
-     * Avoid users abuse, only users with port permission can use jurl2gsi command.
+     * Avoid users abuse, only users with port permission can use jurl2sgsi command.
      */
     private boolean userHasPortPermissions(String idAsString) {
         if (Objects.equals(Config.getDefConfig("bot-master"), idAsString)) {
@@ -409,7 +409,7 @@ public class XiaoxindadaSGSIs extends Command {
          * Start the GSI process
          */
         pb = new ProcessBuilder("/bin/bash", "-c",
-                "cd " + toolPath + " ; ./url2GSI.sh '" + gsiCmdObj.getUrl() + "' " + gsiCmdObj.getGsi() + " " + gsiCmdObj.getParam()
+                "cd " + toolPath + " ; ./url2SGSI.sh '" + gsiCmdObj.getUrl() + "' " + gsiCmdObj.getGsi() + " " + gsiCmdObj.getParam()
         );
         fullLogs.append("<code>-> Starting process...</code>");
 
@@ -524,7 +524,7 @@ public class XiaoxindadaSGSIs extends Command {
 
                 /*
                  * Check the GSI name has special name, like this:
-                 * !jurl2gsi <url link> Generic:StatiXOS-Nuclear
+                 * !jurl2sgsi <url link> Generic:StatiXOS-Nuclear
                  * The name of this ROM is 'StatiXOS Nuclear' (without quotes), the '-' (char) will be the replacement char, to be used as a space
                  */
                 if (gsiCmdObj.getGsi().contains(":")) {
