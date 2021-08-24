@@ -356,7 +356,7 @@ public class XiaoxindadaSGSIs extends Command {
             /*
              * First check
              */
-            String stringToCheck = modelName;
+            String stringToCheck = modelName.toLowerCase();
             boolean testPass = false;
 
             char[] characterSearch = {
