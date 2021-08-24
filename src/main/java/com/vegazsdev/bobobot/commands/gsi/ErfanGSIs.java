@@ -323,7 +323,7 @@ public class ErfanGSIs extends Command {
             else if (modelName.toLowerCase().contains("qssi"))
                 modelName = "Qualcomm Single System Image";
             else if (modelName.toLowerCase().contains("miatoll"))
-                modelName = "MiAtoll";
+                modelName = "Redmi Note 9S/Redmi Note 9 Pro/Redmi Note 9 Pro Max/POCO M2 Pro";
             else if (modelName.toLowerCase().contains("surya"))
                 modelName = "Poco X3";
             else if (modelName.toLowerCase().contains("lavender"))
@@ -346,6 +346,10 @@ public class ErfanGSIs extends Command {
                 modelName = "Samsung Galaxy A20";
             else if (modelName.toLowerCase().contains("a10"))
                 modelName = "Samsung Galaxy A10";
+            else if (modelName.toLowerCase().contains("apollo"))
+                modelName = "Mi 10T/Mi 10T Pro/Redmi K30S";
+            else if (modelName.toLowerCase().contains("gauguin"))
+                modelName = "Mi 10T Lite/Mi 10i 5G/Redmi Note 9 5G";
             else if (modelName.equals(" "))
                 modelName = "Generic";
 
