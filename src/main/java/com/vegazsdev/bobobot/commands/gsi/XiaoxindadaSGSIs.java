@@ -358,6 +358,7 @@ public class XiaoxindadaSGSIs extends Command {
                 if (modelName.equals("AOSP/Pixel (Mainline) Device")) {
                     switch (Objects.requireNonNull(buildType)) {
                         // only Pixel which have QP, RP & SP (Q, R & S)
+                        case "barbet-user" -> modelName = "Google Pixel 5a";
                         case "redfin-user" -> modelName = "Google Pixel 5";
                         case "bramble-user" -> modelName = "Google Pixel 4a 5G";
                         case "sunfish-user" -> modelName = "Google Pixel 4a";
