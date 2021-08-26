@@ -232,36 +232,9 @@ public class ErfanGSIs extends Command {
      * Check if the GSI is valid.
      * It checks if the tool is updated (if it has R/S support), check if the ROM exists too.
      */
+    // FIX-ME
     private boolean isGSIValid(String gsi) {
-        File[] supportedGSIsPandQ = ArrayUtils.addAll(supportedGSIs9, supportedGSIs10);
-        File[] supportedGSIsRandS = ArrayUtils.addAll(supportedGSIs11, supportedGSIs12);
-
-        if (supportedGSIsPandQ == null || supportedGSIsRandS == null) return false;
-
-        boolean canRunYet = true;
-
-        try {
-            String gsi2 = null;
-
-            if (gsi.contains(":")) {
-                gsi2 = gsi.split(":")[0];
-            }
-
-            for (File supportedGSI : Objects.requireNonNull(supportedGSIsPandQ)) {
-                canRunYet = false;
-                if (Objects.requireNonNullElse(gsi2, gsi).equals(supportedGSI.getName())) return true;
-            }
-
-            if (canRunYet) {
-                for (File supportedGSI : Objects.requireNonNull(supportedGSIsRandS)) {
-                    if (Objects.requireNonNullElse(gsi2, gsi).equals(supportedGSI.getName())) return true;
-                }
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return false;
-        }
-        return false;
+        return true;
     }
 
     /**
