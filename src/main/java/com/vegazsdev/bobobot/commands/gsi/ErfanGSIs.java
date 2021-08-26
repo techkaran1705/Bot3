@@ -342,6 +342,8 @@ public class ErfanGSIs extends Command {
                         case "blueline-user" -> modelName = "Google Pixel 3";
                         case "taimen-user" -> modelName = "Google Pixel 2 XL";
                         case "walleye-user" -> modelName = "Google Pixel 2";
+                        case "marlin-user" -> modelName = "Google Pixel XL";
+                        case "sailfish-user" -> modelName = "Google Pixel";
                     }
                 }
             }
