@@ -78,6 +78,7 @@ public class ErfanGSIs extends Command {
     private String messageError = "";
     private String infoGSI = "";
     private String noticeGSI = "";
+    private String developerNoticeGSI = "";
 
     public ErfanGSIs() {
         super("url2gsi");
@@ -199,8 +200,9 @@ public class ErfanGSIs extends Command {
      */
     private GSICmdObj isCommandValid(Update update) {
         GSICmdObj gsiCmdObj = new GSICmdObj();
-        String[] msgComparableRaw = update.getMessage().getText().split(" ");
         String msg = update.getMessage().getText().replace(Config.getDefConfig("bot-hotkey") + this.getAlias() + " ", "");
+        String[] msgComparableRaw = update.getMessage().getText().split(" "), paramComparableRaw;
+        boolean canContinueLoop = false;
         String url, gsi, param;
 
         if (msgComparableRaw.length >= 3) {
@@ -209,12 +211,27 @@ public class ErfanGSIs extends Command {
                 gsiCmdObj.setUrl(url);
                 gsi = msg.split(" ")[2];
                 gsiCmdObj.setGsi(gsi);
-                param = msg.replace(url + " ", "").replace(gsi, "").trim();
+                param = msg.replace(msgComparableRaw[0], "").replace(msgComparableRaw[1], "").replace(msgComparableRaw[2], "").trim();
                 param = try2AvoidCodeInjection(param);
+                paramComparableRaw = param.split(" ");
 
-                if (param.contains("-nv")) {
-                    noticeGSI = "<b>Notice</b>\nThis GSI requires the vendor to have the same version of the system, check <a href=\"https://t.me/TrebleExperience_chat/10308\">this</a>\n\n";
+                if (param.contains("-nv")) noticeGSI = "<b>Notice</b>\nThis GSI requires the vendor to have the same version of the system, check <a href=\"https://t.me/TrebleExperience_chat/10308\">this</a>\n\n";
+
+                StringBuilder stringBuilder = new StringBuilder();
+                for (String string : paramComparableRaw) {
+                    if (string.startsWith("-")) canContinueLoop = true;
+                    if (!string.startsWith("-")) break;
+                    if (canContinueLoop) stringBuilder.append(string).append(" ");
                 }
+
+                developerNoticeGSI = param.replace(String.valueOf(stringBuilder), "");
+                if (developerNoticeGSI.contains(param)) developerNoticeGSI = "";
+                if (!developerNoticeGSI.equals("")) developerNoticeGSI =
+                        "<b>Developer Notice</b>\n"
+                        + param.replace(String.valueOf(stringBuilder), "")
+                        + "\n\n";
+
+                param = String.valueOf(stringBuilder);
 
                 gsiCmdObj.setParam(param);
                 gsiCmdObj.setUpdate(update);
@@ -601,6 +618,7 @@ public class ErfanGSIs extends Command {
                         + "\n\n<b>Information</b>\n<code>" + descGSI
                         + "</code>\n\n"
                         + noticeGSI
+                        + developerNoticeGSI
                         + "<b>Credits</b>" + "\n"
                         + "<a href=\"https://github.com/Erfanoabdi\">Erfan Abdi</a>" + " | "
                         + "<a href=\"https://github.com/TrebleExperience/Bot3\">Bo³+t</a>" + "\n\n"
@@ -643,6 +661,7 @@ public class ErfanGSIs extends Command {
                 vendorOverlays.set(null);
                 odmOverlays.set(null);
                 infoGSI = null;
+                developerNoticeGSI = null;
                 arr.clear();
                 gsiCmdObj.clean();
             } else {
