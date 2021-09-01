@@ -21,4 +21,4 @@ Any bugs, problems or the like must be reported. If you are going to fork or clo
 * [What is VNDK](https://source.android.com/devices/architecture/vndk)
 
 ## Notice
-No matter how stable the versions are, remember: Everything has problems, bugs, errors & etc. `velan/stable` branch doesn't mean Bo³+t won't have critical bugs like bot death or delay in case of a long process (eg: This happens only in processes that use `ProcessBuilder`, if the process (eg: Characters allowed by the Telegram API is `4096`) exceeds Telegram's limit: Bot dies.).
+No matter how stable the versions are, remember: Everything has problems, bugs, errors & etc. `velan/stable` branch doesn't mean Bo³+t won't have critical bugs like bot death or delay in case of a long process (eg: This happens only in processes that use `ProcessBuilder`, if the process (eg: Characters allowed by the Telegram API is `4096`) exceeds Telegram's limit: Bot dies.
