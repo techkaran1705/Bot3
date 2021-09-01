@@ -314,11 +314,11 @@ public class ErfanGSIs extends Command {
                 modelName = "Motorola System Image";
             else if (modelName.toLowerCase().contains("mssi"))
                 modelName = "MIUI Single System Image";
-            else if (modelName.toLowerCase().equals("a30"))
+            else if (modelName.equals("a30"))
                 modelName = "Samsung Galaxy A30";
-            else if (modelName.toLowerCase().equals("a20"))
+            else if (modelName.equals("a20"))
                 modelName = "Samsung Galaxy A20";
-            else if (modelName.toLowerCase().equals("a10"))
+            else if (modelName.equals("a10"))
                 modelName = "Samsung Galaxy A10";
             else if (modelName.toLowerCase().contains("apollo"))
                 modelName = "Mi 10T/Mi 10T Pro/Redmi K30S";
