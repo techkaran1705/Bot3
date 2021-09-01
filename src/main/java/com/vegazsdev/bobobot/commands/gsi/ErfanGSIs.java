@@ -80,6 +80,11 @@ public class ErfanGSIs extends Command {
     private String noticeGSI = "";
     private String developerNoticeGSI = "";
 
+    /**
+     * Create dummy PrefObj
+     */
+    private PrefObj prefObj;
+
     public ErfanGSIs() {
         super("url2gsi");
     }
@@ -147,6 +152,7 @@ public class ErfanGSIs extends Command {
                 case "list", "roms", "gsis" -> sendSupportedROMs(update, bot, prefs);
                 default -> {
                     messageError = prefs.getString("egsi_fail_to_build_gsi");
+                    prefObj = prefs;
                     if (userHasPortPermissions(update.getMessage().getFrom().getId().toString())) {
                         if (!FileTools.checkIfFolderExists("ErfanGSIs")) {
                             bot.sendReply(prefs.getString("egsi_dont_exists_tool_folder"), update);
@@ -215,7 +221,7 @@ public class ErfanGSIs extends Command {
                 param = try2AvoidCodeInjection(param);
                 paramComparableRaw = param.split(" ");
 
-                if (param.contains("-nv")) noticeGSI = "<b>Notice</b>\nThis GSI requires the vendor to have the same version of the system, check <a href=\"https://t.me/TrebleExperience_chat/10308\">this</a>\n\n";
+                if (param.contains("-nv")) noticeGSI = "<b>GSI Notice</b>\nThis GSI requires the vendor to have the same version of the system, check <a href=\"https://t.me/TrebleExperience_chat/10308\">this</a>\n\n";
 
                 StringBuilder stringBuilder = new StringBuilder();
                 for (String string : paramComparableRaw) {
@@ -634,7 +640,12 @@ public class ErfanGSIs extends Command {
                 /*
                  * Reply kthx
                  */
-                if (idGSI != 0) bot.sendReply("Done! Here the <a href=\"" + "https://t.me/" + Config.getDefConfig("publicChannel")  + "/" + idGSI + "\">link</a> post", update);
+                if (idGSI != 0) bot.sendReply(prefObj.getString("egsi_done")
+                        .replace("%1", gsiCmdObj.getGsi())
+                        .replace("%2", String.valueOf(builderID))
+                        .replace("%3", builder)
+                        .replace("%4", Objects.requireNonNull(Config.getDefConfig("publicChannel")))
+                        .replace("%5", String.valueOf(idGSI)), update);
 
                 /*
                  * Delete output/input folder with two codes (The first seems not worked so to make sure, use other code for it)

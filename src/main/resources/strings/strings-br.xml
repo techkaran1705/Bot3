@@ -32,6 +32,7 @@
     <egsi_dont_exists_tool_folder>A pasta da ferramenta ErfanGSIs não existe.</egsi_dont_exists_tool_folder>
     <egsi_something_is_wrong>Algo está errado, cheque se você está usando a tool do ErfanGSIs atualizada.</egsi_something_is_wrong>
     <egsi_fail_to_build_gsi>Bip bop... Algo de errado não está certo, o processo de fazer GSI falhou, cheque se tem algo errado.</egsi_fail_to_build_gsi>
+    <egsi_done>Pronto! A GSI &lt;b&gt;%1&lt;/b&gt; foi feita com sucesso por &lt;a href="tg://user?id=%2"&gt;%3&lt;/a&gt;, você pode ver mais sobre essa GSI com este &lt;a href="https://t.me/%4/%5"&gt;link&lt;/a&gt;.</egsi_done>
 
     <!-- XiaoxindadaSGSIs Command -->
     <xgsi_allowed>ID do usuário: &lt;b&gt;%1&lt;/b&gt; agora tem permissões para portar SGSIs</xgsi_allowed>

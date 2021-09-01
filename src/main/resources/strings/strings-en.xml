@@ -48,6 +48,7 @@
     <egsi_dont_exists_tool_folder>The ErfanGSIs tool folder does not exist.</egsi_dont_exists_tool_folder>
     <egsi_something_is_wrong>Something is wrong, check if you are using the updated ErfanGSIs tool.</egsi_something_is_wrong>
     <egsi_fail_to_build_gsi>Beep bop... Something wrong isn't correct, the GSI process failed, check if something is wrong.</egsi_fail_to_build_gsi>
+    <egsi_done>Done! &lt;b&gt;%1&lt;/b&gt; GSI was successfully built by &lt;a href="tg://user?id=%2"&gt;%3&lt;/a&gt;, you can see more about this GSI with this &lt;a href="https://t.me/%4/%5"&gt;link&lt;/a&gt;.</egsi_done>
 
     <!-- XiaoxindadaSGSIs Command -->
     <xgsi_allowed>UserID: &lt;b&gt;%1&lt;/b&gt; now has port permissions</xgsi_allowed>
