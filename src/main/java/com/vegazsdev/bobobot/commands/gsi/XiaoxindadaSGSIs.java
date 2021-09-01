@@ -2,6 +2,7 @@ package com.vegazsdev.bobobot.commands.gsi;
 
 import com.vegazsdev.bobobot.TelegramBot;
 import com.vegazsdev.bobobot.core.command.Command;
+import com.vegazsdev.bobobot.core.command.annotations.DisableCommand;
 import com.vegazsdev.bobobot.core.gsi.GSICmdObj;
 import com.vegazsdev.bobobot.core.gsi.SourceForgeUpload;
 import com.vegazsdev.bobobot.db.PrefObj;
@@ -49,6 +50,7 @@ import java.util.stream.Stream;
  *
  * </ul>
  */
+@DisableCommand
 @SuppressWarnings({"SpellCheckingInspection", "unused"})
 public class XiaoxindadaSGSIs extends Command {
 
