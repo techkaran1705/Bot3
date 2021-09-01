@@ -23,6 +23,11 @@
     <only_admin_can_run>Only Administrators can use this command</only_admin_can_run>
     <bad_usage>Bad usage.</bad_usage>
 
+    <!-- Start command -->
+    <start>Hey there! How are you? 👋&#xA;I was developed especially to serve as an automation for ErfanGSIs, I don't have many functions beyond that.</start>
+    <start_source_code>🔧 Source Code</start_source_code>
+    <start_treble_experience>📫 TrebleExperience Channel</start_treble_experience>
+
     <!-- About Command -->
     <about_bot>❔&lt;b&gt; About&lt;/b&gt;&#xA;&lt;b&gt;Bo³+t&lt;/b&gt; is written in java and originally developed by @VegaZS&#xA;&#xA;⌨&lt;b&gt; Developer/Maintainer of Bo³+t&lt;/b&gt;&#xA;&lt;a href="https://github.com/VegaBobo"&gt;VegaZS&lt;/a&gt; - Original dev&#xA;&lt;a href="https://github.com/Velosh"&gt;Velosh&lt;/a&gt; - Unofficial maintainer of &lt;b&gt;Bo³+t&lt;/b&gt; for Treble Experience&#xA;&#xA;❕&lt;b&gt; Build Info&lt;/b&gt;&#xA;&lt;code&gt;%1&lt;/code&gt;</about_bot>
     <about_source_code>❕ Source code</about_source_code>

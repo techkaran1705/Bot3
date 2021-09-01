@@ -7,6 +7,11 @@
     <only_admin_can_run>Apenas Administradores podem usar esse comando</only_admin_can_run>
     <bad_usage>Mal uso.</bad_usage>
 
+    <!-- Start command -->
+    <start>Olá! Como você está? 👋&#xA;Fui desenvolvido especialmente para servir de automatização para ErfanGSIs, não tenho muitas funções além disso.</start>
+    <start_source_code>🔧 Código-fonte</start_source_code>
+    <start_treble_experience>📫 Canal da TrebleExperience</start_treble_experience>
+
     <!-- About Command -->
     <about_bot>❔&lt;b&gt; Sobre&lt;/b&gt;&#xA;&lt;b&gt;Bo³+t&lt;/b&gt; é programado em java e originalmente desenvolvido por @VegaZS&#xA;&#xA;⌨&lt;b&gt; Desenvolvedor/Mantenedor do Bo³+t&lt;/b&gt;&#xA;&lt;a href="https://github.com/VegaBobo"&gt;VegaZS&lt;/a&gt; - Desenvolvedor original&#xA;&lt;a href="https://github.com/Velosh"&gt;Velosh&lt;/a&gt; - Mantenedor não oficial do &lt;b&gt;Bo³+t&lt;/b&gt; para Treble Experience&#xA;&#xA;❕&lt;b&gt; Info da Build&lt;/b&gt;&#xA;&lt;code&gt;%1&lt;/code&gt;</about_bot>
     <about_source_code>❕ Código-fonte</about_source_code>
