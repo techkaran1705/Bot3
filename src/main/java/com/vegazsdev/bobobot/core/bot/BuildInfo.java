@@ -15,9 +15,9 @@ public record BuildInfo(boolean doStable) {
     }
 
     private static class Variables {
-        public final String VERSION = "1.6.1";
+        public final String VERSION = "1.6.5";
         public final String STABLE = "STABLE";
         public final String STAGING = "BETA";
-        public final String CODENAME = "Taiga";
+        public final String CODENAME = "Yuki";
     }
 }
