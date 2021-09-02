@@ -467,7 +467,6 @@ public class ErfanGSIs extends Command {
              * If the GSI got true boolean, it will create gzip, upload, prepare message and send it to channel/group
              */
             if (success) {
-                fullLogs.append("\n").append("<code>Creating gzip...</code>");
                 bot.editMessage(fullLogs.toString(), update, id);
 
                 /*
@@ -479,6 +478,7 @@ public class ErfanGSIs extends Command {
                  * Gzip the files
                  */
                 for (String gzipFile : gzipFiles) {
+                    fullLogs.append("\n").append("<code>-> Gzipping: ").append(gzipFile).append(".gz").append("</code>");
                     new FileTools().gzipFile(gzipFile, gzipFile + ".gz");
                 }
 
@@ -525,7 +525,7 @@ public class ErfanGSIs extends Command {
                 /*
                  * Now say the bot will upload files to SourceForge
                  */
-                fullLogs.append("\n").append("<code>Sending files to SF...</code>");
+                fullLogs.append("\n").append("<code>-> Uploading compressed files from GSI to SourceForge...</code>");
                 bot.editMessage(fullLogs.toString(), update, id);
 
                 /*
@@ -628,7 +628,7 @@ public class ErfanGSIs extends Command {
                 sendMessage.setChatId(Objects.requireNonNull(SourceForgeSetup.getSfConf("bot-announcement-id")));
                 idGSI = bot.sendMessageAsyncBase(sendMessage, update);
 
-                fullLogs.append("\n").append("Finished!");
+                fullLogs.append("\n").append("-> Finished!");
                 bot.editMessage(fullLogs.toString(), update, id);
 
                 /*
