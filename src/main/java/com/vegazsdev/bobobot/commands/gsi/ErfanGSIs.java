@@ -343,6 +343,8 @@ public class ErfanGSIs extends Command {
                 modelName = "Samsung Galaxy A20";
             else if (modelName.equals("a10"))
                 modelName = "Samsung Galaxy A10";
+            else if (modelName.equals("LE2123"))
+                modelName = "OnePlus 9 Pro";
             else if (modelName.toLowerCase().contains("apollo"))
                 modelName = "Mi 10T/Mi 10T Pro/Redmi K30S";
             else if (modelName.toLowerCase().contains("gauguin"))
