@@ -28,7 +28,7 @@
     <egsi_current_queue>&lt;b&gt;Ports na Fila:&lt;/b&gt; %1&#xA;&lt;i&gt;%2&lt;/i&gt;</egsi_current_queue>
     <egsi_added_to_queue>Port adicionado na fila.</egsi_added_to_queue>
     <egsi_no_ports_queue>Sem ports na fila.</egsi_no_ports_queue>
-    <egsi_supported_types>&lt;b&gt;Tipo de GSI ou URL invalida!&lt;/b&gt;&#xA;&#xA;Tipos de GSIs suportadas no Android 9: %1&#xA;&#xA;Tipos de GSIs suportadas no Android 10: %2&#xA;&#xA;Tipos de GSIs suportadas no Android 11: %3&#xA;&#xA;Tipos de GSIs suportadas no Android S: %4</egsi_supported_types>
+    <egsi_supported_types>&lt;b&gt;Tipo de GSI ou URL invalida!&lt;/b&gt;&#xA;&#xA;ipos de GSIs suportadas no Android 10: %1&#xA;&#xA;Tipos de GSIs suportadas no Android 11: %2&#xA;&#xA;Tipos de GSIs suportadas no Android S: %3</egsi_supported_types>
     <egsi_dont_exists_tool_folder>A pasta da ferramenta ErfanGSIs não existe.</egsi_dont_exists_tool_folder>
     <egsi_something_is_wrong>Algo está errado, cheque se você está usando a tool do ErfanGSIs atualizada.</egsi_something_is_wrong>
     <egsi_fail_to_build_gsi>Bip bop... Algo de errado não está certo, o processo de fazer GSI falhou, cheque se tem algo errado.</egsi_fail_to_build_gsi>

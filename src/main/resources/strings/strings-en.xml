@@ -44,7 +44,7 @@
     <egsi_current_queue>&lt;b&gt;Ports on Queue:&lt;/b&gt; %1&#xA;&lt;i&gt;%2&lt;/i&gt;</egsi_current_queue>
     <egsi_added_to_queue>Added to queue.</egsi_added_to_queue>
     <egsi_no_ports_queue>No ports on queue.</egsi_no_ports_queue>
-    <egsi_supported_types>&lt;b&gt;GSI Type or URL is not valid!&lt;/b&gt;&#xA;&#xA;Supported types on Android 9: %1&#xA;&#xA;Supported types on Android 10: %2&#xA;&#xA;Supported types on Android 11: %3&#xA;&#xA;Supported types on Android S: %4</egsi_supported_types>
+    <egsi_supported_types>&lt;b&gt;GSI Type or URL is not valid!&lt;/b&gt;&#xA;&#xA;Supported types on Android 10: %1&#xA;&#xA;Supported types on Android 11: %2&#xA;&#xA;Supported types on Android 12: %3</egsi_supported_types>
     <egsi_dont_exists_tool_folder>The ErfanGSIs tool folder does not exist.</egsi_dont_exists_tool_folder>
     <egsi_something_is_wrong>Something is wrong, check if you are using the updated ErfanGSIs tool.</egsi_something_is_wrong>
     <egsi_fail_to_build_gsi>Beep bop... Something wrong isn't correct, the GSI process failed, check if something is wrong.</egsi_fail_to_build_gsi>

@@ -67,10 +67,9 @@ public class ErfanGSIs extends Command {
     /**
      * Get supported versions from ErfanGSIs tool.
      */
-    private final File[] supportedGSIs9 = new File(toolPath + "roms/9").listFiles(File::isDirectory);
     private final File[] supportedGSIs10 = new File(toolPath + "roms/10").listFiles(File::isDirectory);
     private final File[] supportedGSIs11 = new File(toolPath + "roms/11").listFiles(File::isDirectory);
-    private final File[] supportedGSIs12 = new File(toolPath + "roms/S").listFiles(File::isDirectory);
+    private final File[] supportedGSIs12 = new File(toolPath + "roms/12").listFiles(File::isDirectory);
 
     /**
      * Some workarounds.
@@ -737,25 +736,21 @@ public class ErfanGSIs extends Command {
      * Common message for list/jurl2gsi args
      */
     public void sendSupportedROMs(Update update, TelegramBot bot, PrefObj prefs) {
-        File[] supportedGSIsPandQ = ArrayUtils.addAll(supportedGSIs9, supportedGSIs10);
+        File[] supportedGSIsPandQ = ArrayUtils.addAll(supportedGSIs10);
         File[] supportedGSIsRandS = ArrayUtils.addAll(supportedGSIs11, supportedGSIs12);
 
         if (supportedGSIsPandQ != null && supportedGSIsRandS != null) {
             bot.sendReply(prefs.getString("egsi_supported_types")
                     .replace("%1",
-                            Arrays.toString(supportedGSIs9).replace(toolPath + "roms/9/", "")
-                                    .replace("[", "")
-                                    .replace("]", ""))
-                    .replace("%2",
                             Arrays.toString(supportedGSIs10).replace(toolPath + "roms/10/", "")
                                     .replace("[", "")
                                     .replace("]", ""))
-                    .replace("%3",
+                    .replace("%2",
                             Arrays.toString(supportedGSIs11).replace(toolPath + "roms/11/", "")
                                     .replace("[", "")
                                     .replace("]", ""))
-                    .replace("%4",
-                            Arrays.toString(supportedGSIs12).replace(toolPath + "roms/S/", "")
+                    .replace("%3",
+                            Arrays.toString(supportedGSIs12).replace(toolPath + "roms/12/", "")
                                     .replace("[", "")
                                     .replace("]", "")), update);
         } else {
