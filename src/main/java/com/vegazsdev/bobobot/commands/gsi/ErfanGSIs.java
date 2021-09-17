@@ -355,6 +355,8 @@ public class ErfanGSIs extends Command {
                 if (modelName.equals("AOSP/Pixel (Mainline) Device")) {
                     switch (Objects.requireNonNull(buildType)) {
                         // only Pixel which have QP, RP & SP (Q, R & S)
+                        case "raven-user" -> modelName = "Google Pixel 6 Pro";
+                        case "oriel-user" -> modelName = "Google Pixel 6";
                         case "barbet-user" -> modelName = "Google Pixel 5a";
                         case "redfin-user" -> modelName = "Google Pixel 5";
                         case "bramble-user" -> modelName = "Google Pixel 4a 5G";
