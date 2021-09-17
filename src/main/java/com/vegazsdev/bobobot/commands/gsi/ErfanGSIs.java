@@ -488,6 +488,7 @@ public class ErfanGSIs extends Command {
                  */
                 for (String gzipFile : gzipFiles) {
                     fullLogs.append("\n").append("<code>-> Gzipping: ").append(gzipFile).append(".gz").append("</code>");
+                    bot.editMessage(fullLogs.toString(), update, id);
                     new FileTools().gzipFile(gzipFile, gzipFile + ".gz");
                 }
 
