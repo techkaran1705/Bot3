@@ -220,7 +220,7 @@ public class ErfanGSIs extends Command {
                 param = try2AvoidCodeInjection(param);
                 paramComparableRaw = param.split(" ");
 
-                if (param.contains("-nv")) noticeGSI = "<b>GSI Notice</b>\nThis GSI requires the vendor to have the same version of the system, check <a href=\"https://t.me/TrebleExperience_chat/10308\">this</a>\n\n";
+                if (param.contains("-nv")) noticeGSI = "<b>GSI Notice</b>\nThis GSI requires the vendor to have the same version of the system, check <a href=\"https://t.me/TrebleExperience_chat/10308\">this</a>.\n\n";
 
                 StringBuilder stringBuilder = new StringBuilder();
                 for (String string : paramComparableRaw) {
@@ -235,6 +235,9 @@ public class ErfanGSIs extends Command {
                         "<b>Developer Notice</b>\n"
                         + param.replace(String.valueOf(stringBuilder), "")
                         + "\n\n";
+
+                // TODO: FIX ME
+                if (developerNoticeGSI.equals(null)) developerNoticeGSI = "";
 
                 param = String.valueOf(stringBuilder);
 
@@ -631,6 +634,7 @@ public class ErfanGSIs extends Command {
                         + developerNoticeGSI
                         + "<b>Credits</b>" + "\n"
                         + "<a href=\"https://github.com/Erfanoabdi\">Erfan Abdi</a>" + " | "
+                        + "<a href=\"https://github.com/xiaoxindada\">Xiaoxindada</a>" + " | "
                         + "<a href=\"https://github.com/TrebleExperience/Bot3\">Bo³+t</a>" + "\n\n"
                         + "<b>Treble Experience</b>" + "\n"
                         + "<a href=\"https://t.me/TrebleExperience\">Channel</a> | <a href=\"https://t.me/TrebleExperience_chat\">Chat</a> | <a href=\"https://github.com/TrebleExperience\">GitHub</a>"
