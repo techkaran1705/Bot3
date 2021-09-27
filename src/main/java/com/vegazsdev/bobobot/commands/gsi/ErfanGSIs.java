@@ -220,7 +220,11 @@ public class ErfanGSIs extends Command {
                 param = try2AvoidCodeInjection(param);
                 paramComparableRaw = param.split(" ");
 
-                if (param.contains("-nv")) noticeGSI = "<b>GSI Notice</b>\nThis GSI requires the vendor to have the same version of the system, check <a href=\"https://t.me/TrebleExperience_chat/10308\">this</a>.\n\n";
+                if (param.contains("-nv")) {
+                    noticeGSI = "<b>GSI Notice</b>\nThis GSI requires the vendor to have the same version of the system, check <a href=\"https://t.me/TrebleExperience_chat/10308\">this</a>.\n\n";
+                } else {
+                    noticeGSI = "<b>GSI Notice</b>\nNo information for this GSI was reported. Read the <b>Developer Notice</b> and check if there is any additional information directly from the builder.\n\n";
+                }
 
                 StringBuilder stringBuilder = new StringBuilder();
                 for (String string : paramComparableRaw) {
@@ -231,13 +235,17 @@ public class ErfanGSIs extends Command {
 
                 developerNoticeGSI = param.replace(String.valueOf(stringBuilder), "");
                 if (developerNoticeGSI.contains(param)) developerNoticeGSI = "";
-                if (!developerNoticeGSI.equals("")) developerNoticeGSI =
-                        "<b>Developer Notice</b>\n"
-                        + param.replace(String.valueOf(stringBuilder), "")
-                        + "\n\n";
-
-                // TODO: FIX ME
-                if (developerNoticeGSI.equals(null)) developerNoticeGSI = "";
+                if (!developerNoticeGSI.equals("")) {
+                    developerNoticeGSI =
+                            "<b>Developer Notice</b>\n"
+                                    + param.replace(String.valueOf(stringBuilder), "")
+                                    + "\n\n";
+                } else {
+                    developerNoticeGSI =
+                            "<b>Developer Notice</b>\n"
+                                    + "No additional information has been reported, if you think this is a mistake, report it directly to the builder."
+                                    + "\n\n";
+                }
 
                 param = String.valueOf(stringBuilder);
 
