@@ -243,7 +243,7 @@ public class ErfanGSIs extends Command {
                 } else {
                     developerNoticeGSI =
                             "<b>Developer Notice</b>\n"
-                                    + "No additional information has been reported, if you think this is a mistake, report it directly to the builder."
+                                    + "No additional information was reported by the builder, if you think this is a mistake, report it directly to the builder."
                                     + "\n\n";
                 }
 
