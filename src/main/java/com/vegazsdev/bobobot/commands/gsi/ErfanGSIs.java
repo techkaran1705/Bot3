@@ -221,7 +221,7 @@ public class ErfanGSIs extends Command {
                 paramComparableRaw = param.split(" ");
 
                 if (param.contains("-nv")) {
-                    noticeGSI = "<b>GSI Notice</b>\nThis GSI requires the vendor to have the same version of the system, check <a href=\"https://t.me/TrebleExperience_chat/10308\">this</a>.\n\n";
+                    noticeGSI = "<b>GSI Notice</b>\nThis GSI requires the vendor to have the same version of the system, check <a href=\"https://t.me/projectreblechat\">this</a>.\n\n";
                 } else {
                     noticeGSI = "<b>GSI Notice</b>\nNo information for this GSI was reported. Read the <b>Developer Notice</b> and check if there is any additional information directly from the builder.\n\n";
                 }
@@ -660,9 +660,9 @@ public class ErfanGSIs extends Command {
                         + "<a href=\"https://github.com/Erfanoabdi\">Erfan Abdi</a>" + " | "
                         + "<a href=\"https://github.com/xiaoxindada\">Xiaoxindada</a>" + " | "
                         + "<a href=\"https://github.com/phhusson\">Husson</a>" + " | "
-                        + "<a href=\"https://github.com/TrebleExperience/Bot3\">Bo³+t</a>" + "\n\n"
+                        + "<a href=\"https://github.com/ShadesTools/Bot3\">Bo³+t</a>" + "\n\n"
                         + "<b>Treble Experience</b>" + "\n"
-                        + "<a href=\"https://t.me/TrebleExperience\">Channel</a> | <a href=\"https://t.me/TrebleExperience_chat\">Chat</a> | <a href=\"https://github.com/TrebleExperience\">GitHub</a>"
+                        + "<a href=\"https://t.me/berkaygsis\">Channel</a> | <a href=\"https://t.me/projectreblechat\">Chat</a> | <a href=\"https://github.com/ShadesTools\">GitHub</a>"
                 );
                 sendMessage.setChatId(Objects.requireNonNull(SourceForgeSetup.getSfConf("bot-announcement-id")));
                 idGSI = bot.sendMessageAsyncBase(sendMessage, update);
