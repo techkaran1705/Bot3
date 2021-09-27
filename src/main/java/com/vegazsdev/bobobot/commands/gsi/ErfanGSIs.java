@@ -649,7 +649,7 @@ public class ErfanGSIs extends Command {
                 /*
                  * Send GSI message
                  */
-                sendMessage.setText("<b>Requested " + gsiCmdObj.getGsi() + " GSI</b>"
+                sendMessage.setText("<b>Requested " + gsiCmdObj.getGsi() + " GSI + SGSI</b>"
                         + "\n<b>From</b> " + getModelOfOutput(toolPath + "output")
                         + "\n<b>Built by</b> <a href=\"" + "tg://user?id=" + builderID + "\">" + builder + "</a>"
                         + "\n\n<b>Information</b>\n<code>" + descGSI
@@ -659,6 +659,7 @@ public class ErfanGSIs extends Command {
                         + "<b>Credits</b>" + "\n"
                         + "<a href=\"https://github.com/Erfanoabdi\">Erfan Abdi</a>" + " | "
                         + "<a href=\"https://github.com/xiaoxindada\">Xiaoxindada</a>" + " | "
+                        + "<a href=\"https://github.com/phhusson\">Husson</a>" + " | "
                         + "<a href=\"https://github.com/TrebleExperience/Bot3\">Bo³+t</a>" + "\n\n"
                         + "<b>Treble Experience</b>" + "\n"
                         + "<a href=\"https://t.me/TrebleExperience\">Channel</a> | <a href=\"https://t.me/TrebleExperience_chat\">Chat</a> | <a href=\"https://github.com/TrebleExperience\">GitHub</a>"
