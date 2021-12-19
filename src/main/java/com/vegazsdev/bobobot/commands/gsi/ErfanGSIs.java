@@ -660,9 +660,9 @@ public class ErfanGSIs extends Command {
                         + "<a href=\"https://github.com/Erfanoabdi\">Erfan Abdi</a>" + " | "
                         + "<a href=\"https://github.com/xiaoxindada\">Xiaoxindada</a>" + " | "
                         + "<a href=\"https://github.com/phhusson\">Husson</a>" + " | "
-                        + "<a href=\"https://github.com/ShadesTools/Bot3\">Bo³+t</a>" + "\n\n"
-                        + "<b>Treble Experience</b>" + "\n"
-                        + "<a href=\"https://t.me/berkaygsis\">Channel</a> | <a href=\"https://t.me/projectreblechat\">Chat</a> | <a href=\"https://github.com/ShadesTools\">GitHub</a>"
+                        + "<a href=\"https://github.com/dp014875/Bot3\">Bo³+t</a>" + "\n\n"
+                        + "<b>Dipesh GSI</b>" + "\n"
+                        + "<a href=\"https://t.me/dt_tech_updates\">Channel</a> | <a href=\"https://t.me/dt_tech\">Chat</a> | <a href=\"https://github.com/dp014875\">GitHub</a>"
                 );
                 sendMessage.setChatId(Objects.requireNonNull(SourceForgeSetup.getSfConf("bot-announcement-id")));
                 idGSI = bot.sendMessageAsyncBase(sendMessage, update);
