@@ -85,7 +85,7 @@ public class ErfanGSIs extends Command {
     private PrefObj prefObj;
 
     public ErfanGSIs() {
-        super("url2gsi");
+        super("dp2gsi");
     }
 
     private static String[] listFilesForFolder(final File folder) {
